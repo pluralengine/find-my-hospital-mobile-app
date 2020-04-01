@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Blank Template (TypeScript)",
+    "name": "COVID-19 Hospital Monitor",
     "slug": "hospital-monitor",
     "privacy": "public",
     "sdkVersion": "36.0.0",

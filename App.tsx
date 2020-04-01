@@ -1,17 +1,25 @@
-import React from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import logo from "./assets/icon.png";
+import React, { useState } from "react";
+import { StyleSheet, View, Dimensions } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import data from "./assets/api/hospitals.json";
+
 export default function App() {
+  const [hospitals, setHospitals] = useState(data);
+
   return (
     <View style={styles.container}>
-      <Image source={logo} style={styles.logo} />
-      <Text>Buscando el hospital mas cercano...</Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => alert("Hello world!")}
-      >
-        <Text style={styles.buttonText}>Salute!</Text>
-      </TouchableOpacity>
+      <MapView style={styles.map}>
+        {hospitals.map(hospital => (
+          <Marker
+            coordinate={{
+              latitude: hospital.geometry.lat,
+              longitude: hospital.geometry.lng
+            }}
+            title={hospital.name}
+            description={hospital.address}
+          />
+        ))}
+      </MapView>
     </View>
   );
 }
@@ -23,13 +31,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  logo: { width: 100, height: 100, margin: 50 },
-  button: {
-    margin: 10,
-    backgroundColor: "lightgrey",
-    padding: 10,
-    borderWidth: 0,
-    borderRadius: 5
-  },
-  buttonText: { color: "white" }
+  map: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height
+  }
 });
