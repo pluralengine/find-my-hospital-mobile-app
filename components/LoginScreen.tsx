@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import {
   StyleSheet,
   View,
-  Dimensions,
   TouchableOpacity,
   Text,
   TextInput
@@ -66,7 +65,7 @@ const styles = StyleSheet.create({
   },
   formLink: {
     textDecorationLine: "underline",
-    marginBottom: 16,
+    marginBottom: 16
   },
   loginButton: {
     backgroundColor: "white",
@@ -78,5 +77,4 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16
   }
-
 });
