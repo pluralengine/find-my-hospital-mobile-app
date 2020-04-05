@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  TouchableOpacity,
+  Text,
+  Button
+} from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import data from "./assets/api/hospitals.json";
 
@@ -11,6 +18,7 @@ export default function App() {
       <MapView style={styles.map}>
         {hospitals.map(hospital => (
           <Marker
+            key={hospital.id}
             coordinate={{
               latitude: hospital.geometry.lat,
               longitude: hospital.geometry.lng
@@ -20,19 +28,37 @@ export default function App() {
           />
         ))}
       </MapView>
+      <TouchableOpacity style={styles.loginButton}>
+        <Text>Login</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    position: "relative",
     flex: 1,
-    backgroundColor: "#fff",
+    justifyContent: "center",
     alignItems: "center",
-    justifyContent: "center"
+    backgroundColor: "#F5F5F5"
   },
   map: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height
+  },
+  loginButton: {
+    position: "absolute",
+    backgroundColor: "white",
+    borderRadius: 10,
+    borderColor: "#F5F5F5",
+    borderWidth: 1,
+    alignContent: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    right: 30,
+    top: 50
   }
 });
