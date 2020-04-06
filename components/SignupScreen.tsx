@@ -1,25 +1,64 @@
 import "react-native-gesture-handler";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
   TouchableOpacity,
   Text,
-  TextInput
+  TextInput,
+  Alert
 } from "react-native";
 import SearchableDropdown from "react-native-searchable-dropdown";
-import data from "../assets/api/hospitals.json";
+import { getHospitals, createUser } from "../api";
 
 export default function SignupScreen({ navigation }) {
-  const hospitals = data.map(hospital => ({
-    name: hospital.name,
-    value: hospital.name
-  }));
-  const [hospital, setHospital] = useState(hospitals[0]);
-  const [user, setUser] = useState("");
+  const [hospitalItems, setHospitalItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [hospital, setHospital] = useState(null);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
+
+  useEffect(() => {
+    setLoading(true);
+    getHospitals()
+      .then(data => {
+        const items = data.map(hospital => ({
+          value: hospital.id,
+          name: hospital.name
+        }));
+        setHospitalItems(items);
+        setLoading(false);
+      })
+      .catch(e => {
+        setLoading(false);
+      });
+  }, []);
+
+  function submitUser() {
+    createUser({
+      name,
+      email,
+      password,
+      role,
+      hospitalId: hospital.value
+    }).then((user) => {
+      Alert.alert(
+        "Enviado correctamente",
+        `Gracias ${user.name}. Estamos comprobando sus datos.\n\nPronto recibirá un email a ${user.email} confirmando su alta`,
+        [
+          {
+            text: "Aceptar",
+            onPress: () => {
+              navigation.navigate("Login");
+            }
+          }
+        ],
+        { cancelable: false }
+      );
+    });
+  }
 
   return (
     <View style={styles.container}>
@@ -32,6 +71,7 @@ export default function SignupScreen({ navigation }) {
         favor rellene sus datos y verificaremos su identidad.
       </Text>
       <SearchableDropdown
+        select
         onItemSelect={setHospital}
         containerStyle={styles.searchInput}
         itemStyle={{
@@ -41,12 +81,10 @@ export default function SignupScreen({ navigation }) {
           borderBottomWidth: 1,
           borderBottomColor: "transparent"
         }}
-        itemTextStyle={{}}
         itemsContainerStyle={{ maxHeight: 140, marginTop: -16 }}
-        items={hospitals}
-        defaultIndex={2}
+        items={hospitalItems}
         textInputProps={{
-          placeholder: "Hospital",
+          placeholder: loading ? "Cargando..." : "Hospital",
           style: styles.formInput
         }}
         listProps={{
@@ -63,8 +101,8 @@ export default function SignupScreen({ navigation }) {
         style={styles.formInput}
         placeholder="Nombre y Apellidos"
         autoCompleteType="name"
-        onChangeText={user => setUser(user)}
-        defaultValue={user}
+        onChangeText={name => setName(name)}
+        defaultValue={name}
       />
       <TextInput
         style={styles.formInput}
@@ -84,7 +122,7 @@ export default function SignupScreen({ navigation }) {
         onChangeText={password => setPassword(password)}
         defaultValue={password}
       />
-      <TouchableOpacity style={styles.loginButton}>
+      <TouchableOpacity style={styles.loginButton} onPress={submitUser}>
         <Text>Pedir acceso</Text>
       </TouchableOpacity>
     </View>
