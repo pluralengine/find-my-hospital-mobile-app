@@ -1,27 +1,31 @@
 import "react-native-gesture-handler";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
   Dimensions,
   TouchableOpacity,
-  Text
+  Text,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import data from "../assets/api/hospitals.json";
+import { getHospitals } from "../api";
 
 export default function MapScreen({ navigation }) {
-  const [hospitals, setHospitals] = useState(data);
+  const [hospitals, setHospitals] = useState([]);
+
+  useEffect(() => {
+    getHospitals().then(setHospitals);
+  });
 
   return (
     <View style={styles.container}>
       <MapView style={styles.map}>
-        {hospitals.map(hospital => (
+        {hospitals.map((hospital) => (
           <Marker
             key={hospital.id}
             coordinate={{
-              latitude: hospital.geometry.lat,
-              longitude: hospital.geometry.lng
+              latitude: parseFloat(hospital.geometryLat),
+              longitude: parseFloat(hospital.geometryLng),
             }}
             title={hospital.name}
             description={hospital.address}
@@ -44,11 +48,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5F5F5"
+    backgroundColor: "#F5F5F5",
   },
   map: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height
+    height: Dimensions.get("window").height,
   },
   loginButton: {
     position: "absolute",
@@ -62,6 +66,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     right: 24,
-    top: 24
-  }
+    top: 24,
+  },
 });

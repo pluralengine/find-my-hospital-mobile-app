@@ -10,9 +10,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Registro" component={SignupScreen} />
         <Stack.Screen name="Home" component={MapScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Registro" component={SignupScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
