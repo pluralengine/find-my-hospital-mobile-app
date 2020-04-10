@@ -1,7 +1,9 @@
 # COVID-19 Hospital Monitoring
 Client mobile app for COVID-19 hospital emergency status monitoring
 
-## Run development environment
+1. [Run development environment]
+
+## Run locally
 
 Install [Expo CLI])(https://docs.expo.io/versions/latest/workflow/expo-cli/)
 ```

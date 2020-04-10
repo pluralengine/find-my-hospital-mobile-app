@@ -1,38 +1,19 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
-import MapView, { Marker } from "react-native-maps";
-import data from "./assets/api/hospitals.json";
+import "react-native-gesture-handler";
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { MapScreen, LoginScreen, SignupScreen } from "./components";
+import { createStackNavigator } from "@react-navigation/stack";
+
+const Stack = createStackNavigator();
 
 export default function App() {
-  const [hospitals, setHospitals] = useState(data);
-
   return (
-    <View style={styles.container}>
-      <MapView style={styles.map}>
-        {hospitals.map(hospital => (
-          <Marker
-            coordinate={{
-              latitude: hospital.geometry.lat,
-              longitude: hospital.geometry.lng
-            }}
-            title={hospital.name}
-            description={hospital.address}
-          />
-        ))}
-      </MapView>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={MapScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Registro" component={SignupScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height
-  }
-});
