@@ -75,7 +75,7 @@ export default function SignupScreen({ navigation }) {
         onItemSelect={setHospital}
         containerStyle={styles.searchInput}
         itemStyle={styles.dropdownItem}
-        itemsContainerStyle={}
+        itemsContainerStyle={styles.itemsContainer}
         items={hospitalItems}
         textInputProps={{
           placeholder: loading ? "Cargando..." : "Hospital",
@@ -158,16 +158,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "transparent",
   },
-  itemsContainer: { maxHeight: 140, marginTop: -16 },
-  loginButton: {
-    backgroundColor: "white",
+  itemsContainer: {
+    maxHeight: 140,
+    marginTop: -14,
+    marginBottom: 8,
     borderRadius: 10,
-    borderColor: "#F5F5F5",
-    borderWidth: 1,
-    alignContent: "center",
-    justifyContent: "center",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
   },
   formLink: {
     textDecorationLine: "underline",
