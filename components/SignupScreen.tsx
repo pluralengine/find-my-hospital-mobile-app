@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
-  Alert
+  Alert,
 } from "react-native";
 import SearchableDropdown from "react-native-searchable-dropdown";
 import { getHospitals, createUser } from "../api";
@@ -23,15 +23,15 @@ export default function SignupScreen({ navigation }) {
   useEffect(() => {
     setLoading(true);
     getHospitals()
-      .then(data => {
-        const items = data.map(hospital => ({
+      .then((data) => {
+        const items = data.map((hospital) => ({
           value: hospital.id,
-          name: hospital.name
+          name: hospital.name,
         }));
         setHospitalItems(items);
         setLoading(false);
       })
-      .catch(e => {
+      .catch((e) => {
         setLoading(false);
       });
   }, []);
@@ -42,7 +42,7 @@ export default function SignupScreen({ navigation }) {
       email,
       password,
       role,
-      hospitalId: hospital.value
+      hospitalId: hospital.value,
     }).then((user) => {
       Alert.alert(
         "Enviado correctamente",
@@ -52,8 +52,8 @@ export default function SignupScreen({ navigation }) {
             text: "Aceptar",
             onPress: () => {
               navigation.navigate("Login");
-            }
-          }
+            },
+          },
         ],
         { cancelable: false }
       );
@@ -74,34 +74,28 @@ export default function SignupScreen({ navigation }) {
         select
         onItemSelect={setHospital}
         containerStyle={styles.searchInput}
-        itemStyle={{
-          padding: 10,
-          marginTop: 2,
-          backgroundColor: "white",
-          borderBottomWidth: 1,
-          borderBottomColor: "transparent"
-        }}
-        itemsContainerStyle={{ maxHeight: 140, marginTop: -16 }}
+        itemStyle={styles.dropdownItem}
+        itemsContainerStyle={}
         items={hospitalItems}
         textInputProps={{
           placeholder: loading ? "Cargando..." : "Hospital",
-          style: styles.formInput
+          style: styles.formInput,
         }}
         listProps={{
-          nestedScrollEnabled: true
+          nestedScrollEnabled: true,
         }}
       />
       <TextInput
         style={styles.formInput}
         placeholder="Cargo en el hospital"
-        onChangeText={role => setRole(role)}
+        onChangeText={(role) => setRole(role)}
         defaultValue={role}
       />
       <TextInput
         style={styles.formInput}
         placeholder="Nombre y Apellidos"
         autoCompleteType="name"
-        onChangeText={name => setName(name)}
+        onChangeText={(name) => setName(name)}
         defaultValue={name}
       />
       <TextInput
@@ -110,7 +104,7 @@ export default function SignupScreen({ navigation }) {
         autoCompleteType="email"
         keyboardType="email-address"
         textContentType="emailAddress"
-        onChangeText={email => setEmail(email)}
+        onChangeText={(email) => setEmail(email)}
         defaultValue={email}
       />
       <TextInput
@@ -119,7 +113,7 @@ export default function SignupScreen({ navigation }) {
         autoCompleteType="password"
         textContentType="password"
         secureTextEntry
-        onChangeText={password => setPassword(password)}
+        onChangeText={(password) => setPassword(password)}
         defaultValue={password}
       />
       <TouchableOpacity style={styles.loginButton} onPress={submitUser}>
@@ -136,14 +130,14 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: "#F5F5F5",
-    padding: 48
+    padding: 48,
   },
   formTitle: {
     fontSize: 24,
-    marginBottom: 24
+    marginBottom: 24,
   },
   formSubtitle: {
-    marginBottom: 16
+    marginBottom: 16,
   },
   formInput: {
     height: 48,
@@ -152,11 +146,19 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     paddingVertical: 8,
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
   },
   searchInput: {
-    width: "100%"
+    width: "100%",
   },
+  dropdownItem: {
+    padding: 10,
+    marginTop: 2,
+    backgroundColor: "white",
+    borderBottomWidth: 1,
+    borderBottomColor: "transparent",
+  },
+  itemsContainer: { maxHeight: 140, marginTop: -16 },
   loginButton: {
     backgroundColor: "white",
     borderRadius: 10,
@@ -165,9 +167,9 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     paddingVertical: 8,
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
   },
   formLink: {
-    textDecorationLine: "underline"
-  }
+    textDecorationLine: "underline",
+  },
 });
