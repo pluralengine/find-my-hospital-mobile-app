@@ -12,7 +12,7 @@ export const ENDPOINTS = {
 export async function getHospitals() {
   return fetch(ENDPOINTS.HOSPITALS, {
     method: "GET",
-    headers: await getRequestsHeaders(),
+    headers: getRequestsHeaders(),
   }).then((data) => data.json());
 }
 
@@ -27,7 +27,7 @@ export async function createUser(user) {
 
   return fetch(ENDPOINTS.USERS, {
     method: "POST",
-    headers: await getRequestsHeaders(),
+    headers: getRequestsHeaders(),
     body: JSON.stringify(payload),
   }).then((data) => data.json());
 }
@@ -39,7 +39,7 @@ export async function login(user, password) {
   };
   const fetchOptions = {
     method: "POST",
-    headers: await getRequestsHeaders(),
+    headers: getRequestsHeaders(),
     body: JSON.stringify(payload),
   };
 
@@ -48,14 +48,7 @@ export async function login(user, password) {
   });
 }
 
-export async function getUser(user) {
-  return fetch(`${ENDPOINTS.USERS}/${user.id}`, {
-    method: "GET",
-    headers: await getRequestsHeaders(),
-  }).then((data) => data.json());
-}
-
-export async function getRequestsHeaders() {
+export function getRequestsHeaders() {
   return {
     "Content-Type": "application/json",
   };

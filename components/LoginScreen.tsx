@@ -26,13 +26,27 @@ export default function LoginScreen({ navigation }) {
         )
       )
       .then((user) => {
+        if (user && user.token) {
+          Alert.alert(
+            `Hola de nuevo, ${user.name}`,
+            ` Nunca podremos agradecer suficiente lo que estás haciendo durante esta crisis por nosotros. \n\n ¡Venceremos al virus!`
+          );
+          setUser(user);
+          navigation.navigate("Home");
+        } else {
+          throw new Error(
+            `The token is missing in the user information ${JSON.stringify(
+              user
+            )}`
+          );
+        }
+      })
+      .catch((e) =>
         Alert.alert(
-          `Hola de nuevo, ${user.name}`,
-          ` Nunca podremos agradecer suficiente lo que estás haciendo durante esta crisis por nosotros. \n\n ¡Venceremos al virus!`
-        );
-        setUser(user);
-        navigation.navigate("Home");
-      });
+          `Fallo al iniciar sesión`,
+          `Los credenciales son erróneos o el usuario está pendiente de validación`
+        )
+      );
   }
 
   return (
