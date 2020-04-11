@@ -1,9 +1,20 @@
 import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+=======
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
+>>>>>>> feat: added vote view
 import MapView, { Marker } from 'react-native-maps';
 import { getHospitals } from '../api';
 import useLogin from '../hooks/useLogin';
+import VoteBar from './VoteBar';
 
 export default function MapScreen({ navigation }) {
   const [hospitals, setHospitals] = useState([]);
@@ -49,6 +60,7 @@ export default function MapScreen({ navigation }) {
           />
         ))}
       </MapView>
+      <VoteBar style={styles.bottomBar}></VoteBar>
       {renderLogin()}
     </View>
   );
@@ -56,14 +68,23 @@ export default function MapScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
+<<<<<<< HEAD
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+=======
+    display: 'flex',
+    flexDirection: 'column',
+>>>>>>> feat: added vote view
     backgroundColor: '#F5F5F5',
   },
   map: {
     width: '100%',
+<<<<<<< HEAD
     height: '100%',
+=======
+    height: '80%',
+>>>>>>> feat: added vote view
   },
   loginButton: {
     position: 'absolute',
@@ -78,5 +99,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     right: 24,
     top: 24,
+  },
+  bottomBar: {
+    height: '20%',
+    width: '100%',
   },
 });
