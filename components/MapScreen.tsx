@@ -1,14 +1,8 @@
-import "react-native-gesture-handler";
-import React, { useState, useEffect, useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  Dimensions,
-  TouchableOpacity,
-  Text,
-} from "react-native";
-import MapView, { Marker } from "react-native-maps";
-import { getHospitals } from "../api";
+import 'react-native-gesture-handler';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import { getHospitals } from '../api';
 import useLogin from '../hooks/useLogin';
 
 export default function MapScreen({ navigation }) {
@@ -27,7 +21,7 @@ export default function MapScreen({ navigation }) {
     ) : (
       <TouchableOpacity
         style={styles.loginButton}
-        onPress={() => navigation.navigate("Login")}
+        onPress={() => navigation.navigate('Login')}
       >
         <Text>¿Eres personal sanitario?</Text>
       </TouchableOpacity>
@@ -36,7 +30,13 @@ export default function MapScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <MapView style={styles.map}>
+      <MapView
+        provider={'google'}
+        style={styles.map}
+        showsUserLocation={true}
+        showsMyLocationButton={true}
+        showsCompass={true}
+      >
         {hospitals.map((hospital) => (
           <Marker
             key={hospital.id}
@@ -56,25 +56,24 @@ export default function MapScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    position: "relative",
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5F5F5",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
   },
   map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    width: '100%',
+    height: '100%',
   },
   loginButton: {
-    position: "absolute",
-    backgroundColor: "white",
+    position: 'absolute',
+    backgroundColor: 'white',
     borderRadius: 10,
-    borderColor: "#F5F5F5",
+    borderColor: '#F5F5F5',
     borderWidth: 1,
-    alignContent: "center",
-    justifyContent: "center",
-    textAlign: "center",
+    alignContent: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
     paddingVertical: 8,
     paddingHorizontal: 16,
     right: 24,
