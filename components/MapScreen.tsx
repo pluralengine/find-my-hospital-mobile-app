@@ -9,6 +9,48 @@ export default function MapScreen({ navigation }) {
   const [hospitals, setHospitals] = useState([]);
   const { user, logout } = useLogin();
 
+  const [region, setRegion] = useState({});
+
+  function getRegion(location) {
+    console.warn(location);
+    const coordinates = [
+      { latitude: location.latitude, longitude: location.longitude },
+    ];
+    let minX, maxX, minY, maxY;
+    ((coordinate) => {
+      minX = coordinate.latitude;
+      maxX = coordinate.latitude;
+      minY = coordinate.longitude;
+      maxY = coordinate.longitude;
+    })(coordinates[0]);
+
+    coordinates.map((coordinate) => {
+      minX = Math.min(minX, coordinate.latitude);
+      maxX = Math.max(maxX, coordinate.latitude);
+      minY = Math.min(minY, coordinate.longitude);
+      maxY = Math.max(maxY, coordinate.longitude);
+    });
+
+    const midX = (minX + maxX) / 2;
+    const midY = (minY + maxY) / 2;
+    const deltaX = maxX - minX;
+    const deltaY = maxY - minY;
+
+    setRegion({
+      latitude: midX,
+      longitude: midY,
+      latitudeDelta: deltaX,
+      longitudeDelta: deltaY,
+    });
+
+    return {
+      latitude: midX,
+      longitude: midY,
+      latitudeDelta: deltaX,
+      longitudeDelta: deltaY,
+    };
+  }
+
   useEffect(() => {
     getHospitals().then(setHospitals);
   }, []);
