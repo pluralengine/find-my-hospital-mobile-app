@@ -29,54 +29,25 @@ export default function VoteBar({ style }) {
   return (
     <View style={[styles.container, style]}>
       <View style={styles.itemsContainer}>
-        {[1, 2, 3, 4, 5].map((score, idx) => {
-          <TouchableOpacity
+        {[5, 4, 3, 2, 1].map((score, idx) => {
+          return <TouchableOpacity
+            key={score}
             onPress={() => vote(score)}
             style={[styles.numberTab, { backgroundColor: STATUS_PALETTE[idx] }]}
           >
             <Emoji style={styles.tabText} name={STATUS_EMOJIS[idx]} />
           </TouchableOpacity>;
         })}
-        <TouchableOpacity
-          onPress={() => vote(1)}
-          style={[styles.numberTab, { backgroundColor: "#cc3232" }]}
-        >
-          <Emoji style={styles.tabText} name="weary" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => vote(2)}
-          style={[styles.numberTab, { backgroundColor: "#db7b2b" }]}
-        >
-          <Emoji style={styles.tabText} name="slightly_frowning_face" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => vote(3)}
-          style={[styles.numberTab, { backgroundColor: "#e7b416" }]}
-        >
-          <Emoji style={styles.tabText} name="neutral_face" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => vote(4)}
-          style={[styles.numberTab, { backgroundColor: "#99c140" }]}
-        >
-          <Emoji style={styles.tabText} name="slightly_smiling_face" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => vote(5)}
-          style={[styles.numberTab, { backgroundColor: "#2dc937" }]}
-        >
-          <Emoji style={styles.tabText} name="grin" />
-        </TouchableOpacity>
       </View>
-      <View style={styles.stats}>
-        <Text style={styles.hospitalName}>{hospital && hospital.name}</Text>
+      {hospital && <View style={styles.stats}>
+        <Text style={styles.hospitalName}>{hospital.name}</Text>
         <View style={styles.capacity}>
           <Text style={styles.capacityValue}>
-            {hospital && hospital.status ? `${hospital.status}%` : "- %"}
+            {hospital.status ? `${hospital.status}%` : "- %"}
           </Text>
           <Text style={styles.capacityLabel}>ocupación</Text>
         </View>
-      </View>
+      </View>}
     </View>
   );
 }
