@@ -1,5 +1,5 @@
-export const BASE_API_URL = "http://localhost:3000";
-// export const BASE_API_URL = "https://covid-19-hospital-finder.herokuapp.com";
+// export const BASE_API_URL = "http://localhost:3000";
+export const BASE_API_URL = "https://covid-19-hospital-finder.herokuapp.com";
 
 export const ENDPOINTS = {
   HOSPITALS: `${BASE_API_URL}/hospitals`,

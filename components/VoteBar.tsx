@@ -4,6 +4,7 @@ import { StyleSheet, View, TouchableOpacity, Text, Alert } from "react-native";
 import Emoji from "react-native-emoji";
 import { vote as sendVote, getHospital } from "../api";
 import useLogin from "../hooks/useLogin";
+import { STATUS_PALETTE, STATUS_EMOJIS } from "../styles/palette";
 
 export default function VoteBar({ style }) {
   const { user } = useLogin();
@@ -28,6 +29,14 @@ export default function VoteBar({ style }) {
   return (
     <View style={[styles.container, style]}>
       <View style={styles.itemsContainer}>
+        {[1, 2, 3, 4, 5].map((score, idx) => {
+          <TouchableOpacity
+            onPress={() => vote(score)}
+            style={[styles.numberTab, { backgroundColor: STATUS_PALETTE[idx] }]}
+          >
+            <Emoji style={styles.tabText} name={STATUS_EMOJIS[idx]} />
+          </TouchableOpacity>;
+        })}
         <TouchableOpacity
           onPress={() => vote(1)}
           style={[styles.numberTab, { backgroundColor: "#cc3232" }]}
@@ -61,9 +70,12 @@ export default function VoteBar({ style }) {
       </View>
       <View style={styles.stats}>
         <Text style={styles.hospitalName}>{hospital && hospital.name}</Text>
-        <Text style={styles.capacity}>
-          {hospital && hospital.status ? `${hospital.status}%` : "- %"}
-        </Text>
+        <View style={styles.capacity}>
+          <Text style={styles.capacityValue}>
+            {hospital && hospital.status ? `${hospital.status}%` : "- %"}
+          </Text>
+          <Text style={styles.capacityLabel}>ocupación</Text>
+        </View>
       </View>
     </View>
   );
@@ -108,10 +120,21 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   capacity: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "baseline",
     flex: 1,
     textTransform: "uppercase",
     width: "50%",
     textAlign: "center",
     fontSize: 40,
+  },
+  capacityValue: {
+    fontSize: 40,
+    marginRight: 8,
+  },
+  capacityLabel: {
+    fontSize: 12,
   },
 });

@@ -1,10 +1,16 @@
 import "react-native-gesture-handler";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { getHospitals } from "../api";
 import useLogin from "../hooks/useLogin";
 import VoteBar from "./VoteBar";
+import { STATUS_PALETTE, STATUS_MARKER_PALETTE } from "../styles/palette";
 
 export default function MapScreen({ navigation }) {
   const [hospitals, setHospitals] = useState([]);
@@ -13,7 +19,7 @@ export default function MapScreen({ navigation }) {
   const showVoteBar = isLoggedIn;
 
   useEffect(() => {
-    getHospitals().then(setHospitals);
+    getHospitals().then((hospitals) => setHospitals(hospitals));
   }, []);
 
   function renderLogin() {
@@ -43,16 +49,18 @@ export default function MapScreen({ navigation }) {
         {hospitals.map((hospital) => (
           <Marker
             key={hospital.id}
+            tracksViewChanges={false}
             coordinate={{
               latitude: parseFloat(hospital.geometryLat),
               longitude: parseFloat(hospital.geometryLng),
             }}
             title={hospital.name}
             description={hospital.address}
+            pinColor={getPinColor(hospital.status)}
           />
         ))}
       </MapView>
-      {showVoteBar && <VoteBar style={styles.bottomBar}/>}
+      {showVoteBar && <VoteBar style={styles.bottomBar} />}
       {renderLogin()}
     </View>
   );
@@ -87,5 +95,13 @@ const styles = StyleSheet.create({
     maxHeight: "20%",
     overflow: "hidden",
     width: "100%",
-  },
+  }
 });
+
+function getPinColor(status) {
+  if(!Number.isFinite(status)){
+    return 'linen'
+  }
+
+  return STATUS_MARKER_PALETTE[Math.round(status / 20) - 1];
+}
