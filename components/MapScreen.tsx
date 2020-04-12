@@ -6,24 +6,18 @@ import {
   Dimensions,
   TouchableOpacity,
   Text,
-  AsyncStorage,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { getHospitals } from "../api";
-import LoginContext from "../context/LoginContext";
-import { KEYS } from "../storage";
+import useLogin from '../hooks/useLogin';
 
 export default function MapScreen({ navigation }) {
   const [hospitals, setHospitals] = useState([]);
-  const { user, setUser } = useContext(LoginContext);
+  const { user, logout } = useLogin();
 
   useEffect(() => {
     getHospitals().then(setHospitals);
   }, []);
-
-  function logout() {
-    AsyncStorage.removeItem(KEYS.USER).then(() => setUser({}));
-  }
 
   function renderLogin() {
     return user && user.email ? (

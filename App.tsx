@@ -20,8 +20,14 @@ export default function App() {
     });
   }, []);
 
+  function logout() {
+    AsyncStorage.removeItem(KEYS.USER).then(() =>
+      setUser({ email: "", name: "" })
+    );
+  }
+
   return (
-    <LoginContext.Provider value={{ user, setUser }}>
+    <LoginContext.Provider value={{ user, setUser, logout }}>
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Home" component={MapScreen} />

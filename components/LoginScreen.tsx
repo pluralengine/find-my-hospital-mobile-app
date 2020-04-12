@@ -10,20 +10,18 @@ import {
   Alert,
 } from "react-native";
 import { login as loginUser } from "../api";
-import * as storage from "../storage";
-import LoginContext from "../context/LoginContext";
+import { KEYS } from "../storage";
+import useLogin from "../hooks/useLogin";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setUser } = useContext(LoginContext);
+  const { setUser } = useLogin();
 
   function login() {
     loginUser(email, password)
       .then((user) =>
-        AsyncStorage.setItem(storage.KEYS.USER, JSON.stringify(user)).then(
-          () => user
-        )
+        AsyncStorage.setItem(KEYS.USER, JSON.stringify(user)).then(() => user)
       )
       .then((user) => {
         if (user && user.token) {
