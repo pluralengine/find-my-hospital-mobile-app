@@ -1,19 +1,25 @@
-export const BASE_API_URL =
-  process.env.NODE_ENV !== "production"
-    ? "http://localhost:3000"
-    : process.env.BASE_API_URL;
+export const BASE_API_URL = "http://localhost:3000";
+// export const BASE_API_URL = "https://covid-19-hospital-finder.herokuapp.com";
 
 export const ENDPOINTS = {
   HOSPITALS: `${BASE_API_URL}/hospitals`,
   USERS: `${BASE_API_URL}/users`,
   LOGIN: `${BASE_API_URL}/login`,
+  VOTE: `${BASE_API_URL}/score`,
 };
 
 export async function getHospitals() {
   return fetch(ENDPOINTS.HOSPITALS, {
     method: "GET",
     headers: getRequestsHeaders(),
-  }).then((data) => data.json());
+  }).then(requestToJson);
+}
+
+export async function getHospital(id) {
+  return fetch(`${ENDPOINTS.HOSPITALS}/${id}`, {
+    method: "GET",
+    headers: getRequestsHeaders(),
+  }).then(requestToJson);
 }
 
 export async function createUser(user) {
@@ -29,7 +35,7 @@ export async function createUser(user) {
     method: "POST",
     headers: getRequestsHeaders(),
     body: JSON.stringify(payload),
-  }).then((data) => data.json());
+  }).then(requestToJson);
 }
 
 export async function login(user, password) {
@@ -48,8 +54,32 @@ export async function login(user, password) {
   });
 }
 
-export function getRequestsHeaders() {
+export async function vote(user, score) {
+  const payload = {
+    hospitalId: user.hospitalId,
+    userId: user.id,
+    score,
+  };
+  const fetchOptions = {
+    method: "POST",
+    headers: getRequestsHeaders(user.token),
+    body: JSON.stringify(payload),
+  };
+
+  return fetch(ENDPOINTS.VOTE, fetchOptions).then(requestToJson);
+}
+
+export function getRequestsHeaders(token = null) {
   return {
     "Content-Type": "application/json",
+    Authorization: token ? `Bearer ${token}` : undefined,
   };
+}
+
+export async function requestToJson(res) {
+  const response = await res.json();
+  if (response.error) {
+    throw Error(response.error);
+  }
+  return response;
 }

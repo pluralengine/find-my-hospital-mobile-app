@@ -10,7 +10,7 @@ import LoginContext from "./context/LoginContext";
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [user, setUser] = useState({ email: "", name: "" });
+  const [user, setUser] = useState({ email: "", name: "", hospitalId: 0 });
 
   useEffect(() => {
     AsyncStorage.getItem(KEYS.USER).then((value) => {
@@ -22,7 +22,7 @@ export default function App() {
 
   function logout() {
     AsyncStorage.removeItem(KEYS.USER).then(() =>
-      setUser({ email: "", name: "" })
+      setUser({ email: "", name: "", hospitalId: 0 })
     );
   }
 
