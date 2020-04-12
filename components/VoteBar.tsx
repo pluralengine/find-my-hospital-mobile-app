@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import Emoji from 'react-native-emoji';
 
@@ -34,7 +34,7 @@ export default function VoteBar({ style }) {
         </TouchableOpacity>
       </View>
       <View style={styles.stats}>
-        <Text style={styles.hospitalName}>Nombre del Ho pasdfghjklzx cvbn</Text>
+        <Text style={styles.hospitalName}>Nombre del Hospital</Text>
         <Text style={styles.capacity}>100%</Text>
       </View>
     </View>
