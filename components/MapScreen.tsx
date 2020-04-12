@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   View,
@@ -9,13 +9,30 @@ import {
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { getHospitals } from "../api";
+import useLogin from '../hooks/useLogin';
 
 export default function MapScreen({ navigation }) {
   const [hospitals, setHospitals] = useState([]);
+  const { user, logout } = useLogin();
 
   useEffect(() => {
     getHospitals().then(setHospitals);
-  });
+  }, []);
+
+  function renderLogin() {
+    return user && user.email ? (
+      <TouchableOpacity style={styles.loginButton} onPress={logout}>
+        <Text>Cerrar sesión</Text>
+      </TouchableOpacity>
+    ) : (
+      <TouchableOpacity
+        style={styles.loginButton}
+        onPress={() => navigation.navigate("Login")}
+      >
+        <Text>¿Eres personal sanitario?</Text>
+      </TouchableOpacity>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -32,12 +49,7 @@ export default function MapScreen({ navigation }) {
           />
         ))}
       </MapView>
-      <TouchableOpacity
-        style={styles.loginButton}
-        onPress={() => navigation.navigate("Login")}
-      >
-        <Text>Login</Text>
-      </TouchableOpacity>
+      {renderLogin()}
     </View>
   );
 }

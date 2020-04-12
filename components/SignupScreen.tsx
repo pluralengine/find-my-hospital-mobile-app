@@ -106,6 +106,7 @@ export default function SignupScreen({ navigation }) {
         textContentType="emailAddress"
         onChangeText={(email) => setEmail(email)}
         defaultValue={email}
+        autoCapitalize = 'none'
       />
       <TextInput
         style={styles.formInput}
@@ -115,6 +116,7 @@ export default function SignupScreen({ navigation }) {
         secureTextEntry
         onChangeText={(password) => setPassword(password)}
         defaultValue={password}
+        autoCapitalize = 'none'
       />
       <TouchableOpacity style={styles.loginButton} onPress={submitUser}>
         <Text>Pedir acceso</Text>
@@ -166,5 +168,15 @@ const styles = StyleSheet.create({
   },
   formLink: {
     textDecorationLine: "underline",
+  },
+  loginButton: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    borderColor: "#F5F5F5",
+    borderWidth: 1,
+    alignContent: "center",
+    justifyContent: "center",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
   },
 });
