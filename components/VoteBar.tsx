@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import Emoji from 'react-native-emoji';
 
-export default function VoteBar({ style }) {
+export default function VoteBar({ style, hospital }) {
   return (
     <View style={[styles.container, style]}>
       <View style={styles.itemsConstainer}>
@@ -34,8 +34,10 @@ export default function VoteBar({ style }) {
         </TouchableOpacity>
       </View>
       <View style={styles.stats}>
-        <Text style={styles.hospitalName}>Nombre del Hospital</Text>
-        <Text style={styles.capacity}>100%</Text>
+        <Text style={styles.hospitalName}>{hospital && hospital.name}</Text>
+        <Text style={styles.capacity}>
+          {hospital && hospital.status ? `${hospital.status}%` : '- %'}
+        </Text>
       </View>
     </View>
   );
