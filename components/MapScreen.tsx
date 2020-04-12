@@ -52,7 +52,15 @@ export default function MapScreen({ navigation }) {
           />
         ))}
       </MapView>
-      {showVoteBar && <VoteBar style={styles.bottomBar}></VoteBar>}
+      {showVoteBar && (
+        <VoteBar
+          style={styles.bottomBar}
+          hospital={hospitals.find((hospital) => {
+            console.log(user);
+            return hospital.id === user.hospitalId;
+          })}
+        ></VoteBar>
+      )}
       {renderLogin()}
     </View>
   );
