@@ -73,11 +73,11 @@ export default function MapScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <MapView
-        provider={'google'}
         style={styles.map}
-        showsUserLocation={true}
-        showsMyLocationButton={true}
-        showsCompass={true}
+        provider={'google'}
+        showsUserLocation
+        showsMyLocationButton
+        showsCompass
       >
         {hospitals.map((hospital) => (
           <Marker
