@@ -39,12 +39,13 @@ export default function LoginScreen({ navigation }) {
           );
         }
       })
-      .catch((e) =>
+      .catch((e) => {
+        console.warn(e);
         Alert.alert(
           `Fallo al iniciar sesión`,
           `Los credenciales son erróneos o el usuario está pendiente de validación`
-        )
-      );
+        );
+      });
   }
 
   return (

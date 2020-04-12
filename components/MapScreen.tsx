@@ -1,10 +1,10 @@
-import 'react-native-gesture-handler';
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-import { getHospitals } from '../api';
-import useLogin from '../hooks/useLogin';
-import VoteBar from './VoteBar';
+import "react-native-gesture-handler";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import { getHospitals } from "../api";
+import useLogin from "../hooks/useLogin";
+import VoteBar from "./VoteBar";
 
 export default function MapScreen({ navigation }) {
   const [hospitals, setHospitals] = useState([]);
@@ -24,7 +24,7 @@ export default function MapScreen({ navigation }) {
     ) : (
       <TouchableOpacity
         style={styles.loginButton}
-        onPress={() => navigation.navigate('Login')}
+        onPress={() => navigation.navigate("Login")}
       >
         <Text>¿Eres personal sanitario?</Text>
       </TouchableOpacity>
@@ -34,8 +34,8 @@ export default function MapScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <MapView
-        style={[styles.map, { height: showVoteBar ? '80%' : '100%' }]}
-        provider={'google'}
+        style={[styles.map, { height: showVoteBar ? "80%" : "100%" }]}
+        provider={"google"}
         showsUserLocation
         showsMyLocationButton
         showsCompass
@@ -52,15 +52,7 @@ export default function MapScreen({ navigation }) {
           />
         ))}
       </MapView>
-      {showVoteBar && (
-        <VoteBar
-          style={styles.bottomBar}
-          hospital={hospitals.find((hospital) => {
-            console.log(user);
-            return hospital.id === user.hospitalId;
-          })}
-        ></VoteBar>
-      )}
+      {showVoteBar && <VoteBar style={styles.bottomBar}/>}
       {renderLogin()}
     </View>
   );
@@ -68,30 +60,32 @@ export default function MapScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: '#F5F5F5',
+    display: "flex",
+    flexDirection: "column",
+    backgroundColor: "#F5F5F5",
   },
   map: {
-    width: '100%',
-    height: '80%',
+    width: "100%",
+    height: "80%",
   },
   loginButton: {
-    position: 'absolute',
-    backgroundColor: 'white',
+    position: "absolute",
+    backgroundColor: "white",
     borderRadius: 10,
-    borderColor: '#F5F5F5',
+    borderColor: "#F5F5F5",
     borderWidth: 1,
-    alignContent: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
+    alignContent: "center",
+    justifyContent: "center",
+    textAlign: "center",
     paddingVertical: 8,
     paddingHorizontal: 16,
     right: 24,
     top: 24,
   },
   bottomBar: {
-    height: '20%',
-    width: '100%',
+    height: "20%",
+    maxHeight: "20%",
+    overflow: "hidden",
+    width: "100%",
   },
 });
