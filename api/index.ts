@@ -8,11 +8,82 @@ export const ENDPOINTS = {
   VOTE: `${BASE_API_URL}/score`,
 };
 
+export async function getPharmacies() {
+  return Promise.resolve([
+    {
+      id: 11329,
+      name: "MARTINEZ COLINAS,ANDREA/SANCHEZ LOPEZ,MARIA",
+      address: "CALLE CAMELIES 66",
+      phoneNum: "932353039",
+      geometryLat: "41.41346",
+      geometryLng: "2.16384",
+      products: [
+        { id: 1, name: "Mascarilla", stock: true },
+        { id: 2, name: "Gel disinfectant", stock: true },
+      ],
+    },
+    {
+      id: 10821,
+      name: "DE FRUTOS ILLAN, M.CARME",
+      centerCode: "F08008240",
+      address: "CALLE CAMELIES 22",
+      phoneNum: "932132513",
+      geometryLat: "41.4111859",
+      geometryLng: "2.1595809",
+      products: [
+        { id: 1, name: "Mascarilla", stock: false },
+        { id: 2, name: "Gel disinfectant", stock: true },
+      ],
+    },
+    {
+      id: 12029,
+      name: "QUIROS BERNAL, MARIA CARMEN",
+      address: "CALLE CAMELIES 32",
+      phoneNum: "935646904",
+      geometryLat: "41.4626937",
+      geometryLng: "2.1692016",
+      products: [
+        { id: 1, name: "Mascarilla", stock: true },
+        { id: 2, name: "Gel disinfectant", stock: true },
+      ],
+    },
+  ]);
+}
+
 export async function getHospitals() {
   return fetch(ENDPOINTS.HOSPITALS, {
     method: "GET",
     headers: getRequestsHeaders(),
   }).then(requestToJson);
+}
+
+export async function getPharmacy() {
+  return Promise.resolve({
+    id: 12029,
+    name: "QUIROS BERNAL, MARIA CARMEN",
+    address: "CALLE CAMELIES 32",
+    phoneNum: "935646904",
+    updatedAt: "2020-04-16T18:37:47.452Z",
+    geometryLat: "41.4626937",
+    geometryLng: "2.1692016",
+    products: [
+      { id: 1, name: "Mascarilla", photo: "", stock: true },
+      { id: 2, name: "Gel disinfectant", photo: "", stock: true },
+      { id: 4, name: "Guantes", photo: "", stock: false },
+    ],
+  });
+}
+export async function reportStock(products) {
+  return Promise.resolve({
+    id: 12029,
+    name: "QUIROS BERNAL, MARIA CARMEN",
+    address: "CALLE CAMELIES 32",
+    updatedAt: String(new Date()),
+    phoneNum: "935646904",
+    geometryLat: "41.4626937",
+    geometryLng: "2.1692016",
+    products,
+  });
 }
 
 export async function getHospital(id) {

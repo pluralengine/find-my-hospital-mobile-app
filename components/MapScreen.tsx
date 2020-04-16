@@ -1,25 +1,25 @@
 import "react-native-gesture-handler";
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Text,
-} from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, Picker } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { getHospitals } from "../api";
+import SearchableDropdown from "react-native-searchable-dropdown";
+import { getPharmacies } from "../api";
 import useLogin from "../hooks/useLogin";
-import VoteBar from "./VoteBar";
-import { STATUS_PALETTE, STATUS_MARKER_PALETTE } from "../styles/palette";
+import StockBar from "./StockBar";
 
 export default function MapScreen({ navigation }) {
-  const [hospitals, setHospitals] = useState([]);
+  const [pharmacies, setPharmacies] = useState([]);
+  const [provinces, setProvinces] = useState([
+    { name: "Jaén", value: "Jaen" },
+    { name: "Granada", value: "Granada" },
+  ]);
+  const [_, setSelectedProvinces] = useState("java");
   const { user, logout } = useLogin();
   const isLoggedIn = Boolean(user && user.email);
-  const showVoteBar = isLoggedIn;
+  const showVoteBar = true;
 
   useEffect(() => {
-    getHospitals().then((hospitals) => setHospitals(hospitals));
+    getPharmacies().then((pharmacies) => setPharmacies(pharmacies));
   }, []);
 
   function renderLogin() {
@@ -32,7 +32,7 @@ export default function MapScreen({ navigation }) {
         style={styles.loginButton}
         onPress={() => navigation.navigate("Login")}
       >
-        <Text>¿Eres personal sanitario?</Text>
+        <Text>Entrar</Text>
       </TouchableOpacity>
     );
   }
@@ -46,22 +46,39 @@ export default function MapScreen({ navigation }) {
         showsMyLocationButton
         showsCompass
       >
-        {hospitals.map((hospital) => (
-          <Marker
-            key={hospital.id}
-            tracksViewChanges={false}
-            coordinate={{
-              latitude: parseFloat(hospital.geometryLat),
-              longitude: parseFloat(hospital.geometryLng),
-            }}
-            title={hospital.name}
-            description={hospital.address}
-            pinColor={getPinColor(hospital.status)}
-          />
-        ))}
+        {pharmacies.map((pharmacy) => {
+          return (
+            <Marker
+              key={pharmacy.id}
+              tracksViewChanges={false}
+              coordinate={{
+                latitude: parseFloat(pharmacy.geometryLat),
+                longitude: parseFloat(pharmacy.geometryLng),
+              }}
+              title={pharmacy.name}
+              description={pharmacy.address}
+              pinColor={getPinColor(pharmacy)}
+            />
+          );
+        })}
       </MapView>
-      {showVoteBar && <VoteBar style={styles.bottomBar} />}
+      {showVoteBar && <StockBar style={styles.bottomBar} />}
       {renderLogin()}
+      <SearchableDropdown
+        select
+        onItemSelect={setSelectedProvinces}
+        containerStyle={styles.provincesSelector}
+        itemStyle={styles.dropdownItem}
+        itemsContainerStyle={styles.itemsContainer}
+        items={provinces}
+        textInputProps={{
+          placeholder: "Selecciona tu provincia",
+          style: styles.formInput,
+        }}
+        listProps={{
+          nestedScrollEnabled: true,
+        }}
+      />
     </View>
   );
 }
@@ -90,18 +107,57 @@ const styles = StyleSheet.create({
     right: 24,
     top: 24,
   },
+  provincesSelector: {
+    position: "absolute",
+    backgroundColor: "white",
+    borderRadius: 10,
+    borderColor: "#F5F5F5",
+    alignContent: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    left: 24,
+    top: 24,
+    width: "50%",
+    maxHeight: 400,
+    overflow: "hidden",
+  },
+  dropdownItem: {
+    padding: 10,
+    marginTop: 2,
+    backgroundColor: "white",
+    borderBottomWidth: 1,
+    borderBottomColor: "transparent",
+  },
+  itemsContainer: {
+    maxHeight: 140,
+    borderRadius: 10,
+  },
+  formInput: {
+    width: "100%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
   bottomBar: {
     height: "20%",
     maxHeight: "20%",
     overflow: "hidden",
     width: "100%",
-  }
+  },
 });
 
-function getPinColor(status) {
-  if(!Number.isFinite(status)){
-    return 'linen'
+function getPinColor(pharmacy) {
+  const [mask, gel] = pharmacy.products;
+  if (!mask.stock && !gel.stock) {
+    return "red";
+  }
+  if ((!mask.stock && gel.stock) || (mask.stock && !gel.stock)) {
+    return "cyan";
+  }
+  if (mask.stock && gel.stock) {
+    return "green";
   }
 
-  return STATUS_MARKER_PALETTE[Math.round(status / 20) - 1];
+  return "linen";
 }
