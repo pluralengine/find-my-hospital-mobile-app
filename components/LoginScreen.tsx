@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   AsyncStorage,
   StyleSheet,
@@ -50,7 +50,7 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.formTitle}>Acceso a personal del hospital</Text>
+      <Text style={styles.formTitle}>Acceso a personal de farmacia</Text>
       <TextInput
         style={styles.formInput}
         placeholder="Email"
@@ -75,7 +75,7 @@ export default function LoginScreen({ navigation }) {
         style={styles.formLink}
         onPress={() => navigation.navigate("Registro")}
       >
-        Soy personal de hospital y no tengo cuenta, ¿Cómo me registro?
+        Tengo una farmacia y no tengo cuenta, ¿Cómo me registro?
       </Text>
       <TouchableOpacity style={styles.loginButton} onPress={login}>
         <Text>Login</Text>
