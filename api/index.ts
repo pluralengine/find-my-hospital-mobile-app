@@ -6,7 +6,15 @@ export const ENDPOINTS = {
   USERS: `${BASE_API_URL}/users`,
   LOGIN: `${BASE_API_URL}/login`,
   VOTE: `${BASE_API_URL}/score`,
+  PROVINCES: `${BASE_API_URL}/provinces`,
 };
+
+export async function getProvinces() {
+  return fetch(ENDPOINTS.PROVINCES, {
+    method: "GET",
+    headers: getRequestsHeaders(),
+  }).then(requestToJson);
+}
 
 export async function getPharmacies() {
   return Promise.resolve([
@@ -19,7 +27,7 @@ export async function getPharmacies() {
       geometryLng: "2.16384",
       products: [
         { id: 1, name: "Mascarilla", stock: true },
-        { id: 2, name: "Gel disinfectant", stock: true },
+        { id: 2, name: "Gel desinfectante", stock: true },
       ],
     },
     {
@@ -32,7 +40,7 @@ export async function getPharmacies() {
       geometryLng: "2.1595809",
       products: [
         { id: 1, name: "Mascarilla", stock: false },
-        { id: 2, name: "Gel disinfectant", stock: true },
+        { id: 2, name: "Gel desinfectante", stock: true },
       ],
     },
     {
@@ -44,7 +52,7 @@ export async function getPharmacies() {
       geometryLng: "2.1692016",
       products: [
         { id: 1, name: "Mascarilla", stock: true },
-        { id: 2, name: "Gel disinfectant", stock: true },
+        { id: 2, name: "Gel desinfectante", stock: true },
       ],
     },
   ]);
@@ -68,7 +76,7 @@ export async function getPharmacy() {
     geometryLng: "2.1692016",
     products: [
       { id: 1, name: "Mascarilla", photo: "", stock: true },
-      { id: 2, name: "Gel disinfectant", photo: "", stock: true },
+      { id: 2, name: "Gel desinfectante", photo: "", stock: true },
       { id: 4, name: "Guantes", photo: "", stock: false },
     ],
   });
