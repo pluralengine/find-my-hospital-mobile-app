@@ -3,24 +3,31 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, View, TouchableOpacity, Text, Picker } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import SearchableDropdown from "react-native-searchable-dropdown";
-import { getPharmacies } from "../api";
+import { getPharmacies, getProvinces } from "../api";
 import useLogin from "../hooks/useLogin";
 import StockBar from "./StockBar";
 
 export default function MapScreen({ navigation }) {
   const [pharmacies, setPharmacies] = useState([]);
-  const [provinces, setProvinces] = useState([
-    { name: "Jaén", value: "Jaen" },
-    { name: "Granada", value: "Granada" },
-  ]);
+  const [provinces, setProvinces] = useState([]);
   const [_, setSelectedProvinces] = useState("java");
   const { user, logout } = useLogin();
   const isLoggedIn = Boolean(user && user.email);
   const showVoteBar = true;
 
   useEffect(() => {
-    getPharmacies().then((pharmacies) => setPharmacies(pharmacies));
+    getPharmacies().then(setPharmacies);
+    getProvinces().then(setParsedProvinces);
   }, []);
+
+  function setParsedProvinces(provinces) {
+    const selectFormat = provinces.map((province) => ({
+      id: province,
+      name: province,
+    }));
+
+    setProvinces(selectFormat);
+  }
 
   function renderLogin() {
     return isLoggedIn ? (
@@ -117,7 +124,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     left: 24,
     top: 24,
-    width: "50%",
+    width: "45%",
     maxHeight: 400,
     overflow: "hidden",
   },

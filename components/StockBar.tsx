@@ -51,8 +51,8 @@ export default function StockBar({ style }) {
     return (
       <View style={styles.stats}>
         <Text
-          style={styles.hospitalName}
-        >{`La ultima actualización del stock fue ${timeAgo(
+          style={styles.lastUpdate}
+        >{`Actualizaste el inventario ${timeAgo(
           new Date(pharmacy.updatedAt)
         )}`}</Text>
       </View>
@@ -61,8 +61,8 @@ export default function StockBar({ style }) {
 
   return (
     <View style={[styles.container, style]}>
-      <View style={styles.itemsContainer}>{pharmacy && renderProducts()}</View>
       {pharmacy && renderStats()}
+      <View style={styles.itemsContainer}>{pharmacy && renderProducts()}</View>
     </View>
   );
 }
@@ -100,11 +100,12 @@ const styles = StyleSheet.create({
     padding: 8,
     alignItems: "center",
   },
-  hospitalName: {
+  lastUpdate: {
     flex: 1,
-    textTransform: "uppercase",
+    paddingHorizontal: 16,
     width: "50%",
     textAlign: "right",
+    color: "gray",
     fontSize: 12,
   },
   capacity: {
