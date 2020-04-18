@@ -9,28 +9,26 @@ import {
   Alert,
 } from "react-native";
 import SearchableDropdown from "react-native-searchable-dropdown";
-import { getProvinces, createUser, getPharmacies } from "../api";
+import { getHospitals, createUser } from "../api";
 
 export default function SignupScreen({ navigation }) {
-  const [hospitalItems, setProvinceItems] = useState([]);
-  const [pharmacyItems, setPharmacyItems] = useState([]);
+  const [hospitalItems, setHospitalItems] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [province, setProvince] = useState(null);
-  const [pharmacy, setPharmacy] = useState(null);
+  const [hospital, setHospital] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [centerCode, setCenterCode] = useState("");
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     setLoading(true);
-    getProvinces()
+    getHospitals()
       .then((data) => {
-        const items = data.map((province) => ({
-          value: province,
-          name: province,
+        const items = data.map((hospital) => ({
+          value: hospital.id,
+          name: hospital.name,
         }));
-        setProvinceItems(items);
+        setHospitalItems(items);
         setLoading(false);
       })
       .catch((e) => {
@@ -38,31 +36,13 @@ export default function SignupScreen({ navigation }) {
       });
   }, []);
 
-  useEffect(() => {
-    if (province) {
-      setLoading(true);
-      getPharmacies(province)
-        .then((data) => {
-          const items = data.map((pharmacy) => ({
-            value: pharmacy.id,
-            name: pharmacy.name,
-          }));
-          console.log("data",data);
-          setPharmacyItems(items);
-          setLoading(false);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    }
-  }, [province]);
-
   function submitUser() {
     createUser({
       name,
       email,
       password,
-      pharmacyId: pharmacy.value,
+      role,
+      hospitalId: hospital.value,
     }).then((user) => {
       Alert.alert(
         "Enviado correctamente",
@@ -83,41 +63,22 @@ export default function SignupScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.formTitle}>
-        Pedir acceso como personal de farmacia
+        Pedir acceso como personal del hospital
       </Text>
       <Text style={styles.formSubtitle}>
-        Por el momento, solo personal del un usuario por farmacia podrá informar
-        del inventario de productos.
+        Por el momento, solo personal del hospital podrá informar del estado de
+        ocupación de Urgencias. Para verificar que usted pertenece al mismo, por
+        favor rellene sus datos y verificaremos su identidad.
       </Text>
       <SearchableDropdown
         select
-        onItemSelect={(item) => {
-          setProvince(item.value);
-        }}
+        onItemSelect={setHospital}
         containerStyle={styles.searchInput}
         itemStyle={styles.dropdownItem}
         itemsContainerStyle={styles.itemsContainer}
         items={hospitalItems}
         textInputProps={{
-          placeholder: loading ? "Cargando..." : "Provincia",
-          style: styles.formInput,
-        }}
-        listProps={{
-          nestedScrollEnabled: true,
-        }}
-      />
-      <SearchableDropdown
-        select
-        disabled={!province}
-        onItemSelect={(item) => {
-          setPharmacy(item.value);
-        }}
-        containerStyle={styles.searchInput}
-        itemStyle={styles.dropdownItem}
-        itemsContainerStyle={styles.itemsContainer}
-        items={pharmacyItems}
-        textInputProps={{
-          placeholder: loading ? "Cargando..." : "Farmacia",
+          placeholder: loading ? "Cargando..." : "Hospital",
           style: styles.formInput,
         }}
         listProps={{
@@ -126,9 +87,9 @@ export default function SignupScreen({ navigation }) {
       />
       <TextInput
         style={styles.formInput}
-        placeholder="Código Autonómico del Centro"
-        onChangeText={(centerCode) => setCenterCode(centerCode)}
-        defaultValue={centerCode}
+        placeholder="Cargo en el hospital"
+        onChangeText={(role) => setRole(role)}
+        defaultValue={role}
       />
       <TextInput
         style={styles.formInput}
@@ -145,7 +106,7 @@ export default function SignupScreen({ navigation }) {
         textContentType="emailAddress"
         onChangeText={(email) => setEmail(email)}
         defaultValue={email}
-        autoCapitalize="none"
+        autoCapitalize = 'none'
       />
       <TextInput
         style={styles.formInput}
@@ -155,7 +116,7 @@ export default function SignupScreen({ navigation }) {
         secureTextEntry
         onChangeText={(password) => setPassword(password)}
         defaultValue={password}
-        autoCapitalize="none"
+        autoCapitalize = 'none'
       />
       <TouchableOpacity style={styles.loginButton} onPress={submitUser}>
         <Text>Pedir acceso</Text>

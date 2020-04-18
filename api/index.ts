@@ -1,5 +1,5 @@
-// export const BASE_API_URL = "http://localhost:3000";
-export const BASE_API_URL = "https://covid-19-hospital-finder.herokuapp.com";
+export const BASE_API_URL = "http://localhost:3000";
+// export const BASE_API_URL = "https://covid-19-hospital-finder.herokuapp.com";
 
 export const ENDPOINTS = {
   HOSPITALS: `${BASE_API_URL}/hospitals`,
@@ -7,7 +7,17 @@ export const ENDPOINTS = {
   LOGIN: `${BASE_API_URL}/login`,
   VOTE: `${BASE_API_URL}/score`,
   PROVINCES: `${BASE_API_URL}/provinces`,
+  USER_PHARMACY: `${BASE_API_URL}/user/pharmacy`,
+  PHARMACIES: `${BASE_API_URL}/pharmacies`,
 };
+
+export async function getProducts() {
+  return Promise.resolve([
+    { id: 1, name: "Mascarilla", photo: "mask" },
+    { id: 2, name: "Gel desinfectante", photo: "handSanitizer" },
+    { id: 4, name: "Guantes", photo: "gloves" },
+  ]);
+}
 
 export async function getProvinces() {
   return fetch(ENDPOINTS.PROVINCES, {
@@ -16,46 +26,11 @@ export async function getProvinces() {
   }).then(requestToJson);
 }
 
-export async function getPharmacies() {
-  return Promise.resolve([
-    {
-      id: 11329,
-      name: "MARTINEZ COLINAS,ANDREA/SANCHEZ LOPEZ,MARIA",
-      address: "CALLE CAMELIES 66",
-      phoneNum: "932353039",
-      geometryLat: "41.41346",
-      geometryLng: "2.16384",
-      products: [
-        { id: 1, name: "Mascarilla", stock: true },
-        { id: 2, name: "Gel desinfectante", stock: true },
-      ],
-    },
-    {
-      id: 10821,
-      name: "DE FRUTOS ILLAN, M.CARME",
-      centerCode: "F08008240",
-      address: "CALLE CAMELIES 22",
-      phoneNum: "932132513",
-      geometryLat: "41.4111859",
-      geometryLng: "2.1595809",
-      products: [
-        { id: 1, name: "Mascarilla", stock: false },
-        { id: 2, name: "Gel desinfectante", stock: true },
-      ],
-    },
-    {
-      id: 12029,
-      name: "QUIROS BERNAL, MARIA CARMEN",
-      address: "CALLE CAMELIES 32",
-      phoneNum: "935646904",
-      geometryLat: "41.4626937",
-      geometryLng: "2.1692016",
-      products: [
-        { id: 1, name: "Mascarilla", stock: true },
-        { id: 2, name: "Gel desinfectante", stock: true },
-      ],
-    },
-  ]);
+export async function getPharmacies(province) {
+  return fetch(`${ENDPOINTS.PHARMACIES}?provinces=${province}`, {
+    method: "GET",
+    headers: getRequestsHeaders(),
+  }).then(requestToJson);;
 }
 
 export async function getHospitals() {
@@ -65,23 +40,14 @@ export async function getHospitals() {
   }).then(requestToJson);
 }
 
-export async function getPharmacy() {
-  return Promise.resolve({
-    id: 12029,
-    name: "QUIROS BERNAL, MARIA CARMEN",
-    address: "CALLE CAMELIES 32",
-    phoneNum: "935646904",
-    updatedAt: "2020-04-16T18:37:47.452Z",
-    geometryLat: "41.4626937",
-    geometryLng: "2.1692016",
-    products: [
-      { id: 1, name: "Mascarilla", photo: "", stock: true },
-      { id: 2, name: "Gel desinfectante", photo: "", stock: true },
-      { id: 4, name: "Guantes", photo: "", stock: false },
-    ],
-  });
+export async function getPharmacy(token) {
+  return fetch(ENDPOINTS.USER_PHARMACY, {
+    method: "GET",
+    headers: getRequestsHeaders(token),
+  }).then(requestToJson);
 }
-export async function reportStock(products) {
+
+export async function updatePharmacyStock(products) {
   return Promise.resolve({
     id: 12029,
     name: "QUIROS BERNAL, MARIA CARMEN",
