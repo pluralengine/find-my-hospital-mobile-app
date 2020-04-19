@@ -168,7 +168,7 @@ export default function MapScreen({ navigation }) {
         }}
       />
       <TouchableOpacity
-        style={styles.productsButton}
+        style={[styles.productsButton, {bottom: !showStatusBar ? styles.productsButton.bottom : '30%' }]}
         onPress={handleProductsButtonClick}
       >
         {currentProduct && (
