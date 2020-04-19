@@ -7,17 +7,18 @@ export const ENDPOINTS = {
   USERS: `${BASE_API_URL}/users`,
   LOGIN: `${BASE_API_URL}/login`,
   VOTE: `${BASE_API_URL}/score`,
+  PRODUCTS: `${BASE_API_URL}/products`,
   PROVINCES: `${BASE_API_URL}/provinces/areas`,
   USER_PHARMACY: `${BASE_API_URL}/user/pharmacy`,
+  PHARMACY_STOCK: `${BASE_API_URL}/user/pharmacy/stock`,
   PHARMACIES: `${BASE_API_URL}/pharmacies`,
 };
 
 export async function getProducts() {
-  return Promise.resolve([
-    { id: 1, name: "Mascarilla", photo: "mask" },
-    { id: 2, name: "Gel desinfectante", photo: "handSanitizer" },
-    { id: 4, name: "Guantes", photo: "gloves" },
-  ]);
+  return fetch(ENDPOINTS.PRODUCTS, {
+    method: "GET",
+    headers: getRequestsHeaders(),
+  }).then(requestToJson);
 }
 
 export async function getProvinces() {
@@ -50,17 +51,18 @@ export async function getPharmacy(token) {
   }).then(requestToJson);
 }
 
-export async function updatePharmacyStock(products) {
-  return Promise.resolve({
-    id: 12029,
-    name: "QUIROS BERNAL, MARIA CARMEN",
-    address: "CALLE CAMELIES 32",
-    updatedAt: String(new Date()),
-    phoneNum: "935646904",
-    geometryLat: "41.4626937",
-    geometryLng: "2.1692016",
-    products,
-  });
+export async function updatePharmacyStock(token, productId, stock) {
+  const payload = {
+    productId,
+    stock,
+  };
+  const fetchOptions = {
+    method: "PUT",
+    headers: getRequestsHeaders(token),
+    body: JSON.stringify(payload),
+  };
+
+  return fetch(ENDPOINTS.PHARMACY_STOCK, fetchOptions).then(requestToJson);
 }
 
 export async function getHospital(id) {
@@ -80,6 +82,22 @@ export async function createUser(user) {
   };
 
   return fetch(ENDPOINTS.USERS, {
+    method: "POST",
+    headers: getRequestsHeaders(),
+    body: JSON.stringify(payload),
+  }).then(requestToJson);
+}
+
+export async function createPharmacyUser(user) {
+  const payload = {
+    name: user.name,
+    email: user.email,
+    password: user.password,
+    centerCode: user.centerCode,
+    pharmacyId: user.pharmacyId,
+  };
+
+  return fetch(ENDPOINTS.USER_PHARMACY, {
     method: "POST",
     headers: getRequestsHeaders(),
     body: JSON.stringify(payload),

@@ -9,7 +9,7 @@ import {
   Alert,
 } from "react-native";
 import SearchableDropdown from "react-native-searchable-dropdown";
-import { getProvinces, createUser, getPharmacies } from "../api";
+import { getProvinces, createPharmacyUser, getPharmacies } from "../api";
 
 export default function SignupScreen({ navigation }) {
   const [provinceItems, setProvinceItems] = useState([]);
@@ -56,27 +56,70 @@ export default function SignupScreen({ navigation }) {
     }
   }, [city]);
 
+  function validate() {
+    if (!pharmacy) {
+      Alert.alert(
+        "Los datos no son válidos",
+        "Por favor, selecciona tu farmacia"
+      );
+      return;
+    }
+    if (!centerCode) {
+      Alert.alert(
+        "Los datos no son válidos",
+        "Por favor, introduce el código autonómico de la farmacia"
+      );
+      return;
+    }
+    if (!name) {
+      Alert.alert(
+        "Los datos no son validos",
+        "Por favor, introduce tu nombre y tus apellidos"
+      );
+      return;
+    }
+    if (!email) {
+      Alert.alert("Los datos no son válidos", "Por favor, introduce un email");
+      return;
+    }
+    if (!password) {
+      Alert.alert(
+        "Los datos no son válidos",
+        "Por favor, introduce una contraseña"
+      );
+      return;
+    }
+    return true;
+  }
   function submitUser() {
-    createUser({
+    if (!validate()) {
+      return;
+    }
+    createPharmacyUser({
       name,
       email,
       password,
-      pharmacyId: pharmacy.value,
-    }).then((user) => {
-      Alert.alert(
-        "Enviado correctamente",
-        `Gracias ${user.name}. Estamos comprobando sus datos.\n\nPronto recibirá un email a ${user.email} confirmando su alta`,
-        [
-          {
-            text: "Aceptar",
-            onPress: () => {
-              navigation.navigate("Login");
+      centerCode,
+      pharmacyId: pharmacy,
+    })
+      .then((user) => {
+        Alert.alert(
+          "Enviado correctamente",
+          `Gracias ${user.name}. Ya puedes iniciar sesión y actualizar el inventario de tu farmacia.`,
+          [
+            {
+              text: "Aceptar",
+              onPress: () => {
+                navigation.navigate("Login");
+              },
             },
-          },
-        ],
-        { cancelable: false }
-      );
-    });
+          ],
+          { cancelable: false }
+        );
+      })
+      .catch((e) => {
+        Alert.alert("Ha ocurrido un error", String(e));
+      });
   }
 
   return (
@@ -125,15 +168,15 @@ export default function SignupScreen({ navigation }) {
       />
       <TextInput
         style={styles.formInput}
-        placeholder="Código Autonómico del Centro"
-        onChangeText={(centerCode) => setCenterCode(centerCode)}
+        placeholder="Código Autonómico Ej: F08006281"
+        onChangeText={setCenterCode}
         defaultValue={centerCode}
       />
       <TextInput
         style={styles.formInput}
         placeholder="Nombre y Apellidos"
         autoCompleteType="name"
-        onChangeText={(name) => setName(name)}
+        onChangeText={setName}
         defaultValue={name}
       />
       <TextInput
@@ -142,7 +185,7 @@ export default function SignupScreen({ navigation }) {
         autoCompleteType="email"
         keyboardType="email-address"
         textContentType="emailAddress"
-        onChangeText={(email) => setEmail(email)}
+        onChangeText={setEmail}
         defaultValue={email}
         autoCapitalize="none"
       />
@@ -152,7 +195,7 @@ export default function SignupScreen({ navigation }) {
         autoCompleteType="password"
         textContentType="password"
         secureTextEntry
-        onChangeText={(password) => setPassword(password)}
+        onChangeText={setPassword}
         defaultValue={password}
         autoCapitalize="none"
       />

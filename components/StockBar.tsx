@@ -1,6 +1,13 @@
 import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  Image,
+  Alert,
+} from "react-native";
 import { updatePharmacyStock, getPharmacy, getProducts } from "../api";
 import useLogin from "../hooks/useLogin";
 import { STATUS_PALETTE } from "../styles/palette";
@@ -8,7 +15,7 @@ import { ICONS } from "../styles/icons";
 import { timeAgo } from "./utils";
 export default function StockBar({ style }) {
   const { user } = useLogin();
-  const [pharmacy, setPharmacy] = useState();
+  const [pharmacy, setPharmacy] = useState(null);
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -21,7 +28,9 @@ export default function StockBar({ style }) {
   function reportStock(product) {
     const hasStock = pharmacy.products.some((p) => p.id === product.id);
 
-    updatePharmacyStock(product, !hasStock).then(setPharmacy);
+    updatePharmacyStock(user.token, product.id, !hasStock)
+      .then(setPharmacy)
+      .catch((e) => Alert.alert("Error actualizando el stock", String(e)));
   }
 
   function renderProducts() {
@@ -64,8 +73,8 @@ export default function StockBar({ style }) {
 
   return (
     <View style={[styles.container, style]}>
-      {pharmacy && renderStats()}
       <View style={styles.itemsContainer}>{pharmacy && renderProducts()}</View>
+      {pharmacy && renderStats()}
     </View>
   );
 }

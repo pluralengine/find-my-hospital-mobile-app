@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import * as Location from "expo-location";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Callout } from "react-native-maps";
 import SearchableDropdown from "react-native-searchable-dropdown";
 import { getPharmacies, getProvinces } from "../api";
 import useLogin from "../hooks/useLogin";
@@ -114,6 +114,7 @@ export default function MapScreen({ navigation }) {
               }}
               title={pharmacy.name}
               description={pharmacy.address}
+              // pinColor={getPinColor(pharmacy)}
             />
           );
         })}
@@ -137,7 +138,7 @@ export default function MapScreen({ navigation }) {
       />
       {loading && (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" />
+          <ActivityIndicator />
         </View>
       )}
     </View>
@@ -223,14 +224,14 @@ const styles = StyleSheet.create({
 });
 
 function getPinColor(pharmacy) {
-  const [mask, gel] = pharmacy.products;
-  if (!mask.stock && !gel.stock) {
+  const [mask, gel, gloves] = pharmacy.products;
+  if (!mask && !gel) {
     return "red";
   }
-  if ((!mask.stock && gel.stock) || (mask.stock && !gel.stock)) {
+  if ((!mask && gel) || (mask && !gel)) {
     return "cyan";
   }
-  if (mask.stock && gel.stock) {
+  if (mask && gel) {
     return "green";
   }
 

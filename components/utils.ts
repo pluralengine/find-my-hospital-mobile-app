@@ -13,9 +13,9 @@ export function timeAgo(time) {
   }
   const time_formats = [
     [60, "segundos", 1], // 60
-    [120, "hace 1 minuto", "1 minuto"], // 60*2
+    [120, "minuto", 60], // 60*2
     [3600, "minutos", 60], // 60*60, 60
-    [7200, "1 hora", "1 hour hora"], // 60*60*2
+    [7200, "hora", 3600], // 60*60*2
     [86400, "horas", 3600], // 60*60*24, 60*60
     [172800, "ayer", "hoy"], // 60*60*24*2
     [604800, "dias", 86400], // 60*60*24*7, 60*60*24
