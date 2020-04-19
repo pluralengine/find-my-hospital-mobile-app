@@ -13,6 +13,7 @@ import useLogin from "../hooks/useLogin";
 import { STATUS_PALETTE } from "../styles/palette";
 import { ICONS } from "../styles/icons";
 import { timeAgo } from "./utils";
+
 export default function StockBar({ style }) {
   const { user } = useLogin();
   const [pharmacy, setPharmacy] = useState(null);

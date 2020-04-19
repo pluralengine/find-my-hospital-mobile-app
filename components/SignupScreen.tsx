@@ -209,11 +209,13 @@ export default function SignupScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     position: "relative",
+    display:"flex",
     flex: 1,
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5F5F5",
+    alignSelf: "center",
     padding: 48,
+    maxWidth: 600,
   },
   formTitle: {
     fontSize: 24,

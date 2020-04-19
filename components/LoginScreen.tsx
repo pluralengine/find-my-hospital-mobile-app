@@ -30,7 +30,7 @@ export default function LoginScreen({ navigation }) {
             ` Nunca podremos agradecer suficiente lo que estás haciendo durante esta crisis por nosotros. \n\n ¡Venceremos al virus!`
           );
           setUser(user);
-          navigation.navigate("Home");
+          navigation.navigate("Inicio");
         } else {
           throw new Error(
             `The token is missing in the user information ${JSON.stringify(
@@ -87,6 +87,8 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     position: "relative",
+    display: "flex",
+    alignSelf: "center",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

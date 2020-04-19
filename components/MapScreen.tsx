@@ -1,5 +1,5 @@
-import 'react-native-gesture-handler';
-import React, { useState, useEffect, useRef } from 'react';
+import "react-native-gesture-handler";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -7,14 +7,14 @@ import {
   Text,
   ActivityIndicator,
   Image,
-} from 'react-native';
-import * as Location from 'expo-location';
-import MapView, { Marker, Callout } from 'react-native-maps';
-import SearchableDropdown from 'react-native-searchable-dropdown';
-import { getPharmacies, getProvinces, getProducts } from '../api';
-import useLogin from '../hooks/useLogin';
-import StockBar from './StockBar';
-import { ICONS } from '../styles/icons';
+} from "react-native";
+import * as Location from "expo-location";
+import MapView, { Marker } from "react-native-maps";
+import SearchableDropdown from "react-native-searchable-dropdown";
+import { getPharmacies, getProvinces, getProducts } from "../api";
+import useLogin from "../hooks/useLogin";
+import StockBar from "./StockBar";
+import { ICONS } from "../styles/icons";
 
 const DEFAULT_LATITUDE_DELTA = 0.026006060443698686;
 const DEFAULT_LONGITUDE_DELTA = 0.017766952514648438;
@@ -34,8 +34,8 @@ export default function MapScreen({ navigation }) {
 
   async function moveToLocation() {
     const { status } = await Location.requestPermissionsAsync();
-    if (status !== 'granted') {
-      console.warn('Permission to access location was denied');
+    if (status !== "granted") {
+      console.warn("Permission to access location was denied");
     }
 
     const location = await Location.getCurrentPositionAsync({
@@ -110,7 +110,7 @@ export default function MapScreen({ navigation }) {
     ) : (
       <TouchableOpacity
         style={styles.loginButton}
-        onPress={() => navigation.navigate('Login')}
+        onPress={() => navigation.navigate("Login")}
       >
         <Text>Entrar</Text>
       </TouchableOpacity>
@@ -121,15 +121,15 @@ export default function MapScreen({ navigation }) {
     const hasStock = pharmacy.products.some((product) => {
       return product.id === currentProduct.id;
     });
-    return hasStock ? 'green' : 'red';
+    return hasStock ? "green" : "red";
   }
 
   return (
     <View style={styles.container}>
       <MapView
         ref={mapRef}
-        style={[styles.map, { height: showStatusBar ? '80%' : '100%' }]}
-        provider={'google'}
+        style={[styles.map, { height: showStatusBar ? "80%" : "100%" }]}
+        provider={"google"}
         showsUserLocation
         showsMyLocationButton
         showsCompass
@@ -160,7 +160,7 @@ export default function MapScreen({ navigation }) {
         itemsContainerStyle={styles.itemsContainer}
         items={provinceItems}
         textInputProps={{
-          placeholder: 'Selecciona tu ciudad',
+          placeholder: "Selecciona tu ciudad",
           style: styles.formInput,
         }}
         listProps={{
@@ -189,88 +189,89 @@ export default function MapScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: '#F5F5F5',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    height: "100%",
+    width: "100%",
+    flexDirection: "column",
+    backgroundColor: "#F5F5F5",
+    alignItems: "center",
+    justifyContent: "center",
   },
   map: {
-    width: '100%',
-    height: '80%',
+    width: "100%",
+    height: "100%",
   },
   loginButton: {
-    position: 'absolute',
-    backgroundColor: 'white',
+    position: "absolute",
+    backgroundColor: "white",
     borderRadius: 10,
-    borderColor: '#F5F5F5',
+    borderColor: "#F5F5F5",
     borderWidth: 1,
-    alignContent: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
+    alignContent: "center",
+    justifyContent: "center",
     paddingVertical: 8,
     paddingHorizontal: 16,
     right: 24,
     top: 24,
   },
   provincesSelector: {
-    position: 'absolute',
-    backgroundColor: 'white',
+    position: "absolute",
+    backgroundColor: "white",
     borderRadius: 10,
-    borderColor: '#F5F5F5',
-    alignContent: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
+    borderColor: "#F5F5F5",
+    alignContent: "center",
+    justifyContent: "center",
+    textAlign: "center",
     left: 24,
     top: 24,
-    width: '45%',
+    width: "45%",
     maxHeight: 400,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   dropdownItem: {
     padding: 10,
     marginTop: 2,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderBottomWidth: 1,
-    borderBottomColor: 'transparent',
+    borderBottomColor: "transparent",
   },
   itemsContainer: {
     maxHeight: 140,
     borderRadius: 10,
   },
   formInput: {
-    width: '100%',
-    backgroundColor: 'white',
+    width: "100%",
+    backgroundColor: "white",
     borderRadius: 10,
     paddingVertical: 8,
     paddingHorizontal: 16,
   },
   bottomBar: {
-    height: '20%',
-    maxHeight: '20%',
-    overflow: 'hidden',
-    width: '100%',
+    height: "20%",
+    maxHeight: "20%",
+    overflow: "hidden",
+    width: "100%",
   },
   loadingContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
     opacity: 0.5,
   },
   productsButton: {
-    position: 'absolute',
-    bottom: '15%',
-    right: '3%',
-    backgroundColor: 'grey',
-    display: 'flex',
-    justifyContent: 'center',
-    alignContent: 'center',
+    position: "absolute",
+    bottom: "15%",
+    right: "3%",
+    backgroundColor: "grey",
+    display: "flex",
+    justifyContent: "center",
+    alignContent: "center",
     borderRadius: 50,
     padding: 4,
   },
