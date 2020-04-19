@@ -116,7 +116,14 @@ export default function MapScreen({ navigation }) {
       </TouchableOpacity>
     );
   }
-  console.log(products);
+
+  function pinColor(pharmacy) {
+    const hasStock = pharmacy.products.some((product) => {
+      return product.id === currentProduct.id;
+    });
+    return hasStock ? 'green' : 'red';
+  }
+
   return (
     <View style={styles.container}>
       <MapView
@@ -138,7 +145,7 @@ export default function MapScreen({ navigation }) {
               }}
               title={pharmacy.name}
               description={pharmacy.address}
-              // pinColor={getPinColor(pharmacy)}
+              pinColor={pinColor(pharmacy)}
             />
           );
         })}
@@ -160,11 +167,6 @@ export default function MapScreen({ navigation }) {
           nestedScrollEnabled: true,
         }}
       />
-      {loading && (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator />
-        </View>
-      )}
       <TouchableOpacity
         style={styles.productsButton}
         onPress={handleProductsButtonClick}
@@ -176,6 +178,11 @@ export default function MapScreen({ navigation }) {
           />
         )}
       </TouchableOpacity>
+      {loading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator />
+        </View>
+      )}
     </View>
   );
 }
@@ -272,18 +279,3 @@ const styles = StyleSheet.create({
     height: 48,
   },
 });
-
-function getPinColor(pharmacy) {
-  const [mask, gel, gloves] = pharmacy.products;
-  if (!mask && !gel) {
-    return 'red';
-  }
-  if ((!mask && gel) || (mask && !gel)) {
-    return 'cyan';
-  }
-  if (mask && gel) {
-    return 'green';
-  }
-
-  return 'linen';
-}
