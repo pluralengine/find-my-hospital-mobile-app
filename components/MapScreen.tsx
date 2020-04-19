@@ -1,18 +1,20 @@
-import "react-native-gesture-handler";
-import React, { useState, useEffect, useRef } from "react";
+import 'react-native-gesture-handler';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   View,
   TouchableOpacity,
   Text,
   ActivityIndicator,
-} from "react-native";
-import * as Location from "expo-location";
-import MapView, { Marker, Callout } from "react-native-maps";
-import SearchableDropdown from "react-native-searchable-dropdown";
-import { getPharmacies, getProvinces } from "../api";
-import useLogin from "../hooks/useLogin";
-import StockBar from "./StockBar";
+  Image,
+} from 'react-native';
+import * as Location from 'expo-location';
+import MapView, { Marker, Callout } from 'react-native-maps';
+import SearchableDropdown from 'react-native-searchable-dropdown';
+import { getPharmacies, getProvinces, getProducts } from '../api';
+import useLogin from '../hooks/useLogin';
+import StockBar from './StockBar';
+import { ICONS } from '../styles/icons';
 
 const DEFAULT_LATITUDE_DELTA = 0.026006060443698686;
 const DEFAULT_LONGITUDE_DELTA = 0.017766952514648438;
@@ -23,6 +25,8 @@ export default function MapScreen({ navigation }) {
   const [pharmacies, setPharmacies] = useState([]);
   const [city, setCity] = useState();
   const [location, setLocation] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [currentProduct, setCurrentProduct] = useState(null);
   const { user, logout } = useLogin();
   const mapRef = useRef(null);
   const isLoggedIn = Boolean(user && user.email);
@@ -30,8 +34,8 @@ export default function MapScreen({ navigation }) {
 
   async function moveToLocation() {
     const { status } = await Location.requestPermissionsAsync();
-    if (status !== "granted") {
-      console.warn("Permission to access location was denied");
+    if (status !== 'granted') {
+      console.warn('Permission to access location was denied');
     }
 
     const location = await Location.getCurrentPositionAsync({
@@ -78,6 +82,26 @@ export default function MapScreen({ navigation }) {
     }
   }, [city]);
 
+  useEffect(() => {
+    setLoading(true);
+    getProducts().then((products) => {
+      setProducts(products);
+      setCurrentProduct(products[0]);
+      setLoading(false);
+    });
+  }, []);
+
+  function handleProductsButtonClick() {
+    const index = products.findIndex((product) => {
+      return product.id === currentProduct.id;
+    });
+    if (index === products.length - 1) {
+      setCurrentProduct(products[0]);
+    } else {
+      setCurrentProduct(products[index + 1]);
+    }
+  }
+
   function renderLogin() {
     return isLoggedIn ? (
       <TouchableOpacity style={styles.loginButton} onPress={logout}>
@@ -86,19 +110,19 @@ export default function MapScreen({ navigation }) {
     ) : (
       <TouchableOpacity
         style={styles.loginButton}
-        onPress={() => navigation.navigate("Login")}
+        onPress={() => navigation.navigate('Login')}
       >
         <Text>Entrar</Text>
       </TouchableOpacity>
     );
   }
-
+  console.log(products);
   return (
     <View style={styles.container}>
       <MapView
         ref={mapRef}
-        style={[styles.map, { height: showStatusBar ? "80%" : "100%" }]}
-        provider={"google"}
+        style={[styles.map, { height: showStatusBar ? '80%' : '100%' }]}
+        provider={'google'}
         showsUserLocation
         showsMyLocationButton
         showsCompass
@@ -129,7 +153,7 @@ export default function MapScreen({ navigation }) {
         itemsContainerStyle={styles.itemsContainer}
         items={provinceItems}
         textInputProps={{
-          placeholder: "Selecciona tu ciudad",
+          placeholder: 'Selecciona tu ciudad',
           style: styles.formInput,
         }}
         listProps={{
@@ -141,99 +165,125 @@ export default function MapScreen({ navigation }) {
           <ActivityIndicator />
         </View>
       )}
+      <TouchableOpacity
+        style={styles.productsButton}
+        onPress={handleProductsButtonClick}
+      >
+        {currentProduct && (
+          <Image
+            source={ICONS[currentProduct.photo]}
+            style={styles.productsButtonImage}
+          />
+        )}
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    flexDirection: "column",
-    backgroundColor: "#F5F5F5",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: '#F5F5F5',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   map: {
-    width: "100%",
-    height: "80%",
+    width: '100%',
+    height: '80%',
   },
   loginButton: {
-    position: "absolute",
-    backgroundColor: "white",
+    position: 'absolute',
+    backgroundColor: 'white',
     borderRadius: 10,
-    borderColor: "#F5F5F5",
+    borderColor: '#F5F5F5',
     borderWidth: 1,
-    alignContent: "center",
-    justifyContent: "center",
-    textAlign: "center",
+    alignContent: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
     paddingVertical: 8,
     paddingHorizontal: 16,
     right: 24,
     top: 24,
   },
   provincesSelector: {
-    position: "absolute",
-    backgroundColor: "white",
+    position: 'absolute',
+    backgroundColor: 'white',
     borderRadius: 10,
-    borderColor: "#F5F5F5",
-    alignContent: "center",
-    justifyContent: "center",
-    textAlign: "center",
+    borderColor: '#F5F5F5',
+    alignContent: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
     left: 24,
     top: 24,
-    width: "45%",
+    width: '45%',
     maxHeight: 400,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   dropdownItem: {
     padding: 10,
     marginTop: 2,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderBottomWidth: 1,
-    borderBottomColor: "transparent",
+    borderBottomColor: 'transparent',
   },
   itemsContainer: {
     maxHeight: 140,
     borderRadius: 10,
   },
   formInput: {
-    width: "100%",
-    backgroundColor: "white",
+    width: '100%',
+    backgroundColor: 'white',
     borderRadius: 10,
     paddingVertical: 8,
     paddingHorizontal: 16,
   },
   bottomBar: {
-    height: "20%",
-    maxHeight: "20%",
-    overflow: "hidden",
-    width: "100%",
+    height: '20%',
+    maxHeight: '20%',
+    overflow: 'hidden',
+    width: '100%',
   },
   loadingContainer: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "white",
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
     opacity: 0.5,
+  },
+  productsButton: {
+    position: 'absolute',
+    bottom: '15%',
+    right: '3%',
+    backgroundColor: 'grey',
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+    borderRadius: 50,
+    padding: 4,
+  },
+  productsButtonImage: {
+    width: 48,
+    height: 48,
   },
 });
 
 function getPinColor(pharmacy) {
   const [mask, gel, gloves] = pharmacy.products;
   if (!mask && !gel) {
-    return "red";
+    return 'red';
   }
   if ((!mask && gel) || (mask && !gel)) {
-    return "cyan";
+    return 'cyan';
   }
   if (mask && gel) {
-    return "green";
+    return 'green';
   }
 
-  return "linen";
+  return 'linen';
 }
