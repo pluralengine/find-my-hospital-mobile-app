@@ -15,7 +15,7 @@ export default function SignupScreen({ navigation }) {
   const [provinceItems, setProvinceItems] = useState([]);
   const [pharmacyItems, setPharmacyItems] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [province, setProvince] = useState(null);
+  const [city, setCity] = useState(null);
   const [pharmacy, setPharmacy] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -26,9 +26,9 @@ export default function SignupScreen({ navigation }) {
     setLoading(true);
     getProvinces()
       .then((data) => {
-        const items = data.map((province) => ({
-          value: province,
-          name: province,
+        const items = data.map((city) => ({
+          value: city,
+          name: city,
         }));
         setProvinceItems(items);
         setLoading(false);
@@ -39,15 +39,14 @@ export default function SignupScreen({ navigation }) {
   }, []);
 
   useEffect(() => {
-    if (province) {
+    if (city) {
       setLoading(true);
-      getPharmacies(province)
+      getPharmacies({ areas: city })
         .then((data) => {
           const items = data.map((pharmacy) => ({
             value: pharmacy.id,
             name: pharmacy.name,
           }));
-          console.log("data",data);
           setPharmacyItems(items);
           setLoading(false);
         })
@@ -55,7 +54,7 @@ export default function SignupScreen({ navigation }) {
           setLoading(false);
         });
     }
-  }, [province]);
+  }, [city]);
 
   function submitUser() {
     createUser({
@@ -92,14 +91,14 @@ export default function SignupScreen({ navigation }) {
       <SearchableDropdown
         select
         onItemSelect={(item) => {
-          setProvince(item.value);
+          setCity(item.value);
         }}
         containerStyle={styles.searchInput}
         itemStyle={styles.dropdownItem}
         itemsContainerStyle={styles.itemsContainer}
         items={provinceItems}
         textInputProps={{
-          placeholder: loading ? "Cargando..." : "Provincia",
+          placeholder: loading ? "Cargando..." : "Selecciona una ciudad",
           style: styles.formInput,
         }}
         listProps={{
@@ -108,7 +107,7 @@ export default function SignupScreen({ navigation }) {
       />
       <SearchableDropdown
         select
-        disabled={!province}
+        disabled={!city}
         onItemSelect={(item) => {
           setPharmacy(item.value);
         }}
@@ -117,7 +116,7 @@ export default function SignupScreen({ navigation }) {
         itemsContainerStyle={styles.itemsContainer}
         items={pharmacyItems}
         textInputProps={{
-          placeholder: loading ? "Cargando..." : "Farmacia",
+          placeholder: loading ? "Cargando..." : "Selecciona tu farmacia",
           style: styles.formInput,
         }}
         listProps={{

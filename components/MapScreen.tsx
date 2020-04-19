@@ -1,6 +1,12 @@
 import "react-native-gesture-handler";
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  ActivityIndicator,
+} from "react-native";
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
 import SearchableDropdown from "react-native-searchable-dropdown";
@@ -15,9 +21,8 @@ export default function MapScreen({ navigation }) {
   const [provinceItems, setProvinceItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pharmacies, setPharmacies] = useState([]);
-  const [province, setProvince] = useState();
+  const [city, setCity] = useState();
   const [location, setLocation] = useState(null);
-  const [mapRegion, setMapRegion] = useState(null);
   const { user, logout } = useLogin();
   const mapRef = useRef(null);
   const isLoggedIn = Boolean(user && user.email);
@@ -45,9 +50,9 @@ export default function MapScreen({ navigation }) {
     setLoading(true);
     getProvinces()
       .then((data) => {
-        const items = data.map((province) => ({
-          value: province,
-          name: province,
+        const items = data.map((city) => ({
+          value: city,
+          name: city,
         }));
         setProvinceItems(items);
         setLoading(false);
@@ -59,9 +64,9 @@ export default function MapScreen({ navigation }) {
   }, []);
 
   useEffect(() => {
-    if (province) {
+    if (city) {
       setLoading(true);
-      getPharmacies(province)
+      getPharmacies({ areas: city })
         .then((data) => {
           setPharmacies(data);
           setLoading(false);
@@ -71,22 +76,7 @@ export default function MapScreen({ navigation }) {
           setLoading(false);
         });
     }
-  }, [province]);
-
-  function shouldBeVisible(pharmacy, location) {
-    const coords = {
-      latitude: parseFloat(pharmacy.geometryLat),
-      longitude: parseFloat(pharmacy.geometryLng),
-    };
-    const isLatCloseEnough =
-      Math.abs(coords.latitude - location.latitude) < location.latitudeDelta;
-    const isLngCloseEnough =
-      Math.abs(coords.longitude - location.longitude) < location.longitudeDelta;
-    if (isLatCloseEnough) {
-      console.log(pharmacy);
-    }
-    return isLatCloseEnough && isLngCloseEnough;
-  }
+  }, [city]);
 
   function renderLogin() {
     return isLoggedIn ? (
@@ -102,7 +92,7 @@ export default function MapScreen({ navigation }) {
       </TouchableOpacity>
     );
   }
-  console.log(pharmacies.length);
+
   return (
     <View style={styles.container}>
       <MapView
@@ -112,9 +102,7 @@ export default function MapScreen({ navigation }) {
         showsUserLocation
         showsMyLocationButton
         showsCompass
-        loadingEnabled={!location}
         onMapReady={moveToLocation}
-        onRegionChangeComplete={setMapRegion}
       >
         {pharmacies.map((pharmacy) => {
           return (
@@ -134,19 +122,24 @@ export default function MapScreen({ navigation }) {
       {renderLogin()}
       <SearchableDropdown
         select
-        onItemSelect={(item) => setProvince(item.value)}
+        onItemSelect={(item) => setCity(item.value)}
         containerStyle={styles.provincesSelector}
         itemStyle={styles.dropdownItem}
         itemsContainerStyle={styles.itemsContainer}
         items={provinceItems}
         textInputProps={{
-          placeholder: "Selecciona tu provincia",
+          placeholder: "Selecciona tu ciudad",
           style: styles.formInput,
         }}
         listProps={{
           nestedScrollEnabled: true,
         }}
       />
+      {loading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" />
+        </View>
+      )}
     </View>
   );
 }
@@ -156,6 +149,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     backgroundColor: "#F5F5F5",
+    alignItems: "center",
+    justifyContent: "center",
   },
   map: {
     width: "100%",
@@ -212,6 +207,18 @@ const styles = StyleSheet.create({
     maxHeight: "20%",
     overflow: "hidden",
     width: "100%",
+  },
+  loadingContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+    opacity: 0.5,
   },
 });
 

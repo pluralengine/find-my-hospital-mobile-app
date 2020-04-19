@@ -1,4 +1,5 @@
-export const BASE_API_URL = "http://localhost:3000";
+const qs = require("qs");
+export const BASE_API_URL = "http://192.168.1.51:3000";
 // export const BASE_API_URL = "https://covid-19-hospital-finder.herokuapp.com";
 
 export const ENDPOINTS = {
@@ -6,7 +7,7 @@ export const ENDPOINTS = {
   USERS: `${BASE_API_URL}/users`,
   LOGIN: `${BASE_API_URL}/login`,
   VOTE: `${BASE_API_URL}/score`,
-  PROVINCES: `${BASE_API_URL}/provinces`,
+  PROVINCES: `${BASE_API_URL}/provinces/areas`,
   USER_PHARMACY: `${BASE_API_URL}/user/pharmacy`,
   PHARMACIES: `${BASE_API_URL}/pharmacies`,
 };
@@ -26,11 +27,13 @@ export async function getProvinces() {
   }).then(requestToJson);
 }
 
-export async function getPharmacies(province) {
-  return fetch(`${ENDPOINTS.PHARMACIES}?provinces=${province}`, {
+export async function getPharmacies(queryParams) {
+  const query = qs.stringify(queryParams);
+
+  return fetch(`${ENDPOINTS.PHARMACIES}?${query}`, {
     method: "GET",
     headers: getRequestsHeaders(),
-  }).then(requestToJson);;
+  }).then(requestToJson);
 }
 
 export async function getHospitals() {
