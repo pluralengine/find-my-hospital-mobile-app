@@ -8,26 +8,45 @@ import useLogin from "../hooks/useLogin";
 import StockBar from "./StockBar";
 
 export default function MapScreen({ navigation }) {
+  const [provinceItems, setProvinceItems] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [pharmacies, setPharmacies] = useState([]);
-  const [provinces, setProvinces] = useState([]);
-  const [_, setSelectedProvinces] = useState("java");
+  const [province, setProvince] = useState();
   const { user, logout } = useLogin();
   const isLoggedIn = Boolean(user && user.email);
-  const showVoteBar = true;
+  const showStatusBar = isLoggedIn;
 
   useEffect(() => {
-    getPharmacies().then(setPharmacies);
-    getProvinces().then(setParsedProvinces);
+    setLoading(true);
+    getProvinces()
+      .then((data) => {
+        const items = data.map((province) => ({
+          value: province,
+          name: province,
+        }));
+        setProvinceItems(items);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
   }, []);
 
-  function setParsedProvinces(provinces) {
-    const selectFormat = provinces.map((province) => ({
-      id: province,
-      name: province,
-    }));
-
-    setProvinces(selectFormat);
-  }
+  useEffect(() => {
+    if (province) {
+      console.log(province);
+      setLoading(true);
+      getPharmacies(province)
+        .then((data) => {
+          setPharmacies(data);
+          setLoading(false);
+        })
+        .catch((e) => {
+          console.error(e);
+          setLoading(false);
+        });
+    }
+  }, [province]);
 
   function renderLogin() {
     return isLoggedIn ? (
@@ -47,7 +66,7 @@ export default function MapScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <MapView
-        style={[styles.map, { height: showVoteBar ? "80%" : "100%" }]}
+        style={[styles.map, { height: showStatusBar ? "80%" : "100%" }]}
         provider={"google"}
         showsUserLocation
         showsMyLocationButton
@@ -57,27 +76,25 @@ export default function MapScreen({ navigation }) {
           return (
             <Marker
               key={pharmacy.id}
-              tracksViewChanges={false}
               coordinate={{
                 latitude: parseFloat(pharmacy.geometryLat),
                 longitude: parseFloat(pharmacy.geometryLng),
               }}
               title={pharmacy.name}
               description={pharmacy.address}
-              pinColor={getPinColor(pharmacy)}
             />
           );
         })}
       </MapView>
-      {showVoteBar && <StockBar style={styles.bottomBar} />}
+      {showStatusBar && <StockBar style={styles.bottomBar} />}
       {renderLogin()}
       <SearchableDropdown
         select
-        onItemSelect={setSelectedProvinces}
+        onItemSelect={(item) => setProvince(item.value)}
         containerStyle={styles.provincesSelector}
         itemStyle={styles.dropdownItem}
         itemsContainerStyle={styles.itemsContainer}
-        items={provinces}
+        items={provinceItems}
         textInputProps={{
           placeholder: "Selecciona tu provincia",
           style: styles.formInput,

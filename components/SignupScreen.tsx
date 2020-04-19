@@ -12,7 +12,7 @@ import SearchableDropdown from "react-native-searchable-dropdown";
 import { getProvinces, createUser, getPharmacies } from "../api";
 
 export default function SignupScreen({ navigation }) {
-  const [hospitalItems, setProvinceItems] = useState([]);
+  const [provinceItems, setProvinceItems] = useState([]);
   const [pharmacyItems, setPharmacyItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [province, setProvince] = useState(null);
@@ -97,7 +97,7 @@ export default function SignupScreen({ navigation }) {
         containerStyle={styles.searchInput}
         itemStyle={styles.dropdownItem}
         itemsContainerStyle={styles.itemsContainer}
-        items={hospitalItems}
+        items={provinceItems}
         textInputProps={{
           placeholder: loading ? "Cargando..." : "Provincia",
           style: styles.formInput,
