@@ -1,20 +1,45 @@
 import "react-native-gesture-handler";
-import React, { useState, useEffect } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Picker } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
 import SearchableDropdown from "react-native-searchable-dropdown";
 import { getPharmacies, getProvinces } from "../api";
 import useLogin from "../hooks/useLogin";
 import StockBar from "./StockBar";
 
+const DEFAULT_LATITUDE_DELTA = 0.026006060443698686;
+const DEFAULT_LONGITUDE_DELTA = 0.017766952514648438;
+
 export default function MapScreen({ navigation }) {
   const [provinceItems, setProvinceItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pharmacies, setPharmacies] = useState([]);
   const [province, setProvince] = useState();
+  const [location, setLocation] = useState(null);
+  const [mapRegion, setMapRegion] = useState(null);
   const { user, logout } = useLogin();
+  const mapRef = useRef(null);
   const isLoggedIn = Boolean(user && user.email);
   const showStatusBar = isLoggedIn;
+
+  async function moveToLocation() {
+    const { status } = await Location.requestPermissionsAsync();
+    if (status !== "granted") {
+      console.warn("Permission to access location was denied");
+    }
+
+    const location = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.BestForNavigation,
+    });
+    setLocation(location.coords);
+    mapRef.current.animateToRegion({
+      latitude: location.coords.latitude,
+      latitudeDelta: DEFAULT_LATITUDE_DELTA,
+      longitude: location.coords.longitude,
+      longitudeDelta: DEFAULT_LONGITUDE_DELTA,
+    });
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -28,13 +53,13 @@ export default function MapScreen({ navigation }) {
         setLoading(false);
       })
       .catch((e) => {
+        console.error(e);
         setLoading(false);
       });
   }, []);
 
   useEffect(() => {
     if (province) {
-      console.log(province);
       setLoading(true);
       getPharmacies(province)
         .then((data) => {
@@ -47,6 +72,21 @@ export default function MapScreen({ navigation }) {
         });
     }
   }, [province]);
+
+  function shouldBeVisible(pharmacy, location) {
+    const coords = {
+      latitude: parseFloat(pharmacy.geometryLat),
+      longitude: parseFloat(pharmacy.geometryLng),
+    };
+    const isLatCloseEnough =
+      Math.abs(coords.latitude - location.latitude) < location.latitudeDelta;
+    const isLngCloseEnough =
+      Math.abs(coords.longitude - location.longitude) < location.longitudeDelta;
+    if (isLatCloseEnough) {
+      console.log(pharmacy);
+    }
+    return isLatCloseEnough && isLngCloseEnough;
+  }
 
   function renderLogin() {
     return isLoggedIn ? (
@@ -62,15 +102,19 @@ export default function MapScreen({ navigation }) {
       </TouchableOpacity>
     );
   }
-
+  console.log(pharmacies.length);
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapRef}
         style={[styles.map, { height: showStatusBar ? "80%" : "100%" }]}
         provider={"google"}
         showsUserLocation
         showsMyLocationButton
         showsCompass
+        loadingEnabled={!location}
+        onMapReady={moveToLocation}
+        onRegionChangeComplete={setMapRegion}
       >
         {pharmacies.map((pharmacy) => {
           return (
