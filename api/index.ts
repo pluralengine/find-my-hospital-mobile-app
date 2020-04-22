@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 const qs = require("qs");
 // export const BASE_API_URL = "http://192.168.1.51:3000";
 export const BASE_API_URL = "http://localhost:3000";
+=======
+const qs = require('qs');
+export const BASE_API_URL = 'http://192.168.1.68:3000';
+>>>>>>> feat: add color of products in pharmacy callout
 // export const BASE_API_URL = "https://covid-19-hospital-finder.herokuapp.com";
 
 export const ENDPOINTS = {
@@ -17,14 +22,14 @@ export const ENDPOINTS = {
 
 export async function getProducts() {
   return fetch(ENDPOINTS.PRODUCTS, {
-    method: "GET",
+    method: 'GET',
     headers: getRequestsHeaders(),
   }).then(requestToJson);
 }
 
 export async function getProvinces() {
   return fetch(ENDPOINTS.PROVINCES, {
-    method: "GET",
+    method: 'GET',
     headers: getRequestsHeaders(),
   }).then(requestToJson);
 }
@@ -33,21 +38,21 @@ export async function getPharmacies(queryParams) {
   const query = qs.stringify(queryParams);
 
   return fetch(`${ENDPOINTS.PHARMACIES}?${query}`, {
-    method: "GET",
+    method: 'GET',
     headers: getRequestsHeaders(),
   }).then(requestToJson);
 }
 
 export async function getHospitals() {
   return fetch(ENDPOINTS.HOSPITALS, {
-    method: "GET",
+    method: 'GET',
     headers: getRequestsHeaders(),
   }).then(requestToJson);
 }
 
 export async function getPharmacy(token) {
   return fetch(ENDPOINTS.USER_PHARMACY, {
-    method: "GET",
+    method: 'GET',
     headers: getRequestsHeaders(token),
   }).then(requestToJson);
 }
@@ -58,7 +63,7 @@ export async function updatePharmacyStock(token, productId, stock) {
     stock,
   };
   const fetchOptions = {
-    method: "PUT",
+    method: 'PUT',
     headers: getRequestsHeaders(token),
     body: JSON.stringify(payload),
   };
@@ -68,7 +73,7 @@ export async function updatePharmacyStock(token, productId, stock) {
 
 export async function getHospital(id) {
   return fetch(`${ENDPOINTS.HOSPITALS}/${id}`, {
-    method: "GET",
+    method: 'GET',
     headers: getRequestsHeaders(),
   }).then(requestToJson);
 }
@@ -83,7 +88,7 @@ export async function createUser(user) {
   };
 
   return fetch(ENDPOINTS.USERS, {
-    method: "POST",
+    method: 'POST',
     headers: getRequestsHeaders(),
     body: JSON.stringify(payload),
   }).then(requestToJson);
@@ -99,7 +104,7 @@ export async function createPharmacyUser(user) {
   };
 
   return fetch(ENDPOINTS.USER_PHARMACY, {
-    method: "POST",
+    method: 'POST',
     headers: getRequestsHeaders(),
     body: JSON.stringify(payload),
   }).then(requestToJson);
@@ -111,7 +116,7 @@ export async function login(user, password) {
     password: password,
   };
   const fetchOptions = {
-    method: "POST",
+    method: 'POST',
     headers: getRequestsHeaders(),
     body: JSON.stringify(payload),
   };
@@ -128,7 +133,7 @@ export async function vote(user, score) {
     score,
   };
   const fetchOptions = {
-    method: "POST",
+    method: 'POST',
     headers: getRequestsHeaders(user.token),
     body: JSON.stringify(payload),
   };
@@ -138,7 +143,7 @@ export async function vote(user, score) {
 
 export function getRequestsHeaders(token = null) {
   return {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
     Authorization: token ? `Bearer ${token}` : undefined,
   };
 }
