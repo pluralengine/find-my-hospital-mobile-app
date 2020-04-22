@@ -7,6 +7,7 @@ import {
   Text,
   ActivityIndicator,
   Image,
+  Dimensions,
 } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker, Callout } from 'react-native-maps';
@@ -16,9 +17,12 @@ import useLogin from '../hooks/useLogin';
 import StockBar from './StockBar';
 import { ICONS } from '../styles/icons';
 import { STATUS_PALETTE } from '../styles/palette';
+import { Linking } from 'expo';
 
 const DEFAULT_LATITUDE_DELTA = 0.026006060443698686;
 const DEFAULT_LONGITUDE_DELTA = 0.017766952514648438;
+const WIDTH = Math.round(Dimensions.get('window').width);
+const CALLOUT_MAXWIDTH = 0.5 * WIDTH;
 
 export default function MapScreen({ navigation }) {
   const [provinceItems, setProvinceItems] = useState([]);
@@ -155,10 +159,16 @@ export default function MapScreen({ navigation }) {
             >
               <Callout>
                 <View style={styles.callout}>
-                  <Text>
-                    {`Farmacia ${pharmacy.name}
-                        googlemaps url`}
-                  </Text>
+                  <View style={styles.textAreaStyle}>
+                    <Text>{`Farmacia ${pharmacy.name}`}</Text>
+                    <Text
+                      onPress={() => {
+                        Linking.openURL(`https://google.com`);
+                      }}
+                    >
+                      Open in GoogleMaps
+                    </Text>
+                  </View>
                   <View style={styles.imageArea}>
                     {products.map((product) => {
                       return (
@@ -327,15 +337,21 @@ const styles = StyleSheet.create({
     padding: 4,
     display: 'flex',
     justifyContent: 'center',
+    maxWidth: CALLOUT_MAXWIDTH,
   },
   imageArea: {
     display: 'flex',
     flexDirection: 'row',
     resizeMode: 'cover',
     justifyContent: 'space-around',
+    padding: 4,
   },
   logoArea: {
     borderRadius: 50,
     padding: 4,
+  },
+  textAreaStyle: {
+    padding: 4,
+    marginBottom: 4,
   },
 });
