@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Image,
   Dimensions,
+  Platform
 } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker, Callout, CalloutSubview } from 'react-native-maps';
@@ -146,7 +147,7 @@ export default function MapScreen({ navigation }) {
     const productIds = pharmacy.products.map((product) => product.id);
     return productIds && productIds.some((id) => id === item.id);
   }
-
+console.log(Platform.OS)
   return (
     <View style={styles.container}>
       <MapView
