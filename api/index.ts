@@ -25,7 +25,7 @@ export async function getProducts() {
 
 export async function getProvinces() {
   return fetch(ENDPOINTS.PROVINCES, {
-    method: 'GET',
+    method: "GET",
     headers: getRequestsHeaders(),
   }).then(requestToJson);
 }

@@ -170,7 +170,7 @@ export default function MapScreen({ navigation }) {
               description={pharmacy.address}
               pinColor={pinColor(pharmacy)}
             >
-              {/* <Callout onPress={() => handleGMapsLink(generateGMapsURL(pharmacy))}>
+              <Callout onPress={() => handleGMapsLink(generateGMapsURL(pharmacy))}>
                 <View style={styles.callout}>
                   <View style={styles.imageArea}>
                     {products.map((product) => {
@@ -203,7 +203,7 @@ export default function MapScreen({ navigation }) {
                     <Text style={{color:'blue'}}>Cómo llegar</Text>
                   </View>
                 </View>
-              </Callout> */}
+              </Callout>
             </Marker>
           );
         })}
