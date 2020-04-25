@@ -28,7 +28,7 @@ export function timeAgo(time) {
     [5806080000, "último centenario", "próximo centenario"], // 60*60*24*7*4*12*100*2
     [58060800000, "centenarios", 2903040000], // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
   ];
-  const seconds = (+new Date() - time) / 1000,
+  let seconds = (+new Date() - time) / 1000,
     token = "hace ",
     list_choice = 1;
 
