@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   AsyncStorage,
   StyleSheet,
@@ -30,7 +30,7 @@ export default function LoginScreen({ navigation }) {
             ` Nunca podremos agradecer suficiente lo que estás haciendo durante esta crisis por nosotros. \n\n ¡Venceremos al virus!`
           );
           setUser(user);
-          navigation.navigate("Home");
+          navigation.navigate("Inicio");
         } else {
           throw new Error(
             `The token is missing in the user information ${JSON.stringify(
@@ -50,7 +50,7 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.formTitle}>Acceso a personal del hospital</Text>
+      <Text style={styles.formTitle}>Acceso a personal de farmacia</Text>
       <TextInput
         style={styles.formInput}
         placeholder="Email"
@@ -75,7 +75,7 @@ export default function LoginScreen({ navigation }) {
         style={styles.formLink}
         onPress={() => navigation.navigate("Registro")}
       >
-        Soy personal de hospital y no tengo cuenta, ¿Cómo me registro?
+        Tengo una farmacia y no tengo cuenta, ¿Cómo me registro?
       </Text>
       <TouchableOpacity style={styles.loginButton} onPress={login}>
         <Text>Login</Text>
@@ -87,6 +87,8 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     position: "relative",
+    display: "flex",
+    alignSelf: "center",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

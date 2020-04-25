@@ -13,9 +13,9 @@ export function timeAgo(time) {
   }
   const time_formats = [
     [60, "segundos", 1], // 60
-    [120, "hace 1 minuto", "1 minuto"], // 60*2
+    [120, "minuto", 60], // 60*2
     [3600, "minutos", 60], // 60*60, 60
-    [7200, "1 hora", "1 hour hora"], // 60*60*2
+    [7200, "hora", 3600], // 60*60*2
     [86400, "horas", 3600], // 60*60*24, 60*60
     [172800, "ayer", "hoy"], // 60*60*24*2
     [604800, "dias", 86400], // 60*60*24*7, 60*60*24
@@ -28,7 +28,7 @@ export function timeAgo(time) {
     [5806080000, "último centenario", "próximo centenario"], // 60*60*24*7*4*12*100*2
     [58060800000, "centenarios", 2903040000], // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
   ];
-  const seconds = (+new Date() - time) / 1000,
+  let seconds = (+new Date() - time) / 1000,
     token = "hace ",
     list_choice = 1;
 

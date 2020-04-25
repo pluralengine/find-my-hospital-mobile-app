@@ -9,26 +9,28 @@ import {
   Alert,
 } from "react-native";
 import SearchableDropdown from "react-native-searchable-dropdown";
-import { getHospitals, createUser } from "../api";
+import { getProvinces, createPharmacyUser, getPharmacies } from "../api";
 
 export default function SignupScreen({ navigation }) {
-  const [hospitalItems, setHospitalItems] = useState([]);
+  const [provinceItems, setProvinceItems] = useState([]);
+  const [pharmacyItems, setPharmacyItems] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [hospital, setHospital] = useState(null);
+  const [city, setCity] = useState(null);
+  const [pharmacy, setPharmacy] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
+  const [centerCode, setCenterCode] = useState("");
 
   useEffect(() => {
     setLoading(true);
-    getHospitals()
+    getProvinces()
       .then((data) => {
-        const items = data.map((hospital) => ({
-          value: hospital.id,
-          name: hospital.name,
+        const items = data.map((city) => ({
+          value: city,
+          name: city,
         }));
-        setHospitalItems(items);
+        setProvinceItems(items);
         setLoading(false);
       })
       .catch((e) => {
@@ -36,49 +38,128 @@ export default function SignupScreen({ navigation }) {
       });
   }, []);
 
+  useEffect(() => {
+    if (city) {
+      setLoading(true);
+      getPharmacies({ areas: city })
+        .then((data) => {
+          const items = data.map((pharmacy) => ({
+            value: pharmacy.id,
+            name: pharmacy.name,
+          }));
+          setPharmacyItems(items);
+          setLoading(false);
+        })
+        .catch((e) => {
+          setLoading(false);
+        });
+    }
+  }, [city]);
+
+  function validate() {
+    if (!pharmacy) {
+      Alert.alert(
+        "Los datos no son válidos",
+        "Por favor, selecciona tu farmacia"
+      );
+      return;
+    }
+    if (!centerCode) {
+      Alert.alert(
+        "Los datos no son válidos",
+        "Por favor, introduce el código autonómico de la farmacia"
+      );
+      return;
+    }
+    if (!name) {
+      Alert.alert(
+        "Los datos no son validos",
+        "Por favor, introduce tu nombre y tus apellidos"
+      );
+      return;
+    }
+    if (!email) {
+      Alert.alert("Los datos no son válidos", "Por favor, introduce un email");
+      return;
+    }
+    if (!password) {
+      Alert.alert(
+        "Los datos no son válidos",
+        "Por favor, introduce una contraseña"
+      );
+      return;
+    }
+    return true;
+  }
   function submitUser() {
-    createUser({
+    if (!validate()) {
+      return;
+    }
+    createPharmacyUser({
       name,
       email,
       password,
-      role,
-      hospitalId: hospital.value,
-    }).then((user) => {
-      Alert.alert(
-        "Enviado correctamente",
-        `Gracias ${user.name}. Estamos comprobando sus datos.\n\nPronto recibirá un email a ${user.email} confirmando su alta`,
-        [
-          {
-            text: "Aceptar",
-            onPress: () => {
-              navigation.navigate("Login");
+      centerCode,
+      pharmacyId: pharmacy,
+    })
+      .then((user) => {
+        Alert.alert(
+          "Enviado correctamente",
+          `Gracias ${user.name}. Ya puedes iniciar sesión y actualizar el inventario de tu farmacia.`,
+          [
+            {
+              text: "Aceptar",
+              onPress: () => {
+                navigation.navigate("Login");
+              },
             },
-          },
-        ],
-        { cancelable: false }
-      );
-    });
+          ],
+          { cancelable: false }
+        );
+      })
+      .catch((e) => {
+        Alert.alert("Ha ocurrido un error", String(e));
+      });
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.formTitle}>
-        Pedir acceso como personal del hospital
+        Pedir acceso como personal de farmacia
       </Text>
       <Text style={styles.formSubtitle}>
-        Por el momento, solo personal del hospital podrá informar del estado de
-        ocupación de Urgencias. Para verificar que usted pertenece al mismo, por
-        favor rellene sus datos y verificaremos su identidad.
+        Por el momento, solo personal del un usuario por farmacia podrá informar
+        del inventario de productos.
       </Text>
       <SearchableDropdown
         select
-        onItemSelect={setHospital}
+        onItemSelect={(item) => {
+          setCity(item.value);
+        }}
         containerStyle={styles.searchInput}
         itemStyle={styles.dropdownItem}
         itemsContainerStyle={styles.itemsContainer}
-        items={hospitalItems}
+        items={provinceItems}
         textInputProps={{
-          placeholder: loading ? "Cargando..." : "Hospital",
+          placeholder: loading ? "Cargando..." : "Selecciona una ciudad",
+          style: styles.formInput,
+        }}
+        listProps={{
+          nestedScrollEnabled: true,
+        }}
+      />
+      <SearchableDropdown
+        select
+        disabled={!city}
+        onItemSelect={(item) => {
+          setPharmacy(item.value);
+        }}
+        containerStyle={styles.searchInput}
+        itemStyle={styles.dropdownItem}
+        itemsContainerStyle={styles.itemsContainer}
+        items={pharmacyItems}
+        textInputProps={{
+          placeholder: loading ? "Cargando..." : "Selecciona tu farmacia",
           style: styles.formInput,
         }}
         listProps={{
@@ -87,15 +168,15 @@ export default function SignupScreen({ navigation }) {
       />
       <TextInput
         style={styles.formInput}
-        placeholder="Cargo en el hospital"
-        onChangeText={(role) => setRole(role)}
-        defaultValue={role}
+        placeholder="Código Autonómico Ej: F08006281"
+        onChangeText={setCenterCode}
+        defaultValue={centerCode}
       />
       <TextInput
         style={styles.formInput}
         placeholder="Nombre y Apellidos"
         autoCompleteType="name"
-        onChangeText={(name) => setName(name)}
+        onChangeText={setName}
         defaultValue={name}
       />
       <TextInput
@@ -104,9 +185,9 @@ export default function SignupScreen({ navigation }) {
         autoCompleteType="email"
         keyboardType="email-address"
         textContentType="emailAddress"
-        onChangeText={(email) => setEmail(email)}
+        onChangeText={setEmail}
         defaultValue={email}
-        autoCapitalize = 'none'
+        autoCapitalize="none"
       />
       <TextInput
         style={styles.formInput}
@@ -114,9 +195,9 @@ export default function SignupScreen({ navigation }) {
         autoCompleteType="password"
         textContentType="password"
         secureTextEntry
-        onChangeText={(password) => setPassword(password)}
+        onChangeText={setPassword}
         defaultValue={password}
-        autoCapitalize = 'none'
+        autoCapitalize="none"
       />
       <TouchableOpacity style={styles.loginButton} onPress={submitUser}>
         <Text>Pedir acceso</Text>
@@ -128,11 +209,13 @@ export default function SignupScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     position: "relative",
+    display:"flex",
     flex: 1,
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5F5F5",
+    alignSelf: "center",
     padding: 48,
+    maxWidth: 600,
   },
   formTitle: {
     fontSize: 24,

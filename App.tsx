@@ -1,7 +1,11 @@
 import "react-native-gesture-handler";
 import React, { useState, useEffect } from "react";
-import { AsyncStorage } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { AsyncStorage, View } from "react-native";
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from "@react-navigation/native";
 import { MapScreen, LoginScreen, SignupScreen } from "./components";
 import { createStackNavigator } from "@react-navigation/stack";
 import { KEYS } from "./storage";
@@ -25,12 +29,21 @@ export default function App() {
       setUser({ email: "", name: "", hospitalId: 0 })
     );
   }
-
+  const theme = {
+    ...DefaultTheme,
+    colors: {
+      primary: 'rgb(255, 45, 85)',
+      background: '#F5F5F5',
+      card: 'rgb(255, 255, 255)',
+      text: 'rgb(28, 28, 30)',
+      border: 'transparent',
+    },
+  };
   return (
     <LoginContext.Provider value={{ user, setUser, logout }}>
-      <NavigationContainer>
+      <NavigationContainer theme={theme}>
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={MapScreen} />
+          <Stack.Screen name="Inicio" component={MapScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Registro" component={SignupScreen} />
         </Stack.Navigator>

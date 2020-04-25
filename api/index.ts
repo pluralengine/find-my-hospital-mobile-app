@@ -1,13 +1,27 @@
-// export const BASE_API_URL = "http://localhost:3000";
-export const BASE_API_URL = "https://covid-19-hospital-finder.herokuapp.com";
+const qs = require("qs");
+// export const BASE_API_URL = "http://192.168.1.51:3000";
+//export const BASE_API_URL = 'http://192.168.1.42:3000';
+export const BASE_API_URL = "http://localhost:3000";
+// export const BASE_API_URL = "https://covid-19-hospital-finder.herokuapp.com";
 
 export const ENDPOINTS = {
   HOSPITALS: `${BASE_API_URL}/hospitals`,
   USERS: `${BASE_API_URL}/users`,
   LOGIN: `${BASE_API_URL}/login`,
   VOTE: `${BASE_API_URL}/score`,
-  PROVINCES: `${BASE_API_URL}/provinces`,
+  PRODUCTS: `${BASE_API_URL}/products`,
+  PROVINCES: `${BASE_API_URL}/provinces/areas`,
+  USER_PHARMACY: `${BASE_API_URL}/user/pharmacy`,
+  PHARMACY_STOCK: `${BASE_API_URL}/user/pharmacy/stock`,
+  PHARMACIES: `${BASE_API_URL}/pharmacies`,
 };
+
+export async function getProducts() {
+  return fetch(ENDPOINTS.PRODUCTS, {
+    method: 'GET',
+    headers: getRequestsHeaders(),
+  }).then(requestToJson);
+}
 
 export async function getProvinces() {
   return fetch(ENDPOINTS.PROVINCES, {
@@ -16,87 +30,46 @@ export async function getProvinces() {
   }).then(requestToJson);
 }
 
-export async function getPharmacies() {
-  return Promise.resolve([
-    {
-      id: 11329,
-      name: "MARTINEZ COLINAS,ANDREA/SANCHEZ LOPEZ,MARIA",
-      address: "CALLE CAMELIES 66",
-      phoneNum: "932353039",
-      geometryLat: "41.41346",
-      geometryLng: "2.16384",
-      products: [
-        { id: 1, name: "Mascarilla", stock: true },
-        { id: 2, name: "Gel desinfectante", stock: true },
-      ],
-    },
-    {
-      id: 10821,
-      name: "DE FRUTOS ILLAN, M.CARME",
-      centerCode: "F08008240",
-      address: "CALLE CAMELIES 22",
-      phoneNum: "932132513",
-      geometryLat: "41.4111859",
-      geometryLng: "2.1595809",
-      products: [
-        { id: 1, name: "Mascarilla", stock: false },
-        { id: 2, name: "Gel desinfectante", stock: true },
-      ],
-    },
-    {
-      id: 12029,
-      name: "QUIROS BERNAL, MARIA CARMEN",
-      address: "CALLE CAMELIES 32",
-      phoneNum: "935646904",
-      geometryLat: "41.4626937",
-      geometryLng: "2.1692016",
-      products: [
-        { id: 1, name: "Mascarilla", stock: true },
-        { id: 2, name: "Gel desinfectante", stock: true },
-      ],
-    },
-  ]);
-}
+export async function getPharmacies(queryParams) {
+  const query = qs.stringify(queryParams);
 
-export async function getHospitals() {
-  return fetch(ENDPOINTS.HOSPITALS, {
-    method: "GET",
+  return fetch(`${ENDPOINTS.PHARMACIES}?${query}`, {
+    method: 'GET',
     headers: getRequestsHeaders(),
   }).then(requestToJson);
 }
 
-export async function getPharmacy() {
-  return Promise.resolve({
-    id: 12029,
-    name: "QUIROS BERNAL, MARIA CARMEN",
-    address: "CALLE CAMELIES 32",
-    phoneNum: "935646904",
-    updatedAt: "2020-04-16T18:37:47.452Z",
-    geometryLat: "41.4626937",
-    geometryLng: "2.1692016",
-    products: [
-      { id: 1, name: "Mascarilla", photo: "", stock: true },
-      { id: 2, name: "Gel desinfectante", photo: "", stock: true },
-      { id: 4, name: "Guantes", photo: "", stock: false },
-    ],
-  });
+export async function getHospitals() {
+  return fetch(ENDPOINTS.HOSPITALS, {
+    method: 'GET',
+    headers: getRequestsHeaders(),
+  }).then(requestToJson);
 }
-export async function reportStock(products) {
-  return Promise.resolve({
-    id: 12029,
-    name: "QUIROS BERNAL, MARIA CARMEN",
-    address: "CALLE CAMELIES 32",
-    updatedAt: String(new Date()),
-    phoneNum: "935646904",
-    geometryLat: "41.4626937",
-    geometryLng: "2.1692016",
-    products,
-  });
+
+export async function getPharmacy(token) {
+  return fetch(ENDPOINTS.USER_PHARMACY, {
+    method: 'GET',
+    headers: getRequestsHeaders(token),
+  }).then(requestToJson);
+}
+
+export async function updatePharmacyStock(token, productId, stock) {
+  const payload = {
+    productId,
+    stock,
+  };
+  const fetchOptions = {
+    method: 'PUT',
+    headers: getRequestsHeaders(token),
+    body: JSON.stringify(payload),
+  };
+
+  return fetch(ENDPOINTS.PHARMACY_STOCK, fetchOptions).then(requestToJson);
 }
 
 export async function getHospital(id) {
   return fetch(`${ENDPOINTS.HOSPITALS}/${id}`, {
-    method: "GET",
+    method: 'GET',
     headers: getRequestsHeaders(),
   }).then(requestToJson);
 }
@@ -111,7 +84,23 @@ export async function createUser(user) {
   };
 
   return fetch(ENDPOINTS.USERS, {
-    method: "POST",
+    method: 'POST',
+    headers: getRequestsHeaders(),
+    body: JSON.stringify(payload),
+  }).then(requestToJson);
+}
+
+export async function createPharmacyUser(user) {
+  const payload = {
+    name: user.name,
+    email: user.email,
+    password: user.password,
+    centerCode: user.centerCode,
+    pharmacyId: user.pharmacyId,
+  };
+
+  return fetch(ENDPOINTS.USER_PHARMACY, {
+    method: 'POST',
     headers: getRequestsHeaders(),
     body: JSON.stringify(payload),
   }).then(requestToJson);
@@ -123,7 +112,7 @@ export async function login(user, password) {
     password: password,
   };
   const fetchOptions = {
-    method: "POST",
+    method: 'POST',
     headers: getRequestsHeaders(),
     body: JSON.stringify(payload),
   };
@@ -140,7 +129,7 @@ export async function vote(user, score) {
     score,
   };
   const fetchOptions = {
-    method: "POST",
+    method: 'POST',
     headers: getRequestsHeaders(user.token),
     body: JSON.stringify(payload),
   };
@@ -150,7 +139,7 @@ export async function vote(user, score) {
 
 export function getRequestsHeaders(token = null) {
   return {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
     Authorization: token ? `Bearer ${token}` : undefined,
   };
 }

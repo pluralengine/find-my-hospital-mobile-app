@@ -1,47 +1,62 @@
 import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Alert } from "react-native";
-import Emoji from "react-native-emoji";
-import { reportStock as updateInventory, getPharmacy } from "../api";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  Image,
+  Alert,
+} from "react-native";
+import { updatePharmacyStock, getPharmacy, getProducts } from "../api";
 import useLogin from "../hooks/useLogin";
-import { STATUS_PALETTE, STATUS_EMOJIS } from "../styles/palette";
+import { STATUS_PALETTE } from "../styles/palette";
+import { ICONS } from "../styles/icons";
 import { timeAgo } from "./utils";
+
 export default function StockBar({ style }) {
   const { user } = useLogin();
-  const [pharmacy, setPharmacy] = useState();
+  const [pharmacy, setPharmacy] = useState(null);
+  const [products, setProducts] = useState([]);
 
-  useEffect(setPharmacyStatus, []);
+  useEffect(() => {
+    getPharmacy(user.token).then((data) => {
+      setPharmacy(data);
+    });
+    getProducts().then(setProducts);
+  }, []);
 
-  function setPharmacyStatus() {
-    getPharmacy().then(setPharmacy);
-  }
+  function reportStock(product) {
+    const hasStock = pharmacy.products.some((p) => p.id === product.id);
 
-  function reportStock(updatedProduct) {
-    const inventory = pharmacy.products.map((product) =>
-      updatedProduct.id === product.id
-        ? { ...product, stock: !product.stock }
-        : product
-    );
-
-    updateInventory(inventory).then(setPharmacy);
+    updatePharmacyStock(user.token, product.id, !hasStock)
+      .then(setPharmacy)
+      .catch((e) => Alert.alert("Error actualizando el stock", String(e)));
   }
 
   function renderProducts() {
-    return pharmacy.products.map((product, idx) => {
+    return products.map((product, idx) => {
+      const hasStock = pharmacy.products.some((p) => p.id === product.id);
       return (
         <TouchableOpacity
           key={product.id}
           onPress={() => reportStock(product)}
           style={[
-            styles.numberTab,
+            styles.productButton,
             {
-              backgroundColor: product.stock
-                ? STATUS_PALETTE[4]
-                : STATUS_PALETTE[0],
+              backgroundColor: hasStock ? STATUS_PALETTE[4] : STATUS_PALETTE[0],
             },
           ]}
         >
-          <Text>{product.name}</Text>
+          {ICONS[product.photo] ? (
+            <Image
+              style={styles.productButtonImg}
+              source={ICONS[product.photo]}
+              accessibilityLabel={product.name}
+            />
+          ) : (
+            <Text style={styles.productButtonText}>{product.name}</Text>
+          )}
         </TouchableOpacity>
       );
     });
@@ -50,9 +65,7 @@ export default function StockBar({ style }) {
   function renderStats() {
     return (
       <View style={styles.stats}>
-        <Text
-          style={styles.lastUpdate}
-        >{`Actualizaste el inventario ${timeAgo(
+        <Text style={styles.lastUpdate}>{`Actualizaste el inventario ${timeAgo(
           new Date(pharmacy.updatedAt)
         )}`}</Text>
       </View>
@@ -61,8 +74,8 @@ export default function StockBar({ style }) {
 
   return (
     <View style={[styles.container, style]}>
-      {pharmacy && renderStats()}
       <View style={styles.itemsContainer}>{pharmacy && renderProducts()}</View>
+      {pharmacy && renderStats()}
     </View>
   );
 }
@@ -79,14 +92,20 @@ const styles = StyleSheet.create({
     padding: 16,
     flexWrap: "wrap",
   },
-  numberTab: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+  productButton: {
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 10,
     marginRight: 4,
     marginBottom: 4,
+    padding: 8,
+  },
+  productButtonText: {
+    color: "white",
+  },
+  productButtonImg: {
+    width: 48,
+    height: 48,
   },
   tabText: {
     fontSize: 24,
