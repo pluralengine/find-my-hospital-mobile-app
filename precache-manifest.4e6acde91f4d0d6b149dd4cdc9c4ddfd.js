@@ -24,12 +24,12 @@ self.__precacheManifest = [
     "url": "/static/media/gloves.4a737be8.png"
   },
   {
-    "revision": "d0c694b562b2208635f250762cd7fc79",
-    "url": "/serve.json"
-  },
-  {
     "revision": "48c7ed4e7da9792af288a60d7242d615",
     "url": "/expo-service-worker.js"
+  },
+  {
+    "revision": "d0c694b562b2208635f250762cd7fc79",
+    "url": "/serve.json"
   },
   {
     "revision": "f29d1d6cd2fdb3805a4e901184e0a73e",
