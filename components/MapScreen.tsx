@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import * as Location from 'expo-location';
-import MapView, { Marker, Callout } from 'react-native-maps';
+import MapView, { Marker, Callout, CalloutSubview } from 'react-native-maps';
 import SearchableDropdown from 'react-native-searchable-dropdown';
 import { getPharmacies, getProvinces, getProducts } from '../api';
 import useLogin from '../hooks/useLogin';
@@ -53,6 +53,19 @@ export default function MapScreen({ navigation }) {
       longitude: location.coords.longitude,
       longitudeDelta: DEFAULT_LONGITUDE_DELTA,
     });
+  }
+
+  const handleGMapsLink = (url) => {
+    setLoading(true)
+    Linking.canOpenURL(url).then((supported)=>{
+      if (supported) {
+         Linking.openURL(url).then(()=>setLoading(false));
+      }
+    });
+  };
+
+  function generateGMapsURL(pharmacy){
+    return encodeURI(`https://www.google.com/maps/search/?api=1&query=${pharmacy.address},${pharmacy.areas}`);
   }
 
   useEffect(() => {
@@ -157,18 +170,8 @@ export default function MapScreen({ navigation }) {
               description={pharmacy.address}
               pinColor={pinColor(pharmacy)}
             >
-              <Callout>
+              <Callout onPress={() => handleGMapsLink(generateGMapsURL(pharmacy))}>
                 <View style={styles.callout}>
-                  <View style={styles.textAreaStyle}>
-                    <Text>{`Farmacia ${pharmacy.name}`}</Text>
-                    <Text
-                      onPress={() => {
-                        Linking.openURL(`https://google.com`);
-                      }}
-                    >
-                      Open in GoogleMaps
-                    </Text>
-                  </View>
                   <View style={styles.imageArea}>
                     {products.map((product) => {
                       return (
@@ -189,11 +192,15 @@ export default function MapScreen({ navigation }) {
                           <Image
                             key={product.id}
                             source={ICONS[product.photo]}
-                            style={styles.productsButtonImage}
+                            style={styles.productsImageCallout}
                           />
                         </View>
                       );
                     })}
+                  </View>
+                  <View style={styles.textAreaStyle}>
+                    <Text style={{textTransform:'capitalize'}}>{`Farmacia ${pharmacy.name}`}</Text>
+                    <Text style={{color:'blue'}}>Cómo llegar</Text>
                   </View>
                 </View>
               </Callout>
@@ -343,15 +350,20 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     resizeMode: 'cover',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     padding: 4,
   },
   logoArea: {
     borderRadius: 50,
     padding: 4,
+    marginRight: 4
   },
   textAreaStyle: {
     padding: 4,
-    marginBottom: 4,
+    marginBottom: 6,
   },
+  productsImageCallout:{
+    width: 32,
+    height: 32,
+  }
 });

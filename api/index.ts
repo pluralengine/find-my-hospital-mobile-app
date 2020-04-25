@@ -1,11 +1,5 @@
-<<<<<<< HEAD
-const qs = require("qs");
-// export const BASE_API_URL = "http://192.168.1.51:3000";
-export const BASE_API_URL = "http://localhost:3000";
-=======
 const qs = require('qs');
-export const BASE_API_URL = 'http://192.168.1.68:3000';
->>>>>>> feat: add color of products in pharmacy callout
+export const BASE_API_URL = 'http://192.168.1.42:3000';
 // export const BASE_API_URL = "https://covid-19-hospital-finder.herokuapp.com";
 
 export const ENDPOINTS = {
