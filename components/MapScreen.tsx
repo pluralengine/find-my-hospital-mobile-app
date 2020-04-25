@@ -157,7 +157,7 @@ export default function MapScreen({ navigation }) {
               description={pharmacy.address}
               pinColor={pinColor(pharmacy)}
             >
-              <Callout>
+              {/* <Callout>
                 <View style={styles.callout}>
                   <View style={styles.textAreaStyle}>
                     <Text>{`Farmacia ${pharmacy.name}`}</Text>
@@ -196,13 +196,11 @@ export default function MapScreen({ navigation }) {
                     })}
                   </View>
                 </View>
-              </Callout>
+              </Callout> */}
             </Marker>
           );
         })}
       </MapView>
-      {showStatusBar && <StockBar style={styles.bottomBar} />}
-      {renderLogin()}
       <SearchableDropdown
         select
         onItemSelect={(item) => setCity(item.value)}
@@ -218,6 +216,8 @@ export default function MapScreen({ navigation }) {
           nestedScrollEnabled: true,
         }}
       />
+      {renderLogin()}
+      {showStatusBar && <StockBar style={styles.bottomBar} />}
       <TouchableOpacity
         style={[
           styles.productsButton,
@@ -258,29 +258,27 @@ const styles = StyleSheet.create({
   loginButton: {
     position: 'absolute',
     backgroundColor: 'white',
-    borderRadius: 10,
-    borderColor: '#F5F5F5',
-    borderWidth: 1,
+    borderRadius: 5,
     alignContent: 'center',
     justifyContent: 'center',
     paddingVertical: 8,
     paddingHorizontal: 16,
     right: 24,
     top: 24,
+    height: 36
   },
   provincesSelector: {
-    position: 'absolute',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    borderColor: '#F5F5F5',
-    alignContent: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    left: 24,
+    position: "absolute",
+    left: 22,
     top: 24,
-    width: '45%',
+    width: 200,
+    maxWidth: 250,
     maxHeight: 400,
-    overflow: 'hidden',
+    backgroundColor: "white",
+    borderRadius: 10,
+    alignContent: "center",
+    justifyContent: "center",
+    overflow: "hidden",
   },
   dropdownItem: {
     padding: 10,
@@ -319,13 +317,13 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   productsButton: {
-    position: 'absolute',
-    bottom: '15%',
-    right: '3%',
-    backgroundColor: 'grey',
-    display: 'flex',
-    justifyContent: 'center',
-    alignContent: 'center',
+    position: "absolute",
+    bottom: 20,
+    right: "3%",
+    backgroundColor: "rgb(0, 150, 135)",
+    display: "flex",
+    justifyContent: "center",
+    alignContent: "center",
     borderRadius: 50,
     padding: 4,
   },

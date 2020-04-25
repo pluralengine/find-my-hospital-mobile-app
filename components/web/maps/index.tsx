@@ -3,6 +3,7 @@ import { View, StyleSheet } from "react-native";
 import { withGoogleMap, GoogleMap } from "react-google-maps";
 import Marker from "./Marker";
 import Polyline from "./Polyline";
+import Callout from "./Callout";
 
 const GoogleMapContainer = withGoogleMap((props) => (
   <GoogleMap {...props} ref={props.handleMapMounted} />
@@ -73,7 +74,14 @@ class MapView extends Component {
           onIdle={this.onDragEnd}
           defaultZoom={15}
           onClick={onPress}
-          options={options}
+          options={{
+            fullscreenControl: false,
+            mapTypeControl: false,
+            zoomControlOptions: {
+              position: google.maps.ControlPosition.LEFT_BOTTOM
+          },
+            ...options
+          }}
         >
           {this.props.children}
         </GoogleMapContainer>
@@ -84,6 +92,7 @@ class MapView extends Component {
 
 MapView.Marker = Marker;
 MapView.Polyline = Polyline;
+MapView.Callout = Callout;
 
 const styles = StyleSheet.create({
   container: {
@@ -94,3 +103,4 @@ const styles = StyleSheet.create({
 export default MapView;
 export {default as Marker} from './Marker';
 export {default as Polyline} from './Polyline';
+export {default as Callout} from './Callout';
