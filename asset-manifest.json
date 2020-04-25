@@ -1,24 +1,24 @@
 {
   "files": {
-    "app.js": "/covid-pharmacies/static/js/app.c684499b.chunk.js",
-    "app.js.map": "/covid-pharmacies/static/js/app.c684499b.chunk.js.map",
-    "runtime~app.js": "/covid-pharmacies/static/js/runtime~app.452473b9.js",
-    "runtime~app.js.map": "/covid-pharmacies/static/js/runtime~app.452473b9.js.map",
-    "static/js/2.1a47bf59.chunk.js": "/covid-pharmacies/static/js/2.1a47bf59.chunk.js",
-    "static/js/2.1a47bf59.chunk.js.map": "/covid-pharmacies/static/js/2.1a47bf59.chunk.js.map",
-    "favicon-16.png": "/covid-pharmacies/favicon-16.png",
-    "favicon-32.png": "/covid-pharmacies/favicon-32.png",
-    "favicon.ico": "/covid-pharmacies/favicon.ico",
-    "index.html": "/covid-pharmacies/index.html",
-    "manifest.json": "/covid-pharmacies/manifest.json",
-    "serve.json": "/covid-pharmacies/serve.json",
-    "static/media/faceMask.png": "/covid-pharmacies/static/media/faceMask.a93b64c1.png",
-    "static/media/gloves.png": "/covid-pharmacies/static/media/gloves.4a737be8.png",
-    "static/media/handSanitizer.png": "/covid-pharmacies/static/media/handSanitizer.0004c66a.png"
+    "app.js": "/static/js/app.ed4eb8f5.chunk.js",
+    "app.js.map": "/static/js/app.ed4eb8f5.chunk.js.map",
+    "runtime~app.js": "/static/js/runtime~app.b3244af7.js",
+    "runtime~app.js.map": "/static/js/runtime~app.b3244af7.js.map",
+    "static/js/2.1a47bf59.chunk.js": "/static/js/2.1a47bf59.chunk.js",
+    "static/js/2.1a47bf59.chunk.js.map": "/static/js/2.1a47bf59.chunk.js.map",
+    "favicon-16.png": "/favicon-16.png",
+    "favicon-32.png": "/favicon-32.png",
+    "favicon.ico": "/favicon.ico",
+    "index.html": "/index.html",
+    "manifest.json": "/manifest.json",
+    "serve.json": "/serve.json",
+    "static/media/faceMask.png": "/static/media/faceMask.a93b64c1.png",
+    "static/media/gloves.png": "/static/media/gloves.4a737be8.png",
+    "static/media/handSanitizer.png": "/static/media/handSanitizer.0004c66a.png"
   },
   "entrypoints": [
-    "static/js/runtime~app.452473b9.js",
+    "static/js/runtime~app.b3244af7.js",
     "static/js/2.1a47bf59.chunk.js",
-    "static/js/app.c684499b.chunk.js"
+    "static/js/app.ed4eb8f5.chunk.js"
   ]
 }
