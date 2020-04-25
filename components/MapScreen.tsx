@@ -147,7 +147,7 @@ export default function MapScreen({ navigation }) {
     const productIds = pharmacy.products.map((product) => product.id);
     return productIds && productIds.some((id) => id === item.id);
   }
-console.log(Platform.OS)
+
   return (
     <View style={styles.container}>
       <MapView
@@ -327,8 +327,19 @@ const styles = StyleSheet.create({
   },
   productsButton: {
     position: "absolute",
-    bottom: 20,
-    right: "3%",
+    ...Platform.select({
+      ios: {
+        bottom: '15%',
+      },
+      android: {
+        bottom: '10%',
+      },
+      default: {
+        // other platforms, web for example
+        bottom: '10%',
+      },
+    }),
+    right: "2.5%",
     backgroundColor: "rgb(0, 150, 135)",
     display: "flex",
     justifyContent: "center",
