@@ -247,7 +247,10 @@ export default function MapScreen({ navigation }) {
       {showStatusBar && <StockBar style={styles.bottomBar} />}
       {displayCurrentLocationButton && (
         <TouchableOpacity
-          style={styles.positionButton}
+          style={[
+            styles.positionButton,
+            { bottom: showStatusBar ? '30%' : '12%' },
+          ]}
           onPress={() => {
             moveToLocation();
           }}>
@@ -408,7 +411,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     padding: 4,
     position: 'absolute',
-    right: '1%',
-    bottom: '12%',
+    right: '0.5%',
   },
 });
