@@ -16,6 +16,8 @@ jobs:
           yarn run build
       - name: Deploy to Github Pages 🚀
         run: |
+          git config --global user.email "ivanortegaalba@gmail.com"
+          git config --global user.name "CI"
           yarn deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
