@@ -260,7 +260,7 @@ export default function MapScreen({ navigation }) {
       <TouchableOpacity
         style={[
           styles.productsButton,
-          { bottom: !showStatusBar ? styles.productsButton.bottom : '30%' },
+          { bottom: showStatusBar ? '40%' : '20%' },
         ]}
         onPress={handleProductsButtonClick}>
         {currentProduct && (
@@ -356,19 +356,7 @@ const styles = StyleSheet.create({
   },
   productsButton: {
     position: 'absolute',
-    ...Platform.select({
-      ios: {
-        bottom: '15%',
-      },
-      android: {
-        bottom: '8%',
-      },
-      web: {
-        bottom: '10%',
-        backgroundColor: 'red',
-      },
-    }),
-    right: '2.5%',
+    right: 8,
     backgroundColor: 'rgb(0, 150, 135)',
     display: 'flex',
     justifyContent: 'center',
