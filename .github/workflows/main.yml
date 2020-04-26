@@ -11,13 +11,10 @@ jobs:
       - name: Install packages 📦
         run: |
           yarn --pure-lockfile
-      - name: Build site 🔧
-        run: |
-          yarn run build
       - name: Deploy to Github Pages 🚀
         run: |
           git config --global user.email "ivanortegaalba@gmail.com"
-          git config --global user.name "CI"
+          git config --global user.name "Ivan Ortega"
           yarn deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
