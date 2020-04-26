@@ -1,7 +1,7 @@
 self.__precacheManifest = [
   {
-    "revision": "b6ab6712f679d92b67d7",
-    "url": "/static/js/app.ed4eb8f5.chunk.js"
+    "revision": "09e57d5ee5891fb649c4",
+    "url": "/static/js/app.759c7bbc.chunk.js"
   },
   {
     "revision": "328ec0abaf4b8f214d7f",
@@ -12,16 +12,16 @@ self.__precacheManifest = [
     "url": "/static/js/2.1a47bf59.chunk.js"
   },
   {
-    "revision": "a93b64c1d191eecb5a752364df0f63f9",
-    "url": "/static/media/faceMask.a93b64c1.png"
+    "revision": "20888871a1a92ad7baf63058b442ad09",
+    "url": "/static/media/faceMask.20888871.png"
   },
   {
-    "revision": "0004c66ac7b812b5dfe50c4c88bf2172",
-    "url": "/static/media/handSanitizer.0004c66a.png"
+    "revision": "ce9c49cff89aa1a289837dcfb6343390",
+    "url": "/static/media/handSanitizer.ce9c49cf.png"
   },
   {
-    "revision": "4a737be8d05e6438cf084f43f06b7002",
-    "url": "/static/media/gloves.4a737be8.png"
+    "revision": "2767eaf075869febc54c7c3d57113451",
+    "url": "/static/media/gloves.2767eaf0.png"
   },
   {
     "revision": "48c7ed4e7da9792af288a60d7242d615",
@@ -44,7 +44,7 @@ self.__precacheManifest = [
     "url": "/favicon.ico"
   },
   {
-    "revision": "b2204cef81c5ab4c8365bf5a483fc235",
+    "revision": "daeb8f8a7c17ac6b6b2fe30e770c5a05",
     "url": "/index.html"
   },
   {
