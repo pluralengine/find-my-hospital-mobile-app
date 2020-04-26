@@ -1,18 +1,17 @@
-import "react-native-gesture-handler";
-import React, { useEffect, useState } from "react";
+import 'react-native-gesture-handler';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
   TouchableOpacity,
   Text,
-  Image
-} from "react-native";
-import { updatePharmacyStock, getPharmacy, getProducts } from "../api";
-import useLogin from "../hooks/useLogin";
-import { STATUS_PALETTE } from "../styles/palette";
-import { ICONS } from "../styles/icons";
-import { timeAgo } from "./utils";
-import { showAlert } from './utils'
+  Image,
+} from 'react-native';
+import { updatePharmacyStock, getPharmacy, getProducts } from '../api';
+import useLogin from '../hooks/useLogin';
+import { STATUS_PALETTE } from '../styles/palette';
+import { ICONS } from '../styles/icons';
+import { timeAgo, showAlert } from './utils';
 
 export default function StockBar({ style }) {
   const { user } = useLogin();
@@ -31,7 +30,7 @@ export default function StockBar({ style }) {
 
     updatePharmacyStock(user.token, product.id, !hasStock)
       .then(setPharmacy)
-      .catch((e) => showAlert("Error actualizando el stock", String(e)));
+      .catch((e) => showAlert('Error actualizando el stock', String(e)));
   }
 
   function renderProducts() {
@@ -46,8 +45,7 @@ export default function StockBar({ style }) {
             {
               backgroundColor: hasStock ? STATUS_PALETTE[4] : STATUS_PALETTE[0],
             },
-          ]}
-        >
+          ]}>
           {ICONS[product.photo] ? (
             <Image
               style={styles.productButtonImg}
@@ -82,26 +80,28 @@ export default function StockBar({ style }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   itemsContainer: {
-    display: "flex",
-    flexDirection: "row",
-    height: "50%",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'row',
+    height: '60%',
+    justifyContent: 'space-between',
     padding: 16,
-    flexWrap: "wrap",
   },
   productButton: {
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 10,
     marginRight: 4,
     marginBottom: 4,
     padding: 8,
+    maxWidth: '40%',
+    flexDirection: 'row',
   },
   productButtonText: {
-    color: "white",
+    color: 'white',
   },
   productButtonImg: {
     width: 48,
@@ -109,33 +109,35 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontSize: 24,
+    flexShrink: 1,
+    flexWrap: 'wrap',
   },
   tabSlider: {
     padding: 8,
   },
   stats: {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
     padding: 8,
-    alignItems: "center",
+    alignItems: 'center',
   },
   lastUpdate: {
     flex: 1,
     paddingHorizontal: 16,
-    width: "50%",
-    textAlign: "right",
-    color: "gray",
+    width: '50%',
+    textAlign: 'right',
+    color: 'gray',
     fontSize: 12,
   },
   capacity: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "baseline",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'baseline',
     flex: 1,
-    textTransform: "uppercase",
-    width: "50%",
-    textAlign: "center",
+    textTransform: 'uppercase',
+    width: '50%',
+    textAlign: 'center',
     fontSize: 40,
   },
   capacityValue: {
