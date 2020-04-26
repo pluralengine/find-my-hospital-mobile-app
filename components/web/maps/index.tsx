@@ -102,5 +102,4 @@ const styles = StyleSheet.create({
 
 export default MapView;
 export {default as Marker} from './Marker';
-export {default as Polyline} from './Polyline';
 export {default as Callout} from './Callout';

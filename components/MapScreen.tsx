@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,11 +8,12 @@ import {
   ActivityIndicator,
   Image,
   Dimensions,
+  Platform
 } from 'react-native';
 import * as Location from 'expo-location';
-import MapView, { Marker, Callout, CalloutSubview } from 'react-native-maps';
+import MapView, { Marker, Callout } from 'react-native-maps';
 import SearchableDropdown from 'react-native-searchable-dropdown';
-import { getPharmacies, getProvinces, getProducts } from '../api';
+import { getPharmacies, getProvinces, getProducts, createPharmacyUser } from '../api';
 import useLogin from '../hooks/useLogin';
 import StockBar from './StockBar';
 import { ICONS } from '../styles/icons';
@@ -32,6 +33,7 @@ export default function MapScreen({ navigation }) {
   const [location, setLocation] = useState(null);
   const [products, setProducts] = useState([]);
   const [currentProduct, setCurrentProduct] = useState(null);
+  const [currentMarker, setCurrentMarker] = useState();
   const { user, logout } = useLogin();
   const mapRef = useRef(null);
   const isLoggedIn = Boolean(user && user.email);
@@ -147,6 +149,8 @@ export default function MapScreen({ navigation }) {
     return productIds && productIds.some((id) => id === item.id);
   }
 
+  const isCalloutVisible = (pharmacy) => Platform.OS !=='web' || (currentMarker === pharmacy.id)
+
   return (
     <View style={styles.container}>
       <MapView
@@ -170,8 +174,9 @@ export default function MapScreen({ navigation }) {
               title={pharmacy.name}
               description={pharmacy.address}
               pinColor={pinColor(pharmacy)}
+              onPress={()=> setCurrentMarker(pharmacy.id)}
             >
-              {/* <Callout onPress={() => handleGMapsLink(generateGMapsURL(pharmacy))}>
+              {isCalloutVisible(pharmacy) && <Callout onPress={() => handleGMapsLink(generateGMapsURL(pharmacy))}>
                 <View style={styles.callout}>
                   <View style={styles.imageArea}>
                     {products.map((product) => {
@@ -204,7 +209,8 @@ export default function MapScreen({ navigation }) {
                     <Text style={{color:'blue'}}>Cómo llegar</Text>
                   </View>
                 </View>
-              </Callout> */}
+              </Callout>
+              }
             </Marker>
           );
         })}
@@ -326,8 +332,18 @@ const styles = StyleSheet.create({
   },
   productsButton: {
     position: "absolute",
-    bottom: 20,
-    right: "3%",
+    ...Platform.select({
+      ios: {
+        bottom: '15%',
+      },
+      android: {
+        bottom: '8%',
+      },
+      default: {
+        bottom: 30,
+      },
+    }),
+    right: "2.5%",
     backgroundColor: "rgb(0, 150, 135)",
     display: "flex",
     justifyContent: "center",
@@ -348,7 +364,6 @@ const styles = StyleSheet.create({
   imageArea: {
     display: 'flex',
     flexDirection: 'row',
-    resizeMode: 'cover',
     justifyContent: 'center',
     padding: 4,
   },
