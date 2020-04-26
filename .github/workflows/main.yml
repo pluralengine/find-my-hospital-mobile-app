@@ -10,12 +10,12 @@ jobs:
           persist-credentials: false
       - name: Install packages 📦
         run: |
-          npm ci
+          yarn --pure-lockfile
       - name: Build site 🔧
         run: |
-          npm run build
+          yarn run build
       - name: Deploy to Github Pages 🚀
         run: |
-          npm deploy
+          yarn deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
