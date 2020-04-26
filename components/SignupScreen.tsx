@@ -133,6 +133,7 @@ export default function SignupScreen({ navigation }) {
       </Text>
       <SearchableDropdown
         select
+        inputHeight={48}
         onItemSelect={(item) => {
           setCity(item.value);
         }}
@@ -150,6 +151,7 @@ export default function SignupScreen({ navigation }) {
       />
       <SearchableDropdown
         select
+        inputHeight={48}
         disabled={!city}
         onItemSelect={(item) => {
           setPharmacy(item.value);
@@ -216,6 +218,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 48,
     maxWidth: 600,
+    backgroundColor: '#F5F5F5',
   },
   formTitle: {
     fontSize: 24,
@@ -235,6 +238,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     width: '100%',
+    marginBottom: 16,
   },
   dropdownItem: {
     padding: 10,
@@ -248,6 +252,7 @@ const styles = StyleSheet.create({
     marginTop: -14,
     marginBottom: 8,
     borderRadius: 10,
+    zIndex: 1,
   },
   formLink: {
     textDecorationLine: 'underline',

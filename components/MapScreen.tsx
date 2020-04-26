@@ -228,6 +228,7 @@ export default function MapScreen({ navigation }) {
       </MapView>
       <SearchableDropdown
         select
+        inputHeight={36}
         onItemSelect={(item) => setCity(item.value)}
         containerStyle={styles.provincesSelector}
         itemStyle={styles.dropdownItem}
