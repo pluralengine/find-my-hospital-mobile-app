@@ -1,32 +1,33 @@
-import React from "react";
-import { Select } from "react-select-virtualized";
-import { View } from "react-native";
+import React from 'react';
+import { Select } from 'react-select-virtualized';
+import { View } from 'react-native';
 
 export default function SearchableDropdown({
   containerStyle,
   items,
   onItemSelect,
   textInputProps,
+  inputHeight,
 }) {
   const options = items.map(({ name, value }) => ({ label: name, value }));
 
   return (
-    <View style={[containerStyle, { overflow: "visible" }]}>
+    <View style={[containerStyle, { overflow: 'visible' }]}>
       <Select
         isClearable={false}
         optionHeight={36}
         theme={(theme) => {
           return {
             ...theme,
-            borderRadius: 5,
+            borderRadius: 10,
             colors: {
               ...theme.colors,
-              primary25: "#4C9AFF",
-              primary: "#4C9AFF",
+              primary25: '#4C9AFF',
+              primary: '#4C9AFF',
             },
             spacing: {
               ...theme.spacing,
-              controlHeight: 32,
+              controlHeight: inputHeight,
               menuGlutter: 0,
             },
           };
@@ -34,17 +35,19 @@ export default function SearchableDropdown({
         styles={{
           container: (provided, state) => ({
             ...provided,
-            fontSize: 12,
-            border: "none",
+            fontSize: 14,
+            border: 'none',
             fontFamily: `system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif`,
           }),
           control: (provided, state) => ({
             ...provided,
-            border: "none",
-            minHeight: "36px",
+            border: 'none',
+            minHeight: inputHeight,
+            zIndex: 0,
           }),
-          option: (provided, state) => ({
+          menu: (provided, state) => ({
             ...provided,
+            zIndex: 9999,
           }),
         }}
         isSearchable
