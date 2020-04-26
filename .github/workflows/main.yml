@@ -9,8 +9,14 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+      - name: Install packages 📦
         run: |
-          yarn install
-          yarn run build
-          yarn deploy
+          npm ci
+      - name: Build site 🔧
+          run: |
+            npm run build
+      - name: Deploy to Github Pages 🚀
+          run: |
+            npm deploy
+          env:
+            GITHUB_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
