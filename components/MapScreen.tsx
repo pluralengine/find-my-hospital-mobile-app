@@ -8,12 +8,17 @@ import {
   ActivityIndicator,
   Image,
   Dimensions,
-  Platform
+  Platform,
 } from 'react-native';
 import * as Location from 'expo-location';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import SearchableDropdown from 'react-native-searchable-dropdown';
-import { getPharmacies, getProvinces, getProducts, createPharmacyUser } from '../api';
+import {
+  getPharmacies,
+  getProvinces,
+  getProducts,
+  createPharmacyUser,
+} from '../api';
 import useLogin from '../hooks/useLogin';
 import StockBar from './StockBar';
 import { ICONS } from '../styles/icons';
@@ -48,6 +53,7 @@ export default function MapScreen({ navigation }) {
     const location = await Location.getCurrentPositionAsync({
       accuracy: Location.Accuracy.BestForNavigation,
     });
+
     setLocation(location.coords);
     mapRef.current.animateToRegion({
       latitude: location.coords.latitude,
@@ -58,16 +64,18 @@ export default function MapScreen({ navigation }) {
   }
 
   const handleGMapsLink = (url) => {
-    setLoading(true)
-    Linking.canOpenURL(url).then((supported)=>{
+    setLoading(true);
+    Linking.canOpenURL(url).then((supported) => {
       if (supported) {
-         Linking.openURL(url).then(()=>setLoading(false));
+        Linking.openURL(url).then(() => setLoading(false));
       }
     });
   };
 
-  function generateGMapsURL(pharmacy){
-    return encodeURI(`https://www.google.com/maps/search/?api=1&query=${pharmacy.address},${pharmacy.areas}`);
+  function generateGMapsURL(pharmacy) {
+    return encodeURI(
+      `https://www.google.com/maps/search/?api=1&query=${pharmacy.address},${pharmacy.areas}`
+    );
   }
 
   useEffect(() => {
@@ -130,8 +138,7 @@ export default function MapScreen({ navigation }) {
     ) : (
       <TouchableOpacity
         style={styles.loginButton}
-        onPress={() => navigation.navigate('Login')}
-      >
+        onPress={() => navigation.navigate('Login')}>
         <Text>Entrar</Text>
       </TouchableOpacity>
     );
@@ -149,7 +156,9 @@ export default function MapScreen({ navigation }) {
     return productIds && productIds.some((id) => id === item.id);
   }
 
-  const isCalloutVisible = (pharmacy) => Platform.OS !=='web' || (currentMarker === pharmacy.id)
+  const isCalloutVisible = (pharmacy) =>
+    Platform.OS !== 'web' || currentMarker === pharmacy.id;
+  const displayCurrentLocationButton = Platform.OS === 'web';
 
   return (
     <View style={styles.container}>
@@ -160,8 +169,7 @@ export default function MapScreen({ navigation }) {
         showsUserLocation
         showsMyLocationButton
         showsCompass
-        onMapReady={moveToLocation}
-      >
+        onMapReady={moveToLocation}>
         {pharmacies.map((pharmacy) => {
           return (
             <Marker
@@ -174,43 +182,46 @@ export default function MapScreen({ navigation }) {
               title={pharmacy.name}
               description={pharmacy.address}
               pinColor={pinColor(pharmacy)}
-              onPress={()=> setCurrentMarker(pharmacy.id)}
-            >
-              {isCalloutVisible(pharmacy) && <Callout onPress={() => handleGMapsLink(generateGMapsURL(pharmacy))}>
-                <View style={styles.callout}>
-                  <View style={styles.imageArea}>
-                    {products.map((product) => {
-                      return (
-                        <View
-                          key={product.id}
-                          style={[
-                            styles.logoArea,
-                            {
-                              backgroundColor: isProductAvailable(
-                                pharmacy,
-                                product
-                              )
-                                ? STATUS_PALETTE[4]
-                                : STATUS_PALETTE[0],
-                            },
-                          ]}
-                        >
-                          <Image
+              onPress={() => setCurrentMarker(pharmacy.id)}>
+              {isCalloutVisible(pharmacy) && (
+                <Callout
+                  onPress={() => handleGMapsLink(generateGMapsURL(pharmacy))}>
+                  <View style={styles.callout}>
+                    <View style={styles.imageArea}>
+                      {products.map((product) => {
+                        return (
+                          <View
                             key={product.id}
-                            source={ICONS[product.photo]}
-                            style={styles.productsImageCallout}
-                          />
-                        </View>
-                      );
-                    })}
+                            style={[
+                              styles.logoArea,
+                              {
+                                backgroundColor: isProductAvailable(
+                                  pharmacy,
+                                  product
+                                )
+                                  ? STATUS_PALETTE[4]
+                                  : STATUS_PALETTE[0],
+                              },
+                            ]}>
+                            <Image
+                              key={product.id}
+                              source={ICONS[product.photo]}
+                              style={styles.productsImageCallout}
+                            />
+                          </View>
+                        );
+                      })}
+                    </View>
+                    <View style={styles.textAreaStyle}>
+                      <Text
+                        style={{
+                          textTransform: 'capitalize',
+                        }}>{`Farmacia ${pharmacy.name}`}</Text>
+                      <Text style={{ color: 'blue' }}>Cómo llegar</Text>
+                    </View>
                   </View>
-                  <View style={styles.textAreaStyle}>
-                    <Text style={{textTransform:'capitalize'}}>{`Farmacia ${pharmacy.name}`}</Text>
-                    <Text style={{color:'blue'}}>Cómo llegar</Text>
-                  </View>
-                </View>
-              </Callout>
-              }
+                </Callout>
+              )}
             </Marker>
           );
         })}
@@ -232,13 +243,21 @@ export default function MapScreen({ navigation }) {
       />
       {renderLogin()}
       {showStatusBar && <StockBar style={styles.bottomBar} />}
+      {displayCurrentLocationButton && (
+        <TouchableOpacity
+          style={styles.positionButton}
+          onPress={() => {
+            moveToLocation();
+          }}>
+          <Image source={ICONS.compass} style={{ height: 40, width: 40 }} />
+        </TouchableOpacity>
+      )}
       <TouchableOpacity
         style={[
           styles.productsButton,
           { bottom: !showStatusBar ? styles.productsButton.bottom : '30%' },
         ]}
-        onPress={handleProductsButtonClick}
-      >
+        onPress={handleProductsButtonClick}>
         {currentProduct && (
           <Image
             source={ICONS[currentProduct.photo]}
@@ -279,20 +298,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     right: 24,
     top: 24,
-    height: 36
+    height: 36,
   },
   provincesSelector: {
-    position: "absolute",
+    position: 'absolute',
     left: 22,
     top: 24,
     width: 200,
     maxWidth: 250,
     maxHeight: 400,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 10,
-    alignContent: "center",
-    justifyContent: "center",
-    overflow: "hidden",
+    alignContent: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
   },
   dropdownItem: {
     padding: 10,
@@ -331,7 +350,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   productsButton: {
-    position: "absolute",
+    position: 'absolute',
     ...Platform.select({
       ios: {
         bottom: '15%',
@@ -339,15 +358,16 @@ const styles = StyleSheet.create({
       android: {
         bottom: '8%',
       },
-      default: {
-        bottom: 30,
+      web: {
+        bottom: '10%',
+        backgroundColor: 'red',
       },
     }),
-    right: "2.5%",
-    backgroundColor: "rgb(0, 150, 135)",
-    display: "flex",
-    justifyContent: "center",
-    alignContent: "center",
+    right: '2.5%',
+    backgroundColor: 'rgb(0, 150, 135)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
     borderRadius: 50,
     padding: 4,
   },
@@ -370,14 +390,23 @@ const styles = StyleSheet.create({
   logoArea: {
     borderRadius: 50,
     padding: 4,
-    marginRight: 4
+    marginRight: 4,
   },
   textAreaStyle: {
     padding: 4,
     marginBottom: 6,
   },
-  productsImageCallout:{
+  productsImageCallout: {
     width: 32,
     height: 32,
-  }
+  },
+  positionButton: {
+    display: 'flex',
+    backgroundColor: 'white',
+    borderRadius: 50,
+    padding: 4,
+    position: 'absolute',
+    right: '1%',
+    bottom: '12%',
+  },
 });
