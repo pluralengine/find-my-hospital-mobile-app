@@ -1,8 +1,8 @@
 const qs = require("qs");
 // export const BASE_API_URL = "http://192.168.1.51:3000";
 //export const BASE_API_URL = 'http://192.168.1.42:3000';
-export const BASE_API_URL = "http://localhost:3000";
-// export const BASE_API_URL = "https://covid-19-hospital-finder.herokuapp.com";
+// export const BASE_API_URL = "http://localhost:3000";
+export const BASE_API_URL = "https://covid-19-hospital-finder.herokuapp.com";
 
 export const ENDPOINTS = {
   HOSPITALS: `${BASE_API_URL}/hospitals`,
