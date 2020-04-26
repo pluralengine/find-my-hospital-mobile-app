@@ -1,5 +1,5 @@
-import "react-native-gesture-handler";
-import React, { useState, useEffect } from "react";
+import 'react-native-gesture-handler';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,9 +7,9 @@ import {
   Text,
   TextInput,
   Alert,
-} from "react-native";
-import SearchableDropdown from "react-native-searchable-dropdown";
-import { getProvinces, createPharmacyUser, getPharmacies } from "../api";
+} from 'react-native';
+import SearchableDropdown from 'react-native-searchable-dropdown';
+import { getProvinces, createPharmacyUser, getPharmacies } from '../api';
 
 export default function SignupScreen({ navigation }) {
   const [provinceItems, setProvinceItems] = useState([]);
@@ -17,10 +17,10 @@ export default function SignupScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [city, setCity] = useState(null);
   const [pharmacy, setPharmacy] = useState(null);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [centerCode, setCenterCode] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [centerCode, setCenterCode] = useState('');
 
   useEffect(() => {
     setLoading(true);
@@ -59,33 +59,33 @@ export default function SignupScreen({ navigation }) {
   function validate() {
     if (!pharmacy) {
       Alert.alert(
-        "Los datos no son válidos",
-        "Por favor, selecciona tu farmacia"
+        'Los datos no son válidos',
+        'Por favor, selecciona tu farmacia'
       );
       return;
     }
     if (!centerCode) {
       Alert.alert(
-        "Los datos no son válidos",
-        "Por favor, introduce el código autonómico de la farmacia"
+        'Los datos no son válidos',
+        'Por favor, introduce el código autonómico de la farmacia'
       );
       return;
     }
     if (!name) {
       Alert.alert(
-        "Los datos no son validos",
-        "Por favor, introduce tu nombre y tus apellidos"
+        'Los datos no son validos',
+        'Por favor, introduce tu nombre y tus apellidos'
       );
       return;
     }
     if (!email) {
-      Alert.alert("Los datos no son válidos", "Por favor, introduce un email");
+      Alert.alert('Los datos no son válidos', 'Por favor, introduce un email');
       return;
     }
     if (!password) {
       Alert.alert(
-        "Los datos no son válidos",
-        "Por favor, introduce una contraseña"
+        'Los datos no son válidos',
+        'Por favor, introduce una contraseña'
       );
       return;
     }
@@ -104,13 +104,13 @@ export default function SignupScreen({ navigation }) {
     })
       .then((user) => {
         Alert.alert(
-          "Enviado correctamente",
+          'Enviado correctamente',
           `Gracias ${user.name}. Ya puedes iniciar sesión y actualizar el inventario de tu farmacia.`,
           [
             {
-              text: "Aceptar",
+              text: 'Aceptar',
               onPress: () => {
-                navigation.navigate("Login");
+                navigation.navigate('Login');
               },
             },
           ],
@@ -118,7 +118,7 @@ export default function SignupScreen({ navigation }) {
         );
       })
       .catch((e) => {
-        Alert.alert("Ha ocurrido un error", String(e));
+        Alert.alert('Ha ocurrido un error', String(e));
       });
   }
 
@@ -128,8 +128,8 @@ export default function SignupScreen({ navigation }) {
         Pedir acceso como personal de farmacia
       </Text>
       <Text style={styles.formSubtitle}>
-        Por el momento, solo personal del un usuario por farmacia podrá informar
-        del inventario de productos.
+        Por el momento, solo un usuario por farmacia podrá informar del
+        inventario de productos.
       </Text>
       <SearchableDropdown
         select
@@ -141,7 +141,7 @@ export default function SignupScreen({ navigation }) {
         itemsContainerStyle={styles.itemsContainer}
         items={provinceItems}
         textInputProps={{
-          placeholder: loading ? "Cargando..." : "Selecciona una ciudad",
+          placeholder: loading ? 'Cargando...' : 'Selecciona una ciudad',
           style: styles.formInput,
         }}
         listProps={{
@@ -159,7 +159,7 @@ export default function SignupScreen({ navigation }) {
         itemsContainerStyle={styles.itemsContainer}
         items={pharmacyItems}
         textInputProps={{
-          placeholder: loading ? "Cargando..." : "Selecciona tu farmacia",
+          placeholder: loading ? 'Cargando...' : 'Selecciona tu farmacia',
           style: styles.formInput,
         }}
         listProps={{
@@ -208,12 +208,12 @@ export default function SignupScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    position: "relative",
-    display:"flex",
+    position: 'relative',
+    display: 'flex',
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
     padding: 48,
     maxWidth: 600,
   },
@@ -226,22 +226,22 @@ const styles = StyleSheet.create({
   },
   formInput: {
     height: 48,
-    width: "100%",
+    width: '100%',
     marginBottom: 16,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 10,
     paddingVertical: 8,
     paddingHorizontal: 16,
   },
   searchInput: {
-    width: "100%",
+    width: '100%',
   },
   dropdownItem: {
     padding: 10,
     marginTop: 2,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderBottomWidth: 1,
-    borderBottomColor: "transparent",
+    borderBottomColor: 'transparent',
   },
   itemsContainer: {
     maxHeight: 140,
@@ -250,15 +250,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   formLink: {
-    textDecorationLine: "underline",
+    textDecorationLine: 'underline',
   },
   loginButton: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 10,
-    borderColor: "#F5F5F5",
+    borderColor: '#F5F5F5',
     borderWidth: 1,
-    alignContent: "center",
-    justifyContent: "center",
+    alignContent: 'center',
+    justifyContent: 'center',
     paddingVertical: 8,
     paddingHorizontal: 16,
   },
