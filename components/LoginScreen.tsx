@@ -1,5 +1,5 @@
-import "react-native-gesture-handler";
-import React, { useState } from "react";
+import 'react-native-gesture-handler';
+import React, { useState } from 'react';
 import {
   AsyncStorage,
   StyleSheet,
@@ -8,29 +8,33 @@ import {
   Text,
   TextInput,
   Alert,
-} from "react-native";
-import { login as loginUser } from "../api";
-import { KEYS } from "../storage";
-import useLogin from "../hooks/useLogin";
+  Platform,
+} from 'react-native';
+import { login as loginUser } from '../api';
+import { KEYS } from '../storage';
+import useLogin from '../hooks/useLogin';
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const { setUser } = useLogin();
 
   function login() {
+    const isMobile = Platform.OS !== 'web';
+    const showAlert = isMobile ? Alert.alert : alert;
+
     loginUser(email, password)
       .then((user) =>
         AsyncStorage.setItem(KEYS.USER, JSON.stringify(user)).then(() => user)
       )
       .then((user) => {
         if (user && user.token) {
-          Alert.alert(
-            `Hola de nuevo, ${user.name}`,
-            ` Nunca podremos agradecer suficiente lo que estás haciendo durante esta crisis por nosotros. \n\n ¡Venceremos al virus!`
+          showAlert(
+            `Hola de nuevo, ${user.name},
+              Nunca podremos agradecer suficiente lo que estás haciendo durante esta crisis por nosotros. \n\n ¡Venceremos al virus!`
           );
           setUser(user);
-          navigation.navigate("Inicio");
+          navigation.navigate('Inicio');
         } else {
           throw new Error(
             `The token is missing in the user information ${JSON.stringify(
@@ -41,10 +45,13 @@ export default function LoginScreen({ navigation }) {
       })
       .catch((e) => {
         console.warn(e);
-        Alert.alert(
-          `Fallo al iniciar sesión`,
-          `Los credenciales son erróneos o el usuario está pendiente de validación`
-        );
+        isMobile
+          ? Alert.alert(
+              `Fallo al iniciar sesión:\n\n Los credenciales son erróneos o el usuario está pendiente de validación`
+            )
+          : alert(
+              `Fallo al iniciar sesión:\n\n Los credenciales son erróneos o el usuario está pendiente de validación`
+            );
       });
   }
 
@@ -73,8 +80,7 @@ export default function LoginScreen({ navigation }) {
       />
       <Text
         style={styles.formLink}
-        onPress={() => navigation.navigate("Registro")}
-      >
+        onPress={() => navigation.navigate('Registro')}>
         Tengo una farmacia y no tengo cuenta, ¿Cómo me registro?
       </Text>
       <TouchableOpacity style={styles.loginButton} onPress={login}>
@@ -86,13 +92,13 @@ export default function LoginScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    position: "relative",
-    display: "flex",
-    alignSelf: "center",
+    position: 'relative',
+    display: 'flex',
+    alignSelf: 'center',
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5F5F5",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
     paddingHorizontal: 48,
   },
   formTitle: {
@@ -100,25 +106,25 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   formInput: {
-    width: "100%",
+    width: '100%',
     height: 48,
     marginBottom: 16,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 10,
     paddingVertical: 8,
     paddingHorizontal: 16,
   },
   formLink: {
-    textDecorationLine: "underline",
+    textDecorationLine: 'underline',
     marginBottom: 16,
   },
   loginButton: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 10,
-    borderColor: "#F5F5F5",
+    borderColor: '#F5F5F5',
     borderWidth: 1,
-    alignContent: "center",
-    justifyContent: "center",
+    alignContent: 'center',
+    justifyContent: 'center',
     paddingVertical: 8,
     paddingHorizontal: 16,
   },
