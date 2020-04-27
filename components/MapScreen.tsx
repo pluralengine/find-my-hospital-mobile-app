@@ -17,7 +17,6 @@ import {
   getPharmacies,
   getProvinces,
   getProducts,
-  createPharmacyUser,
 } from '../api';
 import useLogin from '../hooks/useLogin';
 import StockBar from './StockBar';
@@ -45,6 +44,7 @@ export default function MapScreen({ navigation }) {
   const showStatusBar = isLoggedIn;
 
   async function moveToLocation() {
+    setLoading(true)
     const { status } = await Location.requestPermissionsAsync();
     if (status !== 'granted') {
       console.warn('Permission to access location was denied');
@@ -61,6 +61,7 @@ export default function MapScreen({ navigation }) {
       longitude: location.coords.longitude,
       longitudeDelta: DEFAULT_LONGITUDE_DELTA,
     });
+    setLoading(false)
   }
 
   const handleGMapsLink = (url) => {
