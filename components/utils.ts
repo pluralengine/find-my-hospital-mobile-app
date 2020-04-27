@@ -1,3 +1,5 @@
+import { Platform, Alert } from "react-native";
+
 export function timeAgo(time) {
   switch (typeof time) {
     case "number":
@@ -49,4 +51,9 @@ export function timeAgo(time) {
         return token + Math.floor(seconds / format[2]) + " " + format[1] + " ";
     }
   return time;
+}
+
+export function showAlert(...args) {
+  const isMobile = Platform.OS !== "web";
+  return isMobile ? Alert.alert(...args) : alert(args.join("\n\n"));
 }

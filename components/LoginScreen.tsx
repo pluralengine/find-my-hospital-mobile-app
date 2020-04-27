@@ -6,13 +6,12 @@ import {
   View,
   TouchableOpacity,
   Text,
-  TextInput,
-  Alert,
-  Platform,
+  TextInput
 } from 'react-native';
 import { login as loginUser } from '../api';
 import { KEYS } from '../storage';
 import useLogin from '../hooks/useLogin';
+import { showAlert } from './utils'
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -20,9 +19,6 @@ export default function LoginScreen({ navigation }) {
   const { setUser } = useLogin();
 
   function login() {
-    const isMobile = Platform.OS !== 'web';
-    const showAlert = isMobile ? Alert.alert : alert;
-
     loginUser(email, password)
       .then((user) =>
         AsyncStorage.setItem(KEYS.USER, JSON.stringify(user)).then(() => user)
@@ -45,13 +41,9 @@ export default function LoginScreen({ navigation }) {
       })
       .catch((e) => {
         console.warn(e);
-        isMobile
-          ? Alert.alert(
-              `Fallo al iniciar sesión:\n\n Los credenciales son erróneos o el usuario está pendiente de validación`
-            )
-          : alert(
-              `Fallo al iniciar sesión:\n\n Los credenciales son erróneos o el usuario está pendiente de validación`
-            );
+        showAlert(
+          `Fallo al iniciar sesión:\n\n Los credenciales son erróneos o el usuario está pendiente de validación`
+        );
       });
   }
 
