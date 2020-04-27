@@ -6,10 +6,10 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
-  Alert,
 } from 'react-native';
 import SearchableDropdown from 'react-native-searchable-dropdown';
 import { getProvinces, createPharmacyUser, getPharmacies } from '../api';
+import { showAlert } from './utils'
 
 export default function SignupScreen({ navigation }) {
   const [provinceItems, setProvinceItems] = useState([]);
@@ -58,32 +58,32 @@ export default function SignupScreen({ navigation }) {
 
   function validate() {
     if (!pharmacy) {
-      Alert.alert(
+      showAlert(
         'Los datos no son válidos',
         'Por favor, selecciona tu farmacia'
       );
       return;
     }
     if (!centerCode) {
-      Alert.alert(
+      showAlert(
         'Los datos no son válidos',
         'Por favor, introduce el código autonómico de la farmacia'
       );
       return;
     }
     if (!name) {
-      Alert.alert(
+      showAlert(
         'Los datos no son validos',
         'Por favor, introduce tu nombre y tus apellidos'
       );
       return;
     }
     if (!email) {
-      Alert.alert('Los datos no son válidos', 'Por favor, introduce un email');
+      showAlert('Los datos no son válidos', 'Por favor, introduce un email');
       return;
     }
     if (!password) {
-      Alert.alert(
+      showAlert(
         'Los datos no son válidos',
         'Por favor, introduce una contraseña'
       );
@@ -95,6 +95,7 @@ export default function SignupScreen({ navigation }) {
     if (!validate()) {
       return;
     }
+
     createPharmacyUser({
       name,
       email,
@@ -103,7 +104,7 @@ export default function SignupScreen({ navigation }) {
       pharmacyId: pharmacy,
     })
       .then((user) => {
-        Alert.alert(
+        showAlert(
           'Enviado correctamente',
           `Gracias ${user.name}. Ya puedes iniciar sesión y actualizar el inventario de tu farmacia.`,
           [
@@ -118,7 +119,7 @@ export default function SignupScreen({ navigation }) {
         );
       })
       .catch((e) => {
-        Alert.alert('Ha ocurrido un error', String(e));
+        showAlert('Ha ocurrido un error', String(e));
       });
   }
 

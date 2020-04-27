@@ -5,14 +5,14 @@ import {
   View,
   TouchableOpacity,
   Text,
-  Image,
-  Alert,
+  Image
 } from "react-native";
 import { updatePharmacyStock, getPharmacy, getProducts } from "../api";
 import useLogin from "../hooks/useLogin";
 import { STATUS_PALETTE } from "../styles/palette";
 import { ICONS } from "../styles/icons";
 import { timeAgo } from "./utils";
+import { showAlert } from './utils'
 
 export default function StockBar({ style }) {
   const { user } = useLogin();
@@ -31,7 +31,7 @@ export default function StockBar({ style }) {
 
     updatePharmacyStock(user.token, product.id, !hasStock)
       .then(setPharmacy)
-      .catch((e) => Alert.alert("Error actualizando el stock", String(e)));
+      .catch((e) => showAlert("Error actualizando el stock", String(e)));
   }
 
   function renderProducts() {
