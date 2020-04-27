@@ -1,15 +1,15 @@
 self.__precacheManifest = [
   {
-    "revision": "ab8422c5e788faa1c43d",
-    "url": "/static/js/app.31c56f82.chunk.js"
+    "revision": "60d46f1772476f8f76d5",
+    "url": "/static/js/app.c778e784.chunk.js"
   },
   {
     "revision": "328ec0abaf4b8f214d7f",
     "url": "/static/js/runtime~app.b3244af7.js"
   },
   {
-    "revision": "efc1e3dca4c89b7b698c",
-    "url": "/static/js/2.fb70df9c.chunk.js"
+    "revision": "eb33b285c25ae2ebd14e",
+    "url": "/static/js/2.7ce61fd5.chunk.js"
   },
   {
     "revision": "20888871a1a92ad7baf63058b442ad09",
@@ -24,12 +24,16 @@ self.__precacheManifest = [
     "url": "/static/media/gloves.2767eaf0.png"
   },
   {
-    "revision": "d0c694b562b2208635f250762cd7fc79",
-    "url": "/serve.json"
+    "revision": "971d8ea613d8e5a0d94be6aca28651e1",
+    "url": "/static/media/compass.971d8ea6.png"
   },
   {
     "revision": "48c7ed4e7da9792af288a60d7242d615",
     "url": "/expo-service-worker.js"
+  },
+  {
+    "revision": "d0c694b562b2208635f250762cd7fc79",
+    "url": "/serve.json"
   },
   {
     "revision": "f29d1d6cd2fdb3805a4e901184e0a73e",
@@ -44,7 +48,7 @@ self.__precacheManifest = [
     "url": "/favicon.ico"
   },
   {
-    "revision": "9e57a6896dc6765b6d9e361b72d04eef",
+    "revision": "de073616e09453abfb91911453bd573f",
     "url": "/index.html"
   },
   {

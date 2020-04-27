@@ -1,24 +1,25 @@
 {
   "files": {
-    "app.js": "/static/js/app.31c56f82.chunk.js",
-    "app.js.map": "/static/js/app.31c56f82.chunk.js.map",
+    "app.js": "/static/js/app.c778e784.chunk.js",
+    "app.js.map": "/static/js/app.c778e784.chunk.js.map",
     "runtime~app.js": "/static/js/runtime~app.b3244af7.js",
     "runtime~app.js.map": "/static/js/runtime~app.b3244af7.js.map",
-    "static/js/2.fb70df9c.chunk.js": "/static/js/2.fb70df9c.chunk.js",
-    "static/js/2.fb70df9c.chunk.js.map": "/static/js/2.fb70df9c.chunk.js.map",
+    "static/js/2.7ce61fd5.chunk.js": "/static/js/2.7ce61fd5.chunk.js",
+    "static/js/2.7ce61fd5.chunk.js.map": "/static/js/2.7ce61fd5.chunk.js.map",
     "favicon-16.png": "/favicon-16.png",
     "favicon-32.png": "/favicon-32.png",
     "favicon.ico": "/favicon.ico",
     "index.html": "/index.html",
     "manifest.json": "/manifest.json",
     "serve.json": "/serve.json",
+    "static/media/compass.png": "/static/media/compass.971d8ea6.png",
     "static/media/faceMask.png": "/static/media/faceMask.20888871.png",
     "static/media/gloves.png": "/static/media/gloves.2767eaf0.png",
     "static/media/handSanitizer.png": "/static/media/handSanitizer.ce9c49cf.png"
   },
   "entrypoints": [
     "static/js/runtime~app.b3244af7.js",
-    "static/js/2.fb70df9c.chunk.js",
-    "static/js/app.31c56f82.chunk.js"
+    "static/js/2.7ce61fd5.chunk.js",
+    "static/js/app.c778e784.chunk.js"
   ]
 }
