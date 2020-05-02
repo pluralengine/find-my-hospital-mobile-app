@@ -2,10 +2,22 @@
   "background_color": "#ffffff",
   "display": "standalone",
   "lang": "en",
-  "name": "COVID-19 Hospital Monitor",
-  "short_name": "COVID-19 Hospital Monitor",
+  "name": "COVID-19 Mascarillas, guantes y gel",
+  "short_name": "COVID-19 Mascarillas, guantes y gel",
   "start_url": "/?utm_source=web_app_manifest",
   "orientation": "portrait",
+  "related_applications": [
+    {
+      "platform": "itunes",
+      "id": "com.pluralengine.covid"
+    },
+    {
+      "platform": "play",
+      "url": "http://play.google.com/store/apps/details?id=com.pluralengine.covid",
+      "id": "com.pluralengine.covid"
+    }
+  ],
+  "prefer_related_applications": true,
   "icons": [
     {
       "src": "/pwa/chrome-icon/chrome-icon-144.png",

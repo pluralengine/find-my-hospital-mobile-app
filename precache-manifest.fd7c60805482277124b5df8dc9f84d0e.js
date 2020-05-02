@@ -1,15 +1,15 @@
 self.__precacheManifest = [
   {
-    "revision": "f99d7eb2467766586653",
-    "url": "/static/js/app.02c67a41.chunk.js"
+    "revision": "2115986dca39237739a1",
+    "url": "/static/js/app.19b0231e.chunk.js"
   },
   {
     "revision": "328ec0abaf4b8f214d7f",
     "url": "/static/js/runtime~app.b3244af7.js"
   },
   {
-    "revision": "c176f718706f786a84de",
-    "url": "/static/js/2.c42e5402.chunk.js"
+    "revision": "96ec2e811c047728ff47",
+    "url": "/static/js/2.badf14bc.chunk.js"
   },
   {
     "revision": "a6159fe4e1a33141298cb2156ef66368",
@@ -24,12 +24,12 @@ self.__precacheManifest = [
     "url": "/static/media/gloves2.cba5c35f.png"
   },
   {
-    "revision": "d0c694b562b2208635f250762cd7fc79",
-    "url": "/serve.json"
-  },
-  {
     "revision": "48c7ed4e7da9792af288a60d7242d615",
     "url": "/expo-service-worker.js"
+  },
+  {
+    "revision": "d0c694b562b2208635f250762cd7fc79",
+    "url": "/serve.json"
   },
   {
     "revision": "f29d1d6cd2fdb3805a4e901184e0a73e",
@@ -44,11 +44,11 @@ self.__precacheManifest = [
     "url": "/favicon.ico"
   },
   {
-    "revision": "44326479b4bb5bc2a82b4ec02ecd9ae5",
+    "revision": "48bd5512b2a020f7f0c54c57d47342c1",
     "url": "/index.html"
   },
   {
-    "revision": "35bead4c7aba72152ed9302dd89860f6",
+    "revision": "2a08b3856b6947f1fcc8a4d52d3dead8",
     "url": "/manifest.json"
   },
   {
