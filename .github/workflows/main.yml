@@ -13,6 +13,7 @@ jobs:
           yarn --pure-lockfile
       - name: Deploy to Github Pages 🚀
         run: |
+          git config --global credential.helper wincred
           git config --global user.email "ivanortegaalba@gmail.com"
           git config --global user.name "Ivan Ortega"
           yarn deploy
