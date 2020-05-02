@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     height: 48,
     marginBottom: 16,
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: 5,
     paddingVertical: 8,
     paddingHorizontal: 16,
   },
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: 5,
     borderColor: '#F5F5F5',
     borderWidth: 1,
     alignContent: 'center',

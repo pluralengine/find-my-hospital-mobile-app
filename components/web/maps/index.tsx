@@ -77,10 +77,13 @@ class MapView extends Component {
           options={{
             fullscreenControl: false,
             mapTypeControl: false,
+            ...options,
             zoomControlOptions: {
-              position: google.maps.ControlPosition.LEFT_BOTTOM
-          },
-            ...options
+              position: google.maps.ControlPosition.LEFT_BOTTOM,
+            },
+            streetViewControlOptions: {
+              position: google.maps.ControlPosition.LEFT_BOTTOM,
+            },
           }}
         >
           {this.props.children}
@@ -101,5 +104,5 @@ const styles = StyleSheet.create({
 });
 
 export default MapView;
-export {default as Marker} from './Marker';
-export {default as Callout} from './Callout';
+export { default as Marker } from "./Marker";
+export { default as Callout } from "./Callout";

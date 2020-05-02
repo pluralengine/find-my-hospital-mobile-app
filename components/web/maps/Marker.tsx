@@ -20,7 +20,7 @@ class MapViewMarker extends Component {
         onClick={onPress}
         title={description ? `${title}\n${description}` : title}
         position={{ lat: coordinate.latitude, lng: coordinate.longitude }}
-        icon={url}>
+        icon={iconUrl}>
         {children}
       </Marker>
     );
