@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "COVID-19 Hospital Monitor",
+    "name": "COVID-19 Mascarillas, guantes y gel",
     "slug": "hospital-monitor",
     "privacy": "public",
     "sdkVersion": "36.0.0",
@@ -18,11 +18,13 @@
     },
     "assetBundlePatterns": ["assets/**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pluralengine.covid",
+      "buildNumber": "1.0.0"
     },
-    "packagerOpts": {
-      "config": "metro.config.js",
-      "sourceExts": ["js", "jsx", "svg", "ts", "tsx"]
+    "android": {
+      "package": "com.pluralengine.covid",
+      "versionCode": 1
     }
   }
 }
