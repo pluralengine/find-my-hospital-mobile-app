@@ -1,39 +1,35 @@
 self.__precacheManifest = [
   {
-    "revision": "60d46f1772476f8f76d5",
-    "url": "/static/js/app.c778e784.chunk.js"
+    "revision": "f99d7eb2467766586653",
+    "url": "/static/js/app.02c67a41.chunk.js"
   },
   {
     "revision": "328ec0abaf4b8f214d7f",
     "url": "/static/js/runtime~app.b3244af7.js"
   },
   {
-    "revision": "eb33b285c25ae2ebd14e",
-    "url": "/static/js/2.7ce61fd5.chunk.js"
+    "revision": "c176f718706f786a84de",
+    "url": "/static/js/2.c42e5402.chunk.js"
   },
   {
-    "revision": "20888871a1a92ad7baf63058b442ad09",
-    "url": "/static/media/faceMask.20888871.png"
+    "revision": "a6159fe4e1a33141298cb2156ef66368",
+    "url": "/static/media/faceMask.a6159fe4.png"
   },
   {
-    "revision": "ce9c49cff89aa1a289837dcfb6343390",
-    "url": "/static/media/handSanitizer.ce9c49cf.png"
+    "revision": "0c1e1139c020026c57026b03a3abef6e",
+    "url": "/static/media/gel.0c1e1139.png"
   },
   {
-    "revision": "2767eaf075869febc54c7c3d57113451",
-    "url": "/static/media/gloves.2767eaf0.png"
-  },
-  {
-    "revision": "971d8ea613d8e5a0d94be6aca28651e1",
-    "url": "/static/media/compass.971d8ea6.png"
-  },
-  {
-    "revision": "48c7ed4e7da9792af288a60d7242d615",
-    "url": "/expo-service-worker.js"
+    "revision": "cba5c35f67e8c9d9829c6cb0729b8ceb",
+    "url": "/static/media/gloves2.cba5c35f.png"
   },
   {
     "revision": "d0c694b562b2208635f250762cd7fc79",
     "url": "/serve.json"
+  },
+  {
+    "revision": "48c7ed4e7da9792af288a60d7242d615",
+    "url": "/expo-service-worker.js"
   },
   {
     "revision": "f29d1d6cd2fdb3805a4e901184e0a73e",
@@ -48,7 +44,7 @@ self.__precacheManifest = [
     "url": "/favicon.ico"
   },
   {
-    "revision": "de073616e09453abfb91911453bd573f",
+    "revision": "44326479b4bb5bc2a82b4ec02ecd9ae5",
     "url": "/index.html"
   },
   {
