@@ -12,7 +12,7 @@ class MapViewMarker extends Component {
       pinColor,
       ...rest
     } = this.props;
-    const iconUrl = `http://maps.google.com/mapfiles/ms/icons/${pinColor}-dot.png`;
+    const iconUrl = `https://maps.google.com/mapfiles/ms/icons/${pinColor}-dot.png`;
 
     return (
       <Marker
