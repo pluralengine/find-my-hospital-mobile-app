@@ -19,7 +19,7 @@ export default function SearchableDropdown({
         theme={(theme) => {
           return {
             ...theme,
-            borderRadius: 10,
+            borderRadius: 5,
             colors: {
               ...theme.colors,
               primary25: '#4C9AFF',

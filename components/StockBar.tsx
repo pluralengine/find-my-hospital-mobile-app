@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 10,
+    borderRadius: 5,
     marginRight: 4,
     marginBottom: 4,
     padding: 8,

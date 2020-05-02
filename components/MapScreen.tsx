@@ -1,5 +1,5 @@
-import 'react-native-gesture-handler';
-import React, { useState, useEffect, useRef } from 'react';
+import "react-native-gesture-handler";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -9,24 +9,21 @@ import {
   Image,
   Dimensions,
   Platform,
-} from 'react-native';
-import * as Location from 'expo-location';
-import MapView, { Marker, Callout } from 'react-native-maps';
-import SearchableDropdown from 'react-native-searchable-dropdown';
-import {
-  getPharmacies,
-  getProvinces,
-  getProducts,
-} from '../api';
-import useLogin from '../hooks/useLogin';
-import StockBar from './StockBar';
-import { ICONS } from '../styles/icons';
-import { STATUS_PALETTE } from '../styles/palette';
-import { Linking } from 'expo';
+} from "react-native";
+import * as Location from "expo-location";
+import MapView, { Marker, Callout } from "react-native-maps";
+import SearchableDropdown from "react-native-searchable-dropdown";
+import { getPharmacies, getProvinces, getProducts } from "../api";
+import useLogin from "../hooks/useLogin";
+import StockBar from "./StockBar";
+import { ICONS } from "../styles/icons";
+import { STATUS_PALETTE } from "../styles/palette";
+import { Linking } from "expo";
+import { palette } from "../styles/theme";
 
 const DEFAULT_LATITUDE_DELTA = 0.026006060443698686;
 const DEFAULT_LONGITUDE_DELTA = 0.017766952514648438;
-const WIDTH = Math.round(Dimensions.get('window').width);
+const WIDTH = Math.round(Dimensions.get("window").width);
 const CALLOUT_MAXWIDTH = 0.5 * WIDTH;
 
 export default function MapScreen({ navigation }) {
@@ -44,10 +41,10 @@ export default function MapScreen({ navigation }) {
   const showStatusBar = isLoggedIn;
 
   async function moveToLocation() {
-    setLoading(true)
+    setLoading(true);
     const { status } = await Location.requestPermissionsAsync();
-    if (status !== 'granted') {
-      console.warn('Permission to access location was denied');
+    if (status !== "granted") {
+      console.warn("Permission to access location was denied");
     }
 
     const location = await Location.getCurrentPositionAsync({
@@ -61,7 +58,7 @@ export default function MapScreen({ navigation }) {
       longitude: location.coords.longitude,
       longitudeDelta: DEFAULT_LONGITUDE_DELTA,
     });
-    setLoading(false)
+    setLoading(false);
   }
 
   const handleGMapsLink = (url) => {
@@ -139,7 +136,8 @@ export default function MapScreen({ navigation }) {
     ) : (
       <TouchableOpacity
         style={styles.loginButton}
-        onPress={() => navigation.navigate('Login')}>
+        onPress={() => navigation.navigate("Login")}
+      >
         <Text>Entrar</Text>
       </TouchableOpacity>
     );
@@ -149,7 +147,7 @@ export default function MapScreen({ navigation }) {
     const hasStock = pharmacy.products.some((product) => {
       return product.id === currentProduct.id;
     });
-    return hasStock ? 'green' : 'red';
+    return hasStock ? "green" : "red";
   }
 
   function isProductAvailable(pharmacy, item) {
@@ -158,19 +156,20 @@ export default function MapScreen({ navigation }) {
   }
 
   const isCalloutVisible = (pharmacy) =>
-    Platform.OS !== 'web' || currentMarker === pharmacy.id;
-  const displayCurrentLocationButton = Platform.OS === 'web';
+    Platform.OS !== "web" || currentMarker === pharmacy.id;
+  const displayCurrentLocationButton = Platform.OS === "web";
 
   return (
     <View style={styles.container}>
       <MapView
         ref={mapRef}
-        style={[styles.map, { height: showStatusBar ? '80%' : '100%' }]}
-        provider={'google'}
+        style={[styles.map, { height: showStatusBar ? "80%" : "100%" }]}
+        provider={"google"}
         showsUserLocation
         showsMyLocationButton
         showsCompass
-        onMapReady={moveToLocation}>
+        onMapReady={moveToLocation}
+      >
         {pharmacies.map((pharmacy) => {
           return (
             <Marker
@@ -183,10 +182,12 @@ export default function MapScreen({ navigation }) {
               title={pharmacy.name}
               description={pharmacy.address}
               pinColor={pinColor(pharmacy)}
-              onPress={() => setCurrentMarker(pharmacy.id)}>
+              onPress={() => setCurrentMarker(pharmacy.id)}
+            >
               {isCalloutVisible(pharmacy) && (
                 <Callout
-                  onPress={() => handleGMapsLink(generateGMapsURL(pharmacy))}>
+                  onPress={() => handleGMapsLink(generateGMapsURL(pharmacy))}
+                >
                   <View style={styles.callout}>
                     <View style={styles.imageArea}>
                       {products.map((product) => {
@@ -203,7 +204,8 @@ export default function MapScreen({ navigation }) {
                                   ? STATUS_PALETTE[4]
                                   : STATUS_PALETTE[0],
                               },
-                            ]}>
+                            ]}
+                          >
                             <Image
                               key={product.id}
                               source={ICONS[product.photo]}
@@ -216,9 +218,10 @@ export default function MapScreen({ navigation }) {
                     <View style={styles.textAreaStyle}>
                       <Text
                         style={{
-                          textTransform: 'capitalize',
-                        }}>{`Farmacia ${pharmacy.name}`}</Text>
-                      <Text style={{ color: 'blue' }}>Cómo llegar</Text>
+                          textTransform: "capitalize",
+                        }}
+                      >{`Farmacia ${pharmacy.name}`}</Text>
+                      <Text style={{ color: "blue" }}>Cómo llegar</Text>
                     </View>
                   </View>
                 </Callout>
@@ -236,7 +239,7 @@ export default function MapScreen({ navigation }) {
         itemsContainerStyle={styles.itemsContainer}
         items={provinceItems}
         textInputProps={{
-          placeholder: 'Selecciona tu ciudad',
+          placeholder: "Selecciona tu ciudad",
           style: styles.formInput,
         }}
         listProps={{
@@ -248,21 +251,23 @@ export default function MapScreen({ navigation }) {
       {displayCurrentLocationButton && (
         <TouchableOpacity
           style={[
-            styles.positionButton,
-            { bottom: showStatusBar ? '30%' : '12%' },
+            styles.compassButton,
+            { bottom: showStatusBar ? "22%" : "5%" },
           ]}
           onPress={() => {
             moveToLocation();
-          }}>
-          <Image source={ICONS.compass} style={{ height: 40, width: 40 }} />
+          }}
+        >
+          <Image source={ICONS.compass} style={styles.compassButtonImage} />
         </TouchableOpacity>
       )}
       <TouchableOpacity
         style={[
           styles.productsButton,
-          { bottom: showStatusBar ? '40%' : '20%' },
+          { bottom: showStatusBar ? "30%" : "14%" },
         ]}
-        onPress={handleProductsButtonClick}>
+        onPress={handleProductsButtonClick}
+      >
         {currentProduct && (
           <Image
             source={ICONS[currentProduct.photo]}
@@ -281,24 +286,24 @@ export default function MapScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    height: '100%',
-    width: '100%',
-    flexDirection: 'column',
-    backgroundColor: '#F5F5F5',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    height: "100%",
+    width: "100%",
+    flexDirection: "column",
+    backgroundColor: "#F5F5F5",
+    alignItems: "center",
+    justifyContent: "center",
   },
   map: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   loginButton: {
-    position: 'absolute',
-    backgroundColor: 'white',
+    position: "absolute",
+    backgroundColor: "white",
     borderRadius: 5,
-    alignContent: 'center',
-    justifyContent: 'center',
+    alignContent: "center",
+    justifyContent: "center",
     paddingVertical: 8,
     paddingHorizontal: 16,
     right: 24,
@@ -306,78 +311,64 @@ const styles = StyleSheet.create({
     height: 36,
   },
   provincesSelector: {
-    position: 'absolute',
+    position: "absolute",
     left: 22,
     top: 24,
     width: 200,
     maxWidth: 250,
     maxHeight: 400,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    alignContent: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
+    backgroundColor: "white",
+    borderRadius: 5,
+    alignContent: "center",
+    justifyContent: "center",
+    overflow: "hidden",
   },
   dropdownItem: {
     padding: 10,
     marginTop: 2,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderBottomWidth: 1,
-    borderBottomColor: 'transparent',
+    borderBottomColor: "transparent",
   },
   itemsContainer: {
     maxHeight: 140,
-    borderRadius: 10,
+    borderRadius: 5,
   },
   formInput: {
-    width: '100%',
-    backgroundColor: 'white',
-    borderRadius: 10,
+    width: "100%",
+    backgroundColor: "white",
+    borderRadius: 5,
     paddingVertical: 8,
     paddingHorizontal: 16,
   },
   bottomBar: {
-    height: '20%',
-    maxHeight: '20%',
-    overflow: 'hidden',
-    width: '100%',
+    height: "20%",
+    maxHeight: "20%",
+    overflow: "hidden",
+    width: "100%",
   },
   loadingContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
     opacity: 0.5,
-  },
-  productsButton: {
-    position: 'absolute',
-    right: 8,
-    backgroundColor: 'rgb(0, 150, 135)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignContent: 'center',
-    borderRadius: 50,
-    padding: 4,
-  },
-  productsButtonImage: {
-    width: 48,
-    height: 48,
   },
   callout: {
     padding: 4,
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center",
     maxWidth: CALLOUT_MAXWIDTH,
   },
   imageArea: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
     padding: 4,
   },
   logoArea: {
@@ -393,12 +384,43 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
   },
-  positionButton: {
-    display: 'flex',
-    backgroundColor: 'white',
+  productsButton: {
+    position: "absolute",
+    right: 12,
+    backgroundColor: palette.themePrimary,
+    display: "flex",
+    justifyContent: "center",
+    alignContent: "center",
     borderRadius: 50,
-    padding: 4,
-    position: 'absolute',
-    right: '0.5%',
+    padding: 8,
+    shadowColor: palette.black,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
   },
+  productsButtonImage: {
+    width: 42,
+    height: 42,
+  },
+  compassButton: {
+    display: "flex",
+    backgroundColor: palette.white,
+    borderRadius: 50,
+    padding: 16,
+    position: "absolute",
+    right: 12,
+    shadowColor: palette.black,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+  },
+  compassButtonImage: { height: 26, width: 26 },
 });
