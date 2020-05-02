@@ -6,12 +6,13 @@ import {
   View,
   TouchableOpacity,
   Text,
-  TextInput
+  TextInput,
+  Platform,
 } from 'react-native';
 import { login as loginUser } from '../api';
 import { KEYS } from '../storage';
 import useLogin from '../hooks/useLogin';
-import { showAlert } from './utils'
+import { showAlert } from './utils';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -88,6 +89,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignSelf: 'center',
     flex: 1,
+    width: Platform.OS === 'web' ? '' : '100%',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5F5F5',
