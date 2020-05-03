@@ -21,13 +21,13 @@ export function timeAgo(time) {
     [86400, "horas", 3600], // 60*60*24, 60*60
     [172800, "ayer", "hoy"], // 60*60*24*2
     [604800, "dias", 86400], // 60*60*24*7, 60*60*24
-    [1209600, "última semana", "próxima semana"], // 60*60*24*7*4*2
+    [1209600, "la última semana", "la próxima semana"], // 60*60*24*7*4*2
     [2419200, "semanas", 604800], // 60*60*24*7*4, 60*60*24*7
-    [4838400, "último mes", "próximo mes"], // 60*60*24*7*4*2
+    [4838400, "el último mes", "el próximo mes"], // 60*60*24*7*4*2
     [29030400, "meses", 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-    [58060800, "último año", "próximo year"], // 60*60*24*7*4*12*2
+    [58060800, "el último año", "el próximo año"], // 60*60*24*7*4*12*2
     [2903040000, "años", 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
-    [5806080000, "último centenario", "próximo centenario"], // 60*60*24*7*4*12*100*2
+    [5806080000, "el último centenario", "el próximo centenario"], // 60*60*24*7*4*12*100*2
     [58060800000, "centenarios", 2903040000], // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
   ];
   let seconds = (+new Date() - time) / 1000,
@@ -48,7 +48,7 @@ export function timeAgo(time) {
     if (seconds < format[0]) {
       if (typeof format[2] == "string") return format[list_choice];
       else
-        return token + Math.floor(seconds / format[2]) + " " + format[1] + " ";
+        return token + Math.floor(seconds / format[2]) + " " + format[1];
     }
   return time;
 }

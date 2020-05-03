@@ -1,17 +1,12 @@
-import 'react-native-gesture-handler';
-import React, { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Text,
-  Image,
-} from 'react-native';
-import { updatePharmacyStock, getPharmacy, getProducts } from '../api';
-import useLogin from '../hooks/useLogin';
-import { STATUS_PALETTE } from '../styles/palette';
-import { ICONS } from '../styles/icons';
-import { timeAgo, showAlert } from './utils';
+import "react-native-gesture-handler";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, TouchableOpacity, Text, Image } from "react-native";
+import { updatePharmacyStock, getPharmacy, getProducts } from "../api";
+import useLogin from "../hooks/useLogin";
+import { STATUS_PALETTE } from "../styles/palette";
+import { ICONS } from "../styles/icons";
+import { timeAgo, showAlert } from "./utils";
+import { palette } from "../styles/theme";
 
 export default function StockBar({ style }) {
   const { user } = useLogin();
@@ -30,7 +25,7 @@ export default function StockBar({ style }) {
 
     updatePharmacyStock(user.token, product.id, !hasStock)
       .then(setPharmacy)
-      .catch((e) => showAlert('Error actualizando el stock', String(e)));
+      .catch((e) => showAlert("Error actualizando el stock", String(e)));
   }
 
   function renderProducts() {
@@ -45,7 +40,8 @@ export default function StockBar({ style }) {
             {
               backgroundColor: hasStock ? STATUS_PALETTE[4] : STATUS_PALETTE[0],
             },
-          ]}>
+          ]}
+        >
           {ICONS[product.photo] ? (
             <Image
               style={styles.productButtonImg}
@@ -63,7 +59,9 @@ export default function StockBar({ style }) {
   function renderStats() {
     return (
       <View style={styles.stats}>
-        <Text style={styles.lastUpdate}>{`Actualizaste el inventario ${timeAgo(
+        <Text style={styles.pharmacyName}>{pharmacy.name}</Text>
+        <Text style={styles.pharmacyAddress}>{pharmacy.address}</Text>
+        <Text style={styles.statsText}>{`Actualizaste el inventario ${timeAgo(
           new Date(pharmacy.updatedAt)
         )}`}</Text>
       </View>
@@ -72,6 +70,7 @@ export default function StockBar({ style }) {
 
   return (
     <View style={[styles.container, style]}>
+      <Text style={styles.panelTitle}>Mi farmacia</Text>
       <View style={styles.itemsContainer}>{pharmacy && renderProducts()}</View>
       {pharmacy && renderStats()}
     </View>
@@ -80,71 +79,81 @@ export default function StockBar({ style }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+  },
+  panelTitle: {
+    fontSize: 14,
+    alignSelf: "center",
+    textTransform: "uppercase",
+    marginBottom: 8,
+    fontWeight: "bold",
   },
   itemsContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    height: '60%',
-    justifyContent: 'space-between',
-    padding: 16,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 8,
+    paddingVertical: 8,
   },
   productButton: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 5,
-    marginRight: 4,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 50,
+    marginRight: 8,
     marginBottom: 4,
     padding: 8,
-    maxWidth: '40%',
-    flexDirection: 'row',
+    flexDirection: "row",
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
   },
   productButtonText: {
-    color: 'white',
+    color: "white",
   },
   productButtonImg: {
-    width: 48,
-    height: 48,
+    width: 42,
+    height: 42,
   },
   tabText: {
     fontSize: 24,
     flexShrink: 1,
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
   },
   tabSlider: {
     padding: 8,
   },
   stats: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    width: "100%",
     padding: 8,
-    alignItems: 'center',
+    paddingRight: 16,
   },
-  lastUpdate: {
-    flex: 1,
-    paddingHorizontal: 16,
-    width: '50%',
-    textAlign: 'right',
-    color: 'gray',
+  pharmacyName: {
+    textAlign: "right",
+    textTransform: "uppercase",
+    fontWeight: "bold",
+    color: palette.neutralPrimary,
     fontSize: 12,
   },
-  capacity: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'baseline',
-    flex: 1,
-    textTransform: 'uppercase',
-    width: '50%',
-    textAlign: 'center',
-    fontSize: 40,
-  },
-  capacityValue: {
-    fontSize: 40,
-    marginRight: 8,
-  },
-  capacityLabel: {
+  pharmacyAddress: {
+    textAlign: "right",
+    textTransform: "capitalize",
+    color: palette.neutralDark,
     fontSize: 12,
+    marginBottom: 8,
+  },
+  statsText: {
+    textAlign: "right",
+    color: "gray",
+    fontSize: 10,
+    flexWrap: "nowrap"
   },
 });

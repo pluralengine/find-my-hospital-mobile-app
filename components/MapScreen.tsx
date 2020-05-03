@@ -163,11 +163,9 @@ export default function MapScreen({ navigation }) {
     <View style={styles.container}>
       <MapView
         ref={mapRef}
-        style={[styles.map, { height: showStatusBar ? "80%" : "100%" }]}
+        style={[styles.map, { height: "100%" }]}
         provider={"google"}
         showsUserLocation
-        showsMyLocationButton
-        showsCompass
         onMapReady={moveToLocation}
       >
         {pharmacies.map((pharmacy) => {
@@ -248,24 +246,14 @@ export default function MapScreen({ navigation }) {
       />
       {renderLogin()}
       {showStatusBar && <StockBar style={styles.bottomBar} />}
-      {displayCurrentLocationButton && (
-        <TouchableOpacity
-          style={[
-            styles.compassButton,
-            { bottom: showStatusBar ? "22%" : "5%" },
-          ]}
-          onPress={() => {
-            moveToLocation();
-          }}
-        >
-          <Image source={ICONS.compass} style={styles.compassButtonImage} />
-        </TouchableOpacity>
-      )}
       <TouchableOpacity
-        style={[
-          styles.productsButton,
-          { bottom: showStatusBar ? "30%" : "14%" },
-        ]}
+        style={[styles.compassButton, { bottom: showStatusBar ? 220 : 24 }]}
+        onPress={moveToLocation}
+      >
+        <Image source={ICONS.compass} style={styles.compassButtonImage} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.productsButton, { bottom: showStatusBar ? 288 : 92 }]}
         onPress={handleProductsButtonClick}
       >
         {currentProduct && (
@@ -342,10 +330,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   bottomBar: {
-    height: "20%",
-    maxHeight: "20%",
-    overflow: "hidden",
-    width: "100%",
+    position: "absolute",
+    right: 16,
+    bottom: 16,
+    maxWidth: "95%",
+    minWidth: 288,
+    borderRadius: 10,
+    shadowColor: palette.black,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 4,
   },
   loadingContainer: {
     position: "absolute",

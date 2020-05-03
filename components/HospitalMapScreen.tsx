@@ -1,11 +1,6 @@
 import "react-native-gesture-handler";
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Text,
-} from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { getHospitals } from "../api";
 import useLogin from "../hooks/useLogin";
@@ -43,8 +38,8 @@ export default function HospitalMapScreen({ navigation }) {
         style={[styles.map, { height: showVoteBar ? "80%" : "100%" }]}
         provider={"google"}
         showsUserLocation
-        showsMyLocationButton
-        showsCompass
+        showsMyLocationButton={false}
+        showsCompass={false}
       >
         {hospitals.map((hospital) => (
           <Marker
@@ -99,8 +94,8 @@ const styles = StyleSheet.create({
 });
 
 function getPinColor(status) {
-  if(!Number.isFinite(status)){
-    return 'linen'
+  if (!Number.isFinite(status)) {
+    return "linen";
   }
 
   return STATUS_MARKER_PALETTE[Math.round(status / 20) - 1];
