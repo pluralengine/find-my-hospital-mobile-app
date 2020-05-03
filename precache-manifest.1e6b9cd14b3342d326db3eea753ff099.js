@@ -1,15 +1,15 @@
 self.__precacheManifest = [
   {
-    "revision": "2115986dca39237739a1",
-    "url": "/static/js/app.19b0231e.chunk.js"
+    "revision": "649b79739a46818c62eb",
+    "url": "/static/js/app.aa1f9c72.chunk.js"
   },
   {
     "revision": "328ec0abaf4b8f214d7f",
     "url": "/static/js/runtime~app.b3244af7.js"
   },
   {
-    "revision": "96ec2e811c047728ff47",
-    "url": "/static/js/2.badf14bc.chunk.js"
+    "revision": "deb98c1a214a0468a5b3",
+    "url": "/static/js/2.59dce83a.chunk.js"
   },
   {
     "revision": "a6159fe4e1a33141298cb2156ef66368",
@@ -32,19 +32,19 @@ self.__precacheManifest = [
     "url": "/serve.json"
   },
   {
-    "revision": "f29d1d6cd2fdb3805a4e901184e0a73e",
+    "revision": "3bc0b03581299775d438c6ebfaacc423",
     "url": "/favicon-16.png"
   },
   {
-    "revision": "ffd971f7814ef45d8089a2657fb32e56",
+    "revision": "73ec20f0506a15764d67e1bc945e3664",
     "url": "/favicon-32.png"
   },
   {
-    "revision": "514c29b59feb21e1c2602a81a9d164fb",
+    "revision": "980bb285f1500dc0331b0a9ca483df93",
     "url": "/favicon.ico"
   },
   {
-    "revision": "48bd5512b2a020f7f0c54c57d47342c1",
+    "revision": "f875c75d17fb48fa6f69c9e2164f1ae6",
     "url": "/index.html"
   },
   {
