@@ -20,8 +20,13 @@ export default function StockBar({ style }) {
     getProducts().then(setProducts);
   }, []);
 
+  function isProductAvailable(pharmacy, item) {
+    const productWithoutStock = pharmacy.products.map((product) => product.id);
+    return !productWithoutStock.includes(item.id);
+  }
+
   function reportStock(product) {
-    const hasStock = pharmacy.products.some((p) => p.id === product.id);
+    const hasStock = isProductAvailable(pharmacy, product);
 
     updatePharmacyStock(user.token, product.id, !hasStock)
       .then(setPharmacy)
@@ -30,7 +35,7 @@ export default function StockBar({ style }) {
 
   function renderProducts() {
     return products.map((product, idx) => {
-      const hasStock = pharmacy.products.some((p) => p.id === product.id);
+      const hasStock = isProductAvailable(pharmacy, product);
       return (
         <TouchableOpacity
           key={product.id}
@@ -154,6 +159,6 @@ const styles = StyleSheet.create({
     textAlign: "right",
     color: "gray",
     fontSize: 10,
-    flexWrap: "nowrap"
+    flexWrap: "nowrap",
   },
 });

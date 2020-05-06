@@ -144,15 +144,14 @@ export default function MapScreen({ navigation }) {
   }
 
   function pinColor(pharmacy) {
-    const hasStock = pharmacy.products.some((product) => {
-      return product.id === currentProduct.id;
-    });
+    const hasStock = isProductAvailable(pharmacy, currentProduct);
+
     return hasStock ? "green" : "red";
   }
 
   function isProductAvailable(pharmacy, item) {
-    const productIds = pharmacy.products.map((product) => product.id);
-    return productIds && productIds.some((id) => id === item.id);
+    const productWithoutStock = pharmacy.products.map((product) => product.id);
+    return !productWithoutStock.includes(item.id);
   }
 
   const isCalloutVisible = (pharmacy) =>
