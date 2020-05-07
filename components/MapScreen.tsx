@@ -156,7 +156,6 @@ export default function MapScreen({ navigation }) {
 
   const isCalloutVisible = (pharmacy) =>
     Platform.OS !== "web" || currentMarker === pharmacy.id;
-  const displayCurrentLocationButton = Platform.OS === "web";
 
   return (
     <View style={styles.container}>
@@ -292,14 +291,14 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     paddingVertical: 8,
-    paddingHorizontal: 16,
-    right: 24,
+    paddingHorizontal: 8,
+    right: WIDTH < 380 ? 8 : 24,
     top: 24,
     height: 36,
   },
   provincesSelector: {
     position: "absolute",
-    left: 22,
+    left: WIDTH < 380 ? 8 : 24,
     top: 24,
     width: 200,
     maxWidth: 250,
