@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import { View, StyleSheet } from "react-native";
-import { withGoogleMap, GoogleMap } from "react-google-maps";
+import { withGoogleMap, withScriptjs, GoogleMap } from "react-google-maps";
 import Marker from "./Marker";
 import Polyline from "./Polyline";
 import Callout from "./Callout";
 
-const GoogleMapContainer = withGoogleMap((props) => (
-  <GoogleMap {...props} ref={props.handleMapMounted} />
-));
+const GoogleMapContainer = withScriptjs(
+  withGoogleMap((props) => (
+    <GoogleMap {...props} ref={props.handleMapMounted} />
+  ))
+);
 
 class MapView extends Component {
   state = {
@@ -67,6 +69,8 @@ class MapView extends Component {
       <View style={style}>
         <GoogleMapContainer
           handleMapMounted={this.handleMapMounted}
+          googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCU-ru-9oAi_E-2EEljl_CdIlUY9CAnjE"
+          loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div style={{ height: "100%" }} />}
           mapElement={<div style={{ height: "100%" }} />}
           {...centerProps}
