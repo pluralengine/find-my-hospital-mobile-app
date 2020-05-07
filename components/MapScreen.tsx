@@ -138,7 +138,7 @@ export default function MapScreen({ navigation }) {
         style={styles.loginButton}
         onPress={() => navigation.navigate("Login")}
       >
-        <Text>Entrar</Text>
+        <Text>Soy farmacéutico</Text>
       </TouchableOpacity>
     );
   }
