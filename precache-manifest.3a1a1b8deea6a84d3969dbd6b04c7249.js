@@ -1,7 +1,7 @@
 self.__precacheManifest = [
   {
-    "revision": "e60de4547a48fb478d66",
-    "url": "/static/js/app.f433f2d8.chunk.js"
+    "revision": "da5ad57e3ad5ac16d165",
+    "url": "/static/js/app.223051f5.chunk.js"
   },
   {
     "revision": "328ec0abaf4b8f214d7f",
@@ -24,12 +24,12 @@ self.__precacheManifest = [
     "url": "/static/media/gloves2.cba5c35f.png"
   },
   {
-    "revision": "48c7ed4e7da9792af288a60d7242d615",
-    "url": "/expo-service-worker.js"
-  },
-  {
     "revision": "d0c694b562b2208635f250762cd7fc79",
     "url": "/serve.json"
+  },
+  {
+    "revision": "48c7ed4e7da9792af288a60d7242d615",
+    "url": "/expo-service-worker.js"
   },
   {
     "revision": "3bc0b03581299775d438c6ebfaacc423",
@@ -44,7 +44,7 @@ self.__precacheManifest = [
     "url": "/favicon.ico"
   },
   {
-    "revision": "dc2c8e596340c601a124e56eeb7ec19a",
+    "revision": "40c3b65c6e16909df14d59badbd2957c",
     "url": "/index.html"
   },
   {
